@@ -30,7 +30,7 @@ const PricingSection = () => {
           </h2>
         </div>
         
-        <div className="max-w-md mx-auto">
+  <div className="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           <Card className="relative group hover:shadow-card transition-all duration-300 border-0 bg-gradient-card backdrop-blur-glass animate-scale-in focus-within:ring-2 focus-within:ring-brand-fuschia">
             <CardHeader className="text-center pb-6">
               <div className="space-y-2">
@@ -41,9 +41,11 @@ const PricingSection = () => {
                 <div className="text-xs md:text-sm text-muted-foreground">
                   <span className="line-through">{t('pricing.regular')}</span>
                 </div>
+                <div className="text-xs md:text-sm text-muted-foreground" style={{ visibility: 'hidden' }}>
+                  <span>&nbsp;</span>
+                </div>
               </div>
             </CardHeader>
-            
             <CardContent className="space-y-6">
               <ul className="space-y-3" role="list">
                 {features.map((feature, index) => (
@@ -55,10 +57,46 @@ const PricingSection = () => {
                   </li>
                 ))}
               </ul>
-              
               <div className="pt-4">
                 <Button 
                   className="w-full bg-brand-fuschia hover:bg-brand-fuschia/90 text-white font-semibold py-3 rounded-full shadow-button hover:shadow-glow transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-fuschia focus:ring-offset-2"
+                  size="lg"
+                  aria-label={t('pricing.cta')}
+                >
+                  {t('pricing.cta')}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="relative group hover:shadow-card transition-all duration-300 border-0 bg-gradient-card backdrop-blur-glass animate-scale-in focus-within:ring-2 focus-within:ring-brand-purple">
+            <CardHeader className="text-center pb-6">
+              <div className="space-y-2">
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-purple">$255</span>
+                  <span className="text-base md:text-lg text-muted-foreground">/año + IVA</span>
+                </div>
+                <div className="text-xs md:text-sm text-muted-foreground">
+                  <span className="line-through">Precio regular $459</span>
+                </div>
+                <div className="text-xs md:text-sm text-muted-foreground">
+                  <span className="font-semibold text-green-600">Desc: 15%</span>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <ul className="space-y-3" role="list">
+                {features.map((feature, index) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-brand-purple/10 flex items-center justify-center" aria-hidden="true">
+                      <Check className="w-3 h-3 text-brand-purple" />
+                    </div>
+                    <span className="text-sm md:text-base text-foreground">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="pt-4">
+                <Button 
+                  className="w-full bg-brand-purple hover:bg-brand-purple/90 text-white font-semibold py-3 rounded-full shadow-button hover:shadow-[0_0_16px_4px_theme(colors.brand-purple)] transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2"
                   size="lg"
                   aria-label={t('pricing.cta')}
                 >
