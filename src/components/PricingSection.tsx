@@ -96,7 +96,7 @@ const PricingSection = () => {
               </ul>
               <div className="pt-4">
                 <Button 
-                  className="w-full bg-brand-purple hover:bg-brand-purple/90 text-white font-semibold py-3 rounded-full shadow-button hover:shadow-[0_0_16px_4px_theme(colors.brand-purple)] transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2"
+                  className="w-full bg-brand-purple hover:bg-brand-purple text-white font-semibold py-3 rounded-full shadow-button hover:shadow-[0_0_16px_4px_theme(colors.brand-purple)] transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2"
                   size="lg"
                   aria-label={t('pricing.cta')}
                 >
