@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import logo from '@/assets/512-1.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,9 +55,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <span className="text-xl font-bold bg-gradient-to-r from-brand-purple to-brand-fuschia bg-clip-text text-transparent">
-              NILDU
-            </span>
+            <img src={logo} alt="Logo NILDU" className="h-14 w-auto" />
           </div>
 
           {/* Desktop Navigation */}
