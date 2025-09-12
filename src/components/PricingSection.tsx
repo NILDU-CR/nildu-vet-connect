@@ -48,7 +48,8 @@ const PricingSection = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-fuschia">$25</span>
-                  <span className="text-base md:text-lg text-muted-foreground">{t("pricing.month")}</span>
+                    <span className="text-xs md:text-sm font-semibold text-muted-foreground tracking-wide">{t('pricing.currency')}</span>
+                    <span className="text-base md:text-lg text-muted-foreground">{t('pricing.month')}</span>
                 </div>
                 <div className="text-xs md:text-sm text-muted-foreground">
                   <span className="line-through">{t("pricing.regular")}</span>
@@ -90,7 +91,8 @@ const PricingSection = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-purple">{t("pricing.annual.price")}</span>
-                  <span className="text-base md:text-lg text-muted-foreground">{t("pricing.annual.unit")}</span>
+                    <span className="text-xs md:text-sm font-semibold text-muted-foreground tracking-wide">{t('pricing.currency')}</span>
+                    <span className="text-base md:text-lg text-muted-foreground">{t('pricing.annual.unit')}</span>
                 </div>
                 <div className="text-xs md:text-sm text-muted-foreground">
                   <span className="line-through">{t("pricing.annual.regular")}</span>

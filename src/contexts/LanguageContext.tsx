@@ -34,7 +34,8 @@ const translations = {
     'pricing.title': 'Paquete de',
     'pricing.highlight': 'lanzamiento',
     'pricing.month': '/mes + IVA',
-    'pricing.regular': 'Precio regular $45',
+  'pricing.regular': 'Precio regular $45 USD',
+    'pricing.currency': 'USD',
     'pricing.cta': 'Quiero más info',
     'pricing.feature.1': '1 usuario',
     'pricing.feature.2': 'Agenda completa',
@@ -47,8 +48,8 @@ const translations = {
     'pricing.feature.9': 'Soporte técnico',
     'pricing.annual.price': '$255',
     'pricing.annual.unit': '/año + IVA',
-    'pricing.annual.regular': 'Precio regular $459',
-    'pricing.annual.discount': 'Desc: 15%',
+  'pricing.annual.regular': 'Precio regular $459 USD',
+    'pricing.annual.discount': 'Descuento: 15%',
     
     // Contact Form
     'contact.title': '¿Quieres',
@@ -97,7 +98,8 @@ const translations = {
     'pricing.title': 'Launch',
     'pricing.highlight': 'Package',
     'pricing.month': '/month + VAT',
-    'pricing.regular': 'Regular price $45',
+  'pricing.regular': 'Regular price $45 USD',
+  'pricing.currency': 'USD',
     'pricing.cta': 'Get more info',
     'pricing.feature.1': '1 user',
     'pricing.feature.2': 'Complete schedule',
@@ -111,7 +113,7 @@ const translations = {
   // Annual Pricing Section
   'pricing.annual.price': '$255',
   'pricing.annual.unit': '/year + VAT',
-  'pricing.annual.regular': 'Regular price $459',
+  'pricing.annual.regular': 'Regular price $459 USD',
   'pricing.annual.discount': 'Discount: 15%',
     
     // Contact Form
