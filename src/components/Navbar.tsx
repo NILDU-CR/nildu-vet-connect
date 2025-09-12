@@ -83,7 +83,7 @@ const Navbar = () => {
               variant="ghost"
               size="sm"
               onClick={toggleLanguage}
-              className="flex items-center space-x-1 text-foreground/70 hover:text-brand-fuschia"
+              className="flex items-center space-x-1 text-foreground/70 hover:text-brand-fuschia hover:bg-brand-fuschia/10 transition-colors focus:outline-none focus:text-brand-fuschia"
               aria-label={`Switch to ${language === 'es' ? 'English' : 'Spanish'}`}
             >
               <Globe className="w-4 h-4" />
