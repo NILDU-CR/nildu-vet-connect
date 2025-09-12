@@ -91,25 +91,38 @@ const Footer = () => {
             <h4 className="font-semibold text-white text-sm md:text-base">{t('footer.follow')}</h4>
             <div className="flex gap-3">
               <a 
-                href="#" 
+                href="https://www.linkedin.com/company/nildu/" 
                 className="w-8 h-8 md:w-10 md:h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-fuschia/20 transition-colors group focus:outline-none focus:ring-2 focus:ring-brand-fuschia"
                 aria-label="Follow us on LinkedIn"
+                target="_blank" rel="noopener noreferrer"
               >
                 <Linkedin className="w-4 h-4 md:w-5 md:h-5 text-white/70 group-hover:text-brand-fuschia" />
               </a>
               <a 
-                href="#" 
+                href="https://www.facebook.com/nildu" 
                 className="w-8 h-8 md:w-10 md:h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-fuschia/20 transition-colors group focus:outline-none focus:ring-2 focus:ring-brand-fuschia"
                 aria-label="Follow us on Facebook"
+                target="_blank" rel="noopener noreferrer"
               >
                 <Facebook className="w-4 h-4 md:w-5 md:h-5 text-white/70 group-hover:text-brand-fuschia" />
               </a>
               <a 
-                href="#" 
+                href="https://www.instagram.com/nilduvet" 
                 className="w-8 h-8 md:w-10 md:h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-fuschia/20 transition-colors group focus:outline-none focus:ring-2 focus:ring-brand-fuschia"
                 aria-label="Follow us on Instagram"
+                target="_blank" rel="noopener noreferrer"
               >
                 <Instagram className="w-4 h-4 md:w-5 md:h-5 text-white/70 group-hover:text-brand-fuschia" />
+              </a>
+              <a 
+                href="https://x.com/nilduvet" 
+                className="w-8 h-8 md:w-10 md:h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-brand-fuschia/20 transition-colors group focus:outline-none focus:ring-2 focus:ring-brand-fuschia"
+                aria-label="Follow us on X (Twitter)"
+                target="_blank" rel="noopener noreferrer"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 md:w-5 md:h-5 text-white/70 group-hover:text-brand-fuschia">
+                  <path d="M17.53 3.25H21.25L14.39 10.87L22.38 20.75H16.16L10.98 14.39L5.19 20.75H1.47L8.71 12.61L1 3.25H7.41L12.13 8.97L17.53 3.25ZM16.46 19.07H18.13L6.99 4.82H5.18L16.46 19.07Z" />
+                </svg>
               </a>
             </div>
           </div>
