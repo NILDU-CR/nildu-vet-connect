@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -5,43 +6,54 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const PricingSection = () => {
   const { t } = useLanguage();
-  
+  const [clicked, setClicked] = useState<"none" | "monthly" | "annual">("none");
+
   const features = [
-    t('pricing.feature.1'),
-    t('pricing.feature.2'),
-    t('pricing.feature.3'),
-    t('pricing.feature.4'),
-    t('pricing.feature.5'),
-    t('pricing.feature.6'),
-    t('pricing.feature.7'),
-    t('pricing.feature.8'),
-    t('pricing.feature.9')
+    t("pricing.feature.1"),
+    t("pricing.feature.2"),
+    t("pricing.feature.3"),
+    t("pricing.feature.4"),
+    t("pricing.feature.5"),
+    t("pricing.feature.6"),
+    t("pricing.feature.7"),
+    t("pricing.feature.8"),
+    t("pricing.feature.9"),
   ];
+
+  const baseMonthly =
+    "w-full bg-brand-fuschia text-white font-semibold py-3 rounded-full shadow-button focus:outline-none focus:ring-2 focus:ring-brand-fuschia focus:ring-offset-2";
+  const baseAnnual =
+    "w-full bg-brand-purple text-white font-semibold py-3 rounded-full shadow-[0_0_6px_1px_#7c3aed] focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2";
+
+  const hoverMonthly =
+    "hover:bg-brand-fuschia/90 hover:shadow-glow transition-all duration-300 hover:scale-105";
+  const hoverAnnual =
+    "hover:bg-brand-purple hover:shadow-[0_0_16px_4px_#7c3aed] transition-all duration-300 hover:scale-105";
 
   return (
     <section id="pricing" className="py-16 md:py-24 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 md:mb-16 animate-fade-in">
           <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4">
-            {t('pricing.title')}{" "}
+            {t("pricing.title")}{" "}
             <span className="bg-gradient-to-r from-brand-purple to-brand-fuschia bg-clip-text text-transparent">
-              {t('pricing.highlight')}
+              {t("pricing.highlight")}
             </span>
           </h2>
         </div>
-        
-  <div className="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <div className="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           <Card className="relative group hover:shadow-card transition-all duration-300 border-0 bg-gradient-card backdrop-blur-glass animate-scale-in focus-within:ring-2 focus-within:ring-brand-fuschia">
             <CardHeader className="text-center pb-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-fuschia">$25</span>
-                  <span className="text-base md:text-lg text-muted-foreground">{t('pricing.month')}</span>
+                  <span className="text-base md:text-lg text-muted-foreground">{t("pricing.month")}</span>
                 </div>
                 <div className="text-xs md:text-sm text-muted-foreground">
-                  <span className="line-through">{t('pricing.regular')}</span>
+                  <span className="line-through">{t("pricing.regular")}</span>
                 </div>
-                <div className="text-xs md:text-sm text-muted-foreground" style={{ visibility: 'hidden' }}>
+                <div className="text-xs md:text-sm text-muted-foreground" style={{ visibility: "hidden" }}>
                   <span>&nbsp;</span>
                 </div>
               </div>
@@ -58,28 +70,33 @@ const PricingSection = () => {
                 ))}
               </ul>
               <div className="pt-4">
-                <Button 
-                  className="w-full bg-brand-fuschia hover:bg-brand-fuschia/90 text-white font-semibold py-3 rounded-full shadow-button hover:shadow-glow transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-fuschia focus:ring-offset-2"
+                <Button
+                  asChild
+                  className={
+                    (clicked === "monthly" ? baseMonthly : `${baseMonthly} ${hoverMonthly}`)
+                  }
                   size="lg"
-                  aria-label={t('pricing.cta')}
+                  aria-label={t("pricing.cta")}
+                  onClick={() => setClicked("monthly")}
                 >
-                  {t('pricing.cta')}
+                  <a href="#contact">{t("pricing.cta")}</a>
                 </Button>
               </div>
             </CardContent>
           </Card>
+
           <Card className="relative group hover:shadow-card transition-all duration-300 border-0 bg-gradient-card backdrop-blur-glass animate-scale-in focus-within:ring-2 focus-within:ring-brand-purple">
             <CardHeader className="text-center pb-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-purple">{t('pricing.annual.price')}</span>
-                  <span className="text-base md:text-lg text-muted-foreground">{t('pricing.annual.unit')}</span>
+                  <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-purple">{t("pricing.annual.price")}</span>
+                  <span className="text-base md:text-lg text-muted-foreground">{t("pricing.annual.unit")}</span>
                 </div>
                 <div className="text-xs md:text-sm text-muted-foreground">
-                  <span className="line-through">{t('pricing.annual.regular')}</span>
+                  <span className="line-through">{t("pricing.annual.regular")}</span>
                 </div>
                 <div className="text-xs md:text-sm text-muted-foreground">
-                  <span className="font-semibold text-green-600">{t('pricing.annual.discount')}</span>
+                  <span className="font-semibold text-green-600">{t("pricing.annual.discount")}</span>
                 </div>
               </div>
             </CardHeader>
@@ -95,12 +112,16 @@ const PricingSection = () => {
                 ))}
               </ul>
               <div className="pt-4">
-                <Button 
-                  className="w-full bg-brand-purple hover:bg-brand-purple text-white font-semibold py-3 rounded-full shadow-[0_0_6px_1px_#7c3aed] hover:shadow-[0_0_16px_4px_#7c3aed] transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2"
+                <Button
+                  asChild
+                  className={
+                    (clicked === "annual" ? baseAnnual : `${baseAnnual} ${hoverAnnual}`)
+                  }
                   size="lg"
-                  aria-label={t('pricing.cta')}
+                  aria-label={t("pricing.cta")}
+                  onClick={() => setClicked("annual")}
                 >
-                  {t('pricing.cta')}
+                  <a href="#contact">{t("pricing.cta")}</a>
                 </Button>
               </div>
             </CardContent>
@@ -108,7 +129,6 @@ const PricingSection = () => {
         </div>
       </div>
     </section>
-    
   );
 };
 
