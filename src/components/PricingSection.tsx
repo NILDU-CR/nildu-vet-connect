@@ -72,14 +72,14 @@ const PricingSection = () => {
             <CardHeader className="text-center pb-6">
               <div className="space-y-2">
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-purple">$255</span>
-                  <span className="text-base md:text-lg text-muted-foreground">/año + IVA</span>
+                  <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-purple">{t('pricing.annual.price')}</span>
+                  <span className="text-base md:text-lg text-muted-foreground">{t('pricing.annual.unit')}</span>
                 </div>
                 <div className="text-xs md:text-sm text-muted-foreground">
-                  <span className="line-through">Precio regular $459</span>
+                  <span className="line-through">{t('pricing.annual.regular')}</span>
                 </div>
                 <div className="text-xs md:text-sm text-muted-foreground">
-                  <span className="font-semibold text-green-600">Desc: 15%</span>
+                  <span className="font-semibold text-green-600">{t('pricing.annual.discount')}</span>
                 </div>
               </div>
             </CardHeader>
@@ -96,7 +96,7 @@ const PricingSection = () => {
               </ul>
               <div className="pt-4">
                 <Button 
-                  className="w-full bg-brand-purple hover:bg-brand-purple text-white font-semibold py-3 rounded-full shadow-button hover:shadow-[0_0_16px_4px_#7c3aed] transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2"
+                  className="w-full bg-brand-purple hover:bg-brand-purple text-white font-semibold py-3 rounded-full shadow-[0_0_6px_1px_#7c3aed] hover:shadow-[0_0_16px_4px_#7c3aed] transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2"
                   size="lg"
                   aria-label={t('pricing.cta')}
                 >

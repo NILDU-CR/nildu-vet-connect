@@ -35,7 +35,7 @@ const translations = {
     'pricing.highlight': 'lanzamiento',
     'pricing.month': '/mes + IVA',
     'pricing.regular': 'Precio regular $45',
-    'pricing.cta': 'Comenzar ahora',
+    'pricing.cta': 'Quiero más info',
     'pricing.feature.1': '1 usuario',
     'pricing.feature.2': 'Agenda completa',
     'pricing.feature.3': 'Gestión de clientes',
@@ -43,8 +43,12 @@ const translations = {
     'pricing.feature.5': 'Control de vacunas',
     'pricing.feature.6': 'Historial de pesos',
     'pricing.feature.7': 'Multiplataforma',
-    'pricing.feature.8': 'Personalización',
+    'pricing.feature.8': 'Personalización de motivos',
     'pricing.feature.9': 'Soporte técnico',
+    'pricing.annual.price': '$255',
+    'pricing.annual.unit': '/año + IVA',
+    'pricing.annual.regular': 'Precio regular $459',
+    'pricing.annual.discount': 'Desc: 15%',
     
     // Contact Form
     'contact.title': '¿Quieres',
@@ -94,7 +98,7 @@ const translations = {
     'pricing.highlight': 'Package',
     'pricing.month': '/month + VAT',
     'pricing.regular': 'Regular price $45',
-    'pricing.cta': 'Get Started',
+    'pricing.cta': 'Get more info',
     'pricing.feature.1': '1 user',
     'pricing.feature.2': 'Complete schedule',
     'pricing.feature.3': 'Client management',
@@ -102,8 +106,13 @@ const translations = {
     'pricing.feature.5': 'Vaccine control',
     'pricing.feature.6': 'Weight history',
     'pricing.feature.7': 'Multi-platform',
-    'pricing.feature.8': 'Customization',
+    'pricing.feature.8': 'Reasons customization',
     'pricing.feature.9': 'Technical support',
+  // Annual Pricing Section
+  'pricing.annual.price': '$255',
+  'pricing.annual.unit': '/year + VAT',
+  'pricing.annual.regular': 'Regular price $459',
+  'pricing.annual.discount': 'Discount: 15%',
     
     // Contact Form
     'contact.title': 'Want',
