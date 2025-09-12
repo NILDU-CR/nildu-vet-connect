@@ -117,6 +117,10 @@ All colors MUST be HSL.
     @apply bg-background text-foreground font-['Inter',_system-ui,_sans-serif];
   }
   
+  html {
+    scroll-behavior: smooth;
+  }
+  
   /* Glassmorphism utilities */
   .glass {
     background: var(--glass-bg);
@@ -128,5 +132,11 @@ All colors MUST be HSL.
   /* Custom gradient utilities */
   .bg-gradient-radial {
     background: radial-gradient(circle at center, var(--tw-gradient-stops));
+  }
+  
+  /* Focus indicators for better accessibility */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--brand-fuschia));
+    outline-offset: 2px;
   }
 }
