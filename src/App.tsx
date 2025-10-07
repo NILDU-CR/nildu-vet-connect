@@ -20,10 +20,8 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             {comingSoon ? (
-              <>
-                <Route path="/coming-soon" element={<ComingSoon />} />
-                <Route path="*" element={<Navigate to="/coming-soon" replace />} />
-              </>
+              // En modo Coming Soon cualquier ruta muestra la misma página sin cambiar la URL.
+              <Route path="*" element={<ComingSoon />} />
             ) : (
               <>
                 <Route path="/" element={<Index />} />
