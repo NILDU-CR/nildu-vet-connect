@@ -60,6 +60,33 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Modo "Próximamente" (Coming Soon)
+
+Se ha añadido una pantalla temporal para bloquear el sitio público mientras el desarrollo continúa.
+
+Activación:
+
+1. Copia el archivo `.env.example` a `.env` si aún no existe:
+	```sh
+	cp .env.example .env
+	```
+2. Edita `.env` y coloca:
+	```env
+	VITE_COMING_SOON=1
+	```
+3. Inicia (o reinicia) el servidor de desarrollo:
+	```sh
+	npm run dev # o yarn dev / bun dev si usas otra herramienta
+	```
+
+Desactivar (mostrar el sitio real):
+
+```env
+VITE_COMING_SOON=0
+```
+
+Mientras `VITE_COMING_SOON=1`, cualquier ruta mostrará la pantalla "Próximamente" y no se renderizarán las demás páginas.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/0db12643-99b8-4c1f-a0ff-0aa2768c730b) and click on Share -> Publish.
