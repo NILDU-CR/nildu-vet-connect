@@ -20,25 +20,25 @@ function calculateTimeLeft(target: Date): TimeLeft {
 
 export const Countdown = ({ date }: { date?: string }) => {
   const targetStr = date || import.meta.env.VITE_LAUNCH_DATE;
-  const targetDate = targetStr ? new Date(targetStr) : null;
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
-    targetDate ? calculateTimeLeft(targetDate) : { days: 0, hours: 0, minutes: 0, seconds: 0, expired: false }
+    targetStr ? calculateTimeLeft(new Date(targetStr)) : { days: 0, hours: 0, minutes: 0, seconds: 0, expired: false }
   );
 
   useEffect(() => {
-    if (!targetDate) return;
+    if (!targetStr) return;
+    const target = new Date(targetStr);
     const id = setInterval(() => {
-      setTimeLeft(calculateTimeLeft(targetDate));
+      setTimeLeft(calculateTimeLeft(target));
     }, 1000);
     return () => clearInterval(id);
   }, [targetStr]);
 
-  if (!targetDate) return null;
+  if (!targetStr) return null;
 
   return (
     <div className="flex gap-4 justify-center text-slate-200 font-mono text-sm md:text-base">
       {(["days", "hours", "minutes", "seconds"] as const).map((k, i) => {
-        const value = (timeLeft as any)[k] as number;
+        const value = timeLeft[k];
         return (
           <div key={k} className="flex flex-col items-center">
             <span className="px-3 py-2 rounded-md bg-slate-800/70 backdrop-blur border border-slate-700/40 min-w-[60px] text-center text-lg md:text-2xl font-semibold text-emerald-300">

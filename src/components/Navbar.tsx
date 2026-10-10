@@ -1,133 +1,77 @@
-import { useState, useEffect } from 'react';
-import { Menu, X, Globe } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useLanguage } from '@/contexts/LanguageContext';
-import logo from '@/assets/512-1.png';
+import { useState } from "react";
+import wordmark from "@/assets/brand/wordmark.png";
+import { primaryButton } from "@/lib/styles";
+import { CloseIcon, MenuIcon, WhatsAppIcon } from "./Icons";
+
+const links = [
+  { href: "#funciones", label: "Funciones" },
+  { href: "#precios", label: "Precios" },
+  { href: "#contacto", label: "Contacto" },
+];
+
+const whatsapp = "https://wa.me/50689205444?text=" + encodeURIComponent("Hola, quiero información sobre Nildu.");
+
+const entrar = "rounded-md border border-line px-4 py-2 text-sm font-medium text-navy hover:border-navy";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
-  const { language, setLanguage, t } = useLanguage();
-
-  const navItems = [
-    { id: 'hero', label: t('nav.home') },
-    { id: 'features', label: t('nav.features') },
-    { id: 'pricing', label: t('nav.pricing') },
-    { id: 'contact', label: t('nav.contact') },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['hero', 'features', 'pricing', 'contact'];
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom > 100;
-        }
-        return false;
-      });
-      
-      if (currentSection) {
-        setActiveSection(currentSection);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsOpen(false);
-  };
-
-  const toggleLanguage = () => {
-    setLanguage(language === 'es' ? 'en' : 'es');
-  };
+  const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <img src={logo} alt="Logo NILDU" className="h-14 w-auto" />
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`text-sm font-medium transition-colors duration-200 hover:text-brand-fuschia focus:outline-none focus:text-brand-fuschia ${
-                  activeSection === item.id
-                    ? 'text-brand-fuschia'
-                    : 'text-foreground/70'
-                }`}
-                aria-label={`Navigate to ${item.label}`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Language Selector & Mobile Menu */}
-          <div className="flex items-center space-x-4">
-            {/* Language Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleLanguage}
-              className="flex items-center space-x-1 text-foreground/70 hover:text-brand-fuschia hover:bg-brand-fuschia/10 transition-colors focus:outline-none focus:text-brand-fuschia"
-              aria-label={`Switch to ${language === 'es' ? 'English' : 'Spanish'}`}
-            >
-              <Globe className="w-4 h-4" />
-              <span className="text-xs font-medium uppercase">{language}</span>
-            </Button>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label="Toggle navigation menu"
-                aria-expanded={isOpen}
-              >
-                {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </Button>
-            </div>
+    <header className="sticky top-0 z-40 border-b border-line bg-white">
+      <nav aria-label="Principal" className="mx-auto flex h-16 max-w-page items-center justify-between px-4 sm:px-6">
+        <a href="#inicio" className="shrink-0">
+          <img src={wordmark} alt="Nildu" className="h-7 w-auto" />
+        </a>
+        <div className="hidden items-center gap-8 lg:flex">
+          {links.map((l) => (
+            <a key={l.href} href={l.href} className="text-sm text-ink hover:text-navy">
+              {l.label}
+            </a>
+          ))}
+          <a href="https://nildu.app" className={entrar}>
+            Iniciar sesión
+          </a>
+          <a href="#contacto" className={`${primaryButton} !px-4 !py-2 text-sm`}>
+            Agenda una demo
+          </a>
+          <a href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp" title="WhatsApp" className="rounded-md border border-line p-2 hover:border-navy">
+            <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
+          </a>
+        </div>
+        <div className="flex items-center gap-2 lg:hidden">
+          <a href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp" className="rounded-md p-2">
+            <WhatsAppIcon className="h-5 w-5 text-[#25D366]" />
+          </a>
+          <a href="https://nildu.app" className={entrar}>
+            Iniciar sesión
+          </a>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+            aria-controls="menu-movil"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            className="rounded-md p-2 text-navy"
+          >
+            {open ? <CloseIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
+          </button>
+        </div>
+      </nav>
+      {open && (
+        <div id="menu-movil" className="border-t border-line lg:hidden">
+          {links.map((l) => (
+            <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="block px-4 py-3 text-ink hover:bg-mist">
+              {l.label}
+            </a>
+          ))}
+          <div className="px-4 py-3">
+            <a href="#contacto" onClick={() => setOpen(false)} className={`${primaryButton} w-full text-center`}>
+              Agenda una demo
+            </a>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-md rounded-lg mt-2 shadow-lg">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-left px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md hover:bg-muted focus:outline-none focus:bg-muted ${
-                    activeSection === item.id
-                      ? 'text-brand-fuschia bg-muted'
-                      : 'text-foreground/70'
-                  }`}
-                  aria-label={`Navigate to ${item.label}`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </nav>
+      )}
+    </header>
   );
 };
 

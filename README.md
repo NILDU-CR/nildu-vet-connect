@@ -1,100 +1,51 @@
-# Welcome to your Lovable project
+# Nildu · landing
 
-## Project info
+Sitio público de www.nildu.com. Vite + React + TypeScript + Tailwind. Vercel lo despliega
+(equipo "nildus-projects") en cada push a `main`.
 
-**URL**: https://lovable.dev/projects/0db12643-99b8-4c1f-a0ff-0aa2768c730b
+## Correr en local
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/0db12643-99b8-4c1f-a0ff-0aa2768c730b) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+pnpm install
+pnpm dev
 ```
 
-**Edit a file directly in GitHub**
+Abre http://localhost:8080. "Próximamente" solo aparece en nildu.com, así que en local se ve la landing.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Variables
 
-**Use GitHub Codespaces**
+| Variable | Uso |
+|---|---|
+| `VITE_COMING_SOON` | `1`: nildu.com y www.nildu.com muestran solo "Próximamente"; la URL de Vercel (*.vercel.app) muestra la landing. |
+| `VITE_LAUNCH_DATE` | Fecha ISO opcional para la cuenta regresiva de "Próximamente". |
+| `VITE_WEB3FORMS_KEY` | Llave pública de Web3Forms. Los envíos llegan al correo de la cuenta de Web3Forms (hoy root@nildu.com). |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Si Vercel define alguna de estas variables, gana sobre `.env`.
 
-## What technologies are used for this project?
+## Verificar
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## Modo "Próximamente" (Coming Soon)
-
-Se ha añadido una pantalla temporal para bloquear el sitio público mientras el desarrollo continúa.
-
-Activación:
-
-1. Copia el archivo `.env.example` a `.env` si aún no existe:
-	```sh
-	cp .env.example .env
-	```
-2. Edita `.env` y coloca:
-	```env
-	VITE_COMING_SOON=1
-	```
-3. Inicia (o reinicia) el servidor de desarrollo:
-	```sh
-	npm run dev # o yarn dev / bun dev si usas otra herramienta
-	```
-
-Desactivar (mostrar el sitio real):
-
-```env
-VITE_COMING_SOON=0
+```bash
+pnpm typecheck && pnpm lint && pnpm test && pnpm build
 ```
 
-Mientras `VITE_COMING_SOON=1`, cualquier ruta mostrará la pantalla "Próximamente" y no se renderizarán las demás páginas.
+## Capturas del portal
 
-## How can I deploy this project?
+Las capturas salen del portal de QA con la clínica demo.
 
-Simply open [Lovable](https://lovable.dev/projects/0db12643-99b8-4c1f-a0ff-0aa2768c730b) and click on Share -> Publish.
+- Hero (agenda mensual y tres recortes flotantes): las fuentes van en `capturas/` (ignorada por git) y se procesan con
+  `python scripts/hero-screens.py`, que también genera `public/og.png`.
+- Sección de flujo: a 1440×778, como PNG (`consulta.png`, `caja.png`, `fiscal.png`) en una carpeta, y luego:
 
-## Can I connect a custom domain to my Lovable project?
+```bash
+python scripts/optimize-screens.py <carpeta>
+```
 
-Yes, you can!
+## Publicar
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. `dev` de NLD.PortalAPI en producción (inventario, caja y factura electrónica).
+2. El plan de Nildu cargado con el precio de la landing.
+3. Costo por comprobante de Monedly revisado.
+4. `VITE_COMING_SOON=0` en `.env` y verificar que Vercel no la sobrescriba.
+5. Merge a `main`.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+> Con `main` en Vercel, la landing completa (precios incluidos) queda pública en nildu-vet-connect.vercel.app y dentro del JS de nildu.com, aunque ahí se vea "Próximamente". `index.html` (description y og.png) también describe el producto completo en nildu.com.

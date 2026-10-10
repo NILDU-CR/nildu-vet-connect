@@ -1,71 +1,59 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
-import heroImageUrl from "@/assets/hero-vet.jpg";
+import agendaMes from "@/assets/screens/hero/agenda-mes.webp";
+import ficha from "@/assets/screens/hero/ficha.webp";
+import peso from "@/assets/screens/hero/peso.webp";
+import archivos from "@/assets/screens/hero/archivos.webp";
+import citas from "@/assets/screens/hero/citas.webp";
+import { primaryButton } from "@/lib/styles";
+import BrowserFrame from "./BrowserFrame";
+import { LoopArrow, Sparks } from "./Doodles";
 
-const HeroSection = () => {
-  const { t } = useLanguage();
-  const [clicked, setClicked] = useState(false);
+// Recortes reales del portal que flotan sobre la agenda. Solo en md+; en celular se ve únicamente la agenda.
+const flotante = "absolute hidden overflow-hidden rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(23,44,68,0.08),0_16px_40px_rgba(23,44,68,0.16)] md:block";
 
-  const handleCtaClick = () => {
-    setClicked(true);
-    const el = document.getElementById("contact");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    else window.location.hash = "contact";
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-  };
-
-  const buttonClasses = clicked
-    ? "bg-brand-fuschia text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold rounded-full shadow-button focus:outline-none focus:ring-2 focus:ring-brand-fuschia focus:ring-offset-2"
-    : "bg-brand-fuschia hover:bg-brand-fuschia/90 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold rounded-full shadow-button hover:shadow-glow transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-fuschia focus:ring-offset-2";
-
-  return (
-    <section
-      id="hero"
-      className="relative h-[70vh] min-h-[600px] bg-gradient-hero overflow-hidden pt-16"
-    >
-      <div className="pointer-events-none absolute inset-0 bg-gradient-radial from-brand-purple/20 via-transparent to-brand-blue/20" />
-      <div className="container mx-auto px-4 h-full flex items-center relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
-          <div className="text-center lg:text-left space-y-6 animate-fade-in order-2 lg:order-1">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
-              {t("hero.title")}{" "}
-              <span className="bg-gradient-to-r from-brand-fuschia to-brand-pink bg-clip-text text-transparent">
-                NILDU
-              </span>
-            </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              {t("hero.subtitle")}
-            </p>
-            <div className="pt-4">
-              <Button
-                size="lg"
-                aria-label={t("hero.cta")}
-                onClick={handleCtaClick}
-                className={buttonClasses}
-              >
-                {t("hero.cta")}
-              </Button>
-            </div>
-          </div>
-          <div className="relative animate-slide-up order-1 lg:order-2">
-            <div className="relative z-10">
-              <img
-                src={heroImageUrl}
-                alt="Veterinario examinando mascota"
-                className="w-full h-auto rounded-2xl shadow-glass"
-                loading="eager"
-              />
-            </div>
-            <div className="pointer-events-none absolute -top-4 -right-4 w-16 h-16 md:w-24 md:h-24 bg-brand-pink/20 rounded-full blur-xl" />
-            <div className="pointer-events-none absolute -bottom-6 -left-6 w-20 h-20 md:w-32 md:h-32 bg-brand-purple/20 rounded-full blur-2xl" />
-          </div>
+const HeroSection = () => (
+  <section id="inicio" className="scroll-mt-20">
+    <div className="mx-auto max-w-page px-4 pb-20 pt-16 sm:px-6 md:pt-24">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-xs font-medium tracking-[0.12em] text-brand">SOFTWARE PARA VETERINARIAS</p>
+        <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.5rem]">
+          La consulta, la agenda y la factura de tu veterinaria, en un mismo sistema.
+        </h1>
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink">
+          Registras la consulta, aplicas la vacuna y cobras desde el mismo expediente. La factura electrónica sale hacia Hacienda sin pasar por otro programa.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+          <a href="#contacto" className={primaryButton}>
+            Agenda una demo
+          </a>
+          <a href="#precios" className="font-medium text-navy hover:text-brand">
+            Ver precios →
+          </a>
         </div>
       </div>
-    </section>
-  );
-};
+
+      <div className="mx-auto mt-14 max-w-[1040px] md:pb-24">
+        <div className="relative md:mx-[11%]">
+          <BrowserFrame src={agendaMes} alt="Agenda mensual de Nildu con las citas de dos consultorios" url="nildu.app" eager={true} width={1600} height={766} />
+          {/* Posiciones en % del marco, según el boceto de Steve. */}
+          <figure className={`${flotante} left-[6.5%] top-[64%] w-[16.7%]`}>
+            <img src={ficha} alt="Ficha del paciente Canelo: especie, sexo, edad y peso" width={398} height={633} loading="lazy" decoding="async" className="block h-auto w-full" />
+          </figure>
+          <figure className={`${flotante} left-[34%] top-[61%] w-[36%]`}>
+            <img src={citas} alt="Citas de Canelo con su dueña, filtradas por periodo" width={600} height={447} loading="lazy" decoding="async" className="block h-auto w-full" />
+          </figure>
+          <figure className={`${flotante} left-[78%] top-[53%] w-[32%]`}>
+            <img src={peso} alt="Evolución del peso de Canelo con su curva" width={720} height={197} loading="lazy" decoding="async" className="block h-auto w-full" />
+          </figure>
+          <figure className={`${flotante} left-[80%] top-[76%] w-[30%]`}>
+            <img src={archivos} alt="Archivos de Canelo: examen de sangre y radiografía" width={760} height={229} loading="lazy" decoding="async" className="block h-auto w-full" />
+          </figure>
+          <LoopArrow className="absolute bottom-[37%] left-[1%] hidden w-12 -scale-x-100 text-dot-cyan md:block lg:w-16" />
+          <Sparks className="absolute bottom-[50%] left-[105%] hidden w-8 rotate-12 text-dot-gold md:block" />
+          <Sparks className="absolute left-[104%] top-[95%] hidden w-8 text-dot-violet md:block" />
+        </div>
+      </div>
+    </div>
+  </section>
+);
 
 export default HeroSection;

@@ -1,39 +1,10 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 import ComingSoon from "./pages/ComingSoon";
 
-const queryClient = new QueryClient();
+// Con VITE_COMING_SOON=1, nildu.com y www.nildu.com muestran solo "Próximamente"; la URL de
+// Vercel (*.vercel.app) y localhost muestran la landing completa para revisarla antes del lanzamiento.
+const comingSoon = import.meta.env.VITE_COMING_SOON === "1" && location.hostname.endsWith("nildu.com");
 
-const App = () => {
-  const comingSoon = import.meta.env.VITE_COMING_SOON === "1";
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {comingSoon ? (
-              // En modo Coming Soon cualquier ruta muestra la misma página sin cambiar la URL.
-              <Route path="*" element={<ComingSoon />} />
-            ) : (
-              <>
-                <Route path="/" element={<Index />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </>
-            )}
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-};
+const App = () => (comingSoon ? <ComingSoon /> : <Index />);
 
 export default App;

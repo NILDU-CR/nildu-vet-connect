@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Brainstorming companion
+.superpowers/
+.playwright-mcp/
+
+# Local Claude Code config
+.claude/
+
+# Capturas originales del portal (fuentes de scripts/hero-screens.py)
+capturas/

@@ -1,193 +1,105 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useEffect, useRef, useState } from "react";
+import type { FormEvent } from "react";
+import { submitLead } from "@/lib/lead";
+import type { LeadFields } from "@/lib/lead";
+import { primaryButton } from "@/lib/styles";
+
+type Status = "idle" | "sending" | "ok" | "error";
+
+const empty: LeadFields = { nombre: "", correo: "", telefono: "", veterinaria: "", botcheck: "" };
+const accessKey = import.meta.env.VITE_WEB3FORMS_KEY ?? "";
+
+const campos = [
+  { name: "nombre", label: "Nombre", type: "text", autoComplete: "name" },
+  { name: "correo", label: "Correo", type: "email", autoComplete: "email" },
+  { name: "telefono", label: "Teléfono", type: "tel", autoComplete: "tel" },
+  { name: "veterinaria", label: "Nombre de la veterinaria", type: "text", autoComplete: "organization" },
+] as const;
+
+const correo = (
+  <a href="mailto:info@nildu.com" className="font-medium text-brand underline underline-offset-2">
+    info@nildu.com
+  </a>
+);
 
 const ContactForm = () => {
-  const { toast } = useToast();
-  const { t } = useLanguage();
-  
-  const [formData, setFormData] = useState({
-    nombre: "",
-    apellidos: "",
-    email: "",
-    telefono: "",
-    pais: "",
-    veterinaria: ""
-  });
+  const [values, setValues] = useState<LeadFields>(empty);
+  const [status, setStatus] = useState<Status>("idle");
+  const okRef = useRef<HTMLParagraphElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (status === "ok") okRef.current?.focus();
+  }, [status]);
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: t('contact.success.title'),
-      description: t('contact.success.description'),
-    });
-    setFormData({
-      nombre: "",
-      apellidos: "",
-      email: "",
-      telefono: "",
-      pais: "",
-      veterinaria: ""
-    });
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    if (status === "sending") return;
+    setStatus("sending");
+    const result = await submitLead(values, accessKey, fetch);
+    if (result === "ok") {
+      setValues(empty);
+      setStatus("ok");
+    } else {
+      // En error se conservan los datos para que la persona no tenga que reescribirlos.
+      setStatus("error");
+    }
   };
 
   return (
-    <section id="contact" className="py-16 md:py-24 bg-gradient-footer relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-brand-pink/10 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-brand-purple/10 rounded-full blur-3xl"></div>
-      </div>
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8 md:mb-12 animate-fade-in">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-4">
-              {t('contact.title')}{" "}
-              <span className="bg-gradient-to-r from-brand-fuschia to-brand-pink bg-clip-text text-transparent">
-                {t('contact.highlight')}
-              </span>{" "}
-              {t('contact.subtitle')}
-            </h2>
-          </div>
-          
-          <Card className="border-0 bg-white/10 backdrop-blur-glass shadow-glass animate-scale-in">
-            <CardContent className="p-6 md:p-8">
-              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="nombre" className="text-white/90 text-sm md:text-base">
-                      {t('contact.name')}
-                    </Label>
-                    <Input
-                      id="nombre"
-                      name="nombre"
-                      type="text"
-                      value={formData.nombre}
-                      onChange={handleChange}
-                      required
-                      className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:bg-white/30 focus:ring-2 focus:ring-brand-fuschia"
-                      placeholder={t('contact.name')}
-                      aria-label={t('contact.name')}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="apellidos" className="text-white/90 text-sm md:text-base">
-                      {t('contact.surname')}
-                    </Label>
-                    <Input
-                      id="apellidos"
-                      name="apellidos"
-                      type="text"
-                      value={formData.apellidos}
-                      onChange={handleChange}
-                      required
-                      className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:bg-white/30 focus:ring-2 focus:ring-brand-fuschia"
-                      placeholder={t('contact.surname')}
-                      aria-label={t('contact.surname')}
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white/90 text-sm md:text-base">
-                      {t('contact.email')}
-                    </Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:bg-white/30 focus:ring-2 focus:ring-brand-fuschia"
-                      placeholder="tu@email.com"
-                      aria-label={t('contact.email')}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="telefono" className="text-white/90 text-sm md:text-base">
-                      {t('contact.phone')}
-                    </Label>
-                    <Input
-                      id="telefono"
-                      name="telefono"
-                      type="tel"
-                      value={formData.telefono}
-                      onChange={handleChange}
-                      required
-                      className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:bg-white/30 focus:ring-2 focus:ring-brand-fuschia"
-                      placeholder="+506 8888-8888"
-                      aria-label={t('contact.phone')}
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="pais" className="text-white/90 text-sm md:text-base">
-                      {t('contact.country')}
-                    </Label>
-                    <Input
-                      id="pais"
-                      name="pais"
-                      type="text"
-                      value={formData.pais}
-                      onChange={handleChange}
-                      required
-                      className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:bg-white/30 focus:ring-2 focus:ring-brand-fuschia"
-                      placeholder="Costa Rica"
-                      aria-label={t('contact.country')}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="veterinaria" className="text-white/90 text-sm md:text-base">
-                      {t('contact.clinic')}
-                    </Label>
-                    <Input
-                      id="veterinaria"
-                      name="veterinaria"
-                      type="text"
-                      value={formData.veterinaria}
-                      onChange={handleChange}
-                      required
-                      className="bg-white/20 border-white/30 text-white placeholder:text-white/60 focus:bg-white/30 focus:ring-2 focus:ring-brand-fuschia"
-                      placeholder="Veterinaria San José"
-                      aria-label={t('contact.clinic')}
-                    />
-                  </div>
-                </div>
-                
-                <div className="pt-4">
-                  <Button 
-                    type="submit"
-                    className="w-full bg-brand-pink hover:bg-brand-pink/90 text-white font-semibold py-3 rounded-full shadow-button hover:shadow-glow transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-brand-pink focus:ring-offset-2"
-                    size="lg"
-                    aria-label={t('contact.submit')}
-                  >
-                    {t('contact.submit')}
-                  </Button>
-                </div>
-                
-                <p className="text-xs md:text-sm text-white/70 text-center mt-4">
-                  {t('contact.privacy')}
-                </p>
-              </form>
-            </CardContent>
-          </Card>
+    <section id="contacto" className="scroll-mt-20 bg-mist py-20">
+      <div className="mx-auto grid max-w-page gap-10 px-4 sm:px-6 md:grid-cols-2">
+        <div>
+          <h2 className="text-3xl font-semibold tracking-tight">Solicita una demo</h2>
+          <p className="mt-4 max-w-md leading-relaxed text-ink">
+            Completa el formulario y el equipo de Nildu te contactará para mostrarte el sistema. También puedes escribir a {correo}.
+          </p>
         </div>
+
+        {status === "ok" ? (
+          <p ref={okRef} tabIndex={-1} role="status" className="self-start rounded-lg border border-line bg-white p-6 focus:outline-none">
+            ¡Listo! Has enviado tu solicitud. El equipo de Nildu te contactará pronto.
+          </p>
+        ) : !accessKey ? (
+          <p className="self-start rounded-lg border border-line bg-white p-6">Para solicitar una demo, escribe a {correo}.</p>
+        ) : (
+          <form onSubmit={onSubmit} className="grid gap-4 rounded-lg border border-line bg-white p-6">
+            {campos.map((c) => (
+              <div key={c.name}>
+                <label htmlFor={c.name} className="block text-sm font-medium">
+                  {c.label}
+                </label>
+                <input
+                  id={c.name}
+                  name={c.name}
+                  type={c.type}
+                  autoComplete={c.autoComplete}
+                  required
+                  value={values[c.name]}
+                  onChange={(e) => setValues({ ...values, [c.name]: e.target.value })}
+                  className="mt-1 w-full rounded-md border border-ink/70 px-3 py-2 text-navy focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+                />
+              </div>
+            ))}
+            <input
+              type="checkbox"
+              name="botcheck"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="hidden"
+              checked={values.botcheck !== ""}
+              onChange={(e) => setValues({ ...values, botcheck: e.target.checked ? "1" : "" })}
+            />
+            {status === "error" && (
+              <p role="alert" className="text-sm text-red-700">
+                ¡Ups! No se pudo enviar. Escribe a {correo}.
+              </p>
+            )}
+            <button type="submit" disabled={status === "sending"} className={`${primaryButton} disabled:opacity-60`}>
+              {status === "sending" ? "Enviando…" : "Agenda una demo"}
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );

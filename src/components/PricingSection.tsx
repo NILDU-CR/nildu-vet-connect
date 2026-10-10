@@ -1,133 +1,141 @@
 import { useState } from "react";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { primaryButton } from "@/lib/styles";
+import { formatUsd, quote } from "@/lib/pricing";
+import type { Period } from "@/lib/pricing";
+
+const MIN_USERS = 1;
+const MAX_USERS = 50;
+
+const preguntas = [
+  { q: "¿La factura electrónica cuesta aparte?", a: "No, va incluida en el plan." },
+  { q: "¿Qué cuenta como usuario?", a: "Cada persona de tu equipo con acceso a Nildu." },
+  { q: "¿El precio incluye IVA?", a: "No, el IVA se suma al precio." },
+];
+
+const periodoBase = "rounded-full px-4 py-1.5";
+const contadorBoton = "h-9 w-9 rounded-md border border-white/30 disabled:opacity-40";
 
 const PricingSection = () => {
-  const { t } = useLanguage();
-  const [clicked, setClicked] = useState<"none" | "monthly" | "annual">("none");
-
-  const features = [
-    t("pricing.feature.1"),
-    t("pricing.feature.2"),
-    t("pricing.feature.3"),
-    t("pricing.feature.4"),
-    t("pricing.feature.5"),
-    t("pricing.feature.6"),
-    t("pricing.feature.7"),
-    t("pricing.feature.8"),
-    t("pricing.feature.9"),
-  ];
-
-  const baseMonthly =
-    "w-full bg-brand-fuschia text-white font-semibold py-3 rounded-full shadow-button focus:outline-none focus:ring-2 focus:ring-brand-fuschia focus:ring-offset-2";
-  const baseAnnual =
-    "w-full bg-brand-purple text-white font-semibold py-3 rounded-full shadow-[0_0_6px_1px_#7c3aed] focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2";
-
-  const hoverMonthly =
-    "hover:bg-brand-fuschia/90 hover:shadow-glow transition-all duration-300 hover:scale-105";
-  const hoverAnnual =
-    "hover:bg-brand-purple hover:shadow-[0_0_16px_4px_#7c3aed] transition-all duration-300 hover:scale-105";
+  const [period, setPeriod] = useState<Period>("anual");
+  const [users, setUsers] = useState(5);
+  const q = quote(users, period);
+  const anual = period === "anual";
 
   return (
-    <section id="pricing" className="py-16 md:py-24 bg-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12 md:mb-16 animate-fade-in">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4">
-            {t("pricing.title")}{" "}
-            <span className="bg-gradient-to-r from-brand-purple to-brand-fuschia bg-clip-text text-transparent">
-              {t("pricing.highlight")}
-            </span>
-          </h2>
+    <section id="precios" className="scroll-mt-20 bg-navy py-20 text-white">
+      <div className="mx-auto max-w-page px-4 sm:px-6">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
+          <div>
+            <p className="text-xs font-medium tracking-[0.12em] text-cta">PRECIO</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+              Un plan. Todo incluido.
+              <br />
+              Pagas por tu equipo, no por funciones.
+            </h2>
+            <p className="mt-6 flex flex-wrap items-baseline gap-x-3">
+              <span className="text-6xl font-semibold tracking-tight">$25</span>
+              <span className="text-sm text-white/70">USD al mes + IVA</span>
+            </p>
+            <p className="mt-3">Incluye 3 usuarios. Cada usuario adicional, $5 al mes.</p>
+            <div role="group" aria-label="Periodo de pago" className="mt-8 inline-flex rounded-full border border-white/25 p-1 text-sm">
+              <button
+                type="button"
+                aria-pressed={!anual}
+                onClick={() => setPeriod("mensual")}
+                className={`${periodoBase} ${!anual ? "bg-white font-medium text-navy" : "text-white/75"}`}
+              >
+                Mensual
+              </button>
+              <button
+                type="button"
+                aria-pressed={anual}
+                onClick={() => setPeriod("anual")}
+                className={`${periodoBase} ${anual ? "bg-white font-medium text-navy" : "text-white/75"}`}
+              >
+                Anual · 2 meses gratis
+              </button>
+            </div>
+            <p className="mt-8 text-sm text-white/75">¿Cuántas personas usarán Nildu?</p>
+            <div className="mt-3 flex items-center gap-4">
+              <button
+                type="button"
+                aria-label="Quitar un usuario"
+                disabled={users === MIN_USERS}
+                onClick={() => setUsers(users - 1)}
+                className={contadorBoton}
+              >
+                −
+              </button>
+              <span aria-live="polite" className="min-w-[2ch] text-center text-2xl font-semibold">
+                {users}
+              </span>
+              <button
+                type="button"
+                aria-label="Agregar un usuario"
+                disabled={users === MAX_USERS}
+                onClick={() => setUsers(users + 1)}
+                className={contadorBoton}
+              >
+                +
+              </button>
+              <span className="text-xs text-white/70">3 incluidos en el plan</span>
+            </div>
+          </div>
+
+          <div className="rounded-xl bg-white p-6 text-navy shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
+            <p className="text-sm font-semibold">Tu plan</p>
+            <p className="text-xs text-ink">
+              {anual ? "Anual" : "Mensual"} · {users} {users === 1 ? "usuario" : "usuarios"}
+            </p>
+            <div className="mt-3">
+              <p className="flex justify-between py-1.5 text-sm">
+                <span>Plan Nildu ({period})</span>
+                <span>{formatUsd(q.base)}</span>
+              </p>
+              <p className="flex justify-between py-1.5 text-sm">
+                <span>3 usuarios incluidos</span>
+                <span className="text-ink">$0</span>
+              </p>
+              {q.extraUsers > 0 && (
+                <p className="flex justify-between py-1.5 text-sm">
+                  <span>
+                    {q.extraUsers} {q.extraUsers === 1 ? "usuario adicional" : "usuarios adicionales"}
+                  </span>
+                  <span>{formatUsd(q.extraCost)}</span>
+                </p>
+              )}
+              <p className="flex justify-between py-1.5 text-sm">
+                <span>Factura electrónica</span>
+                <span className="text-ink">Incluida</span>
+              </p>
+              <p className="flex justify-between py-1.5 text-sm">
+                <span>Inventario y caja</span>
+                <span className="text-ink">Incluido</span>
+              </p>
+            </div>
+            <div aria-live="polite" className="mt-3 border-t border-line pt-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold">Total</span>
+                <span className="text-right">
+                  <span className="block text-2xl font-semibold">{formatUsd(q.total)}</span>
+                  <span className="block text-xs text-ink">{anual ? "al año" : "al mes"} + IVA</span>
+                </span>
+              </div>
+              {anual && <p className="mt-1 text-right text-xs text-ink">equivale a {formatUsd(q.perMonth)} al mes</p>}
+            </div>
+            <a href="#contacto" className={`${primaryButton} mt-5 w-full text-center`}>
+              Agenda una demo
+            </a>
+          </div>
         </div>
 
-        <div className="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card className="relative group hover:shadow-card transition-all duration-300 border-0 bg-gradient-card backdrop-blur-glass animate-scale-in focus-within:ring-2 focus-within:ring-brand-fuschia">
-            <CardHeader className="text-center pb-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-fuschia">$25</span>
-                    <span className="text-xs md:text-sm font-semibold text-muted-foreground tracking-wide">{t('pricing.currency')}</span>
-                    <span className="text-base md:text-lg text-muted-foreground">{t('pricing.month')}</span>
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground">
-                  <span className="line-through">{t("pricing.regular")}</span>
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground" style={{ visibility: "hidden" }}>
-                  <span>&nbsp;</span>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <ul className="space-y-3" role="list">
-                {features.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-brand-fuschia/10 flex items-center justify-center" aria-hidden="true">
-                      <Check className="w-3 h-3 text-brand-fuschia" />
-                    </div>
-                    <span className="text-sm md:text-base text-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="pt-4">
-                <Button
-                  asChild
-                  className={
-                    (clicked === "monthly" ? baseMonthly : `${baseMonthly} ${hoverMonthly}`)
-                  }
-                  size="lg"
-                  aria-label={t("pricing.cta")}
-                  onClick={() => setClicked("monthly")}
-                >
-                  <a href="#contact">{t("pricing.cta")}</a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="relative group hover:shadow-card transition-all duration-300 border-0 bg-gradient-card backdrop-blur-glass animate-scale-in focus-within:ring-2 focus-within:ring-brand-purple">
-            <CardHeader className="text-center pb-6">
-              <div className="space-y-2">
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-purple">{t("pricing.annual.price")}</span>
-                    <span className="text-xs md:text-sm font-semibold text-muted-foreground tracking-wide">{t('pricing.currency')}</span>
-                    <span className="text-base md:text-lg text-muted-foreground">{t('pricing.annual.unit')}</span>
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground">
-                  <span className="line-through">{t("pricing.annual.regular")}</span>
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground">
-                  <span className="font-semibold text-green-600">{t("pricing.annual.discount")}</span>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <ul className="space-y-3" role="list">
-                {features.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 rounded-full bg-brand-purple/10 flex items-center justify-center" aria-hidden="true">
-                      <Check className="w-3 h-3 text-brand-purple" />
-                    </div>
-                    <span className="text-sm md:text-base text-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="pt-4">
-                <Button
-                  asChild
-                  className={
-                    (clicked === "annual" ? baseAnnual : `${baseAnnual} ${hoverAnnual}`)
-                  }
-                  size="lg"
-                  aria-label={t("pricing.cta")}
-                  onClick={() => setClicked("annual")}
-                >
-                  <a href="#contact">{t("pricing.cta")}</a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="mt-14 grid gap-6 text-sm sm:grid-cols-3">
+          {preguntas.map((p) => (
+            <div key={p.q} className="border-t border-white/15 pt-4">
+              <p className="font-semibold">{p.q}</p>
+              <p className="mt-1 text-white/75">{p.a}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
