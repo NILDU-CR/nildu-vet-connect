@@ -114,6 +114,13 @@ const ContactForm = () => {
             <button type="submit" disabled={status === "sending"} className={`${primaryButton} disabled:opacity-60`}>
               {status === "sending" ? "Enviando…" : "Agenda una demo"}
             </button>
+            <p className="text-xs text-ink">
+              Nildu usa tus datos solo para contactarte sobre la demo. Lee la{" "}
+              <a href="/privacidad" className="underline underline-offset-2 hover:text-navy">
+                política de privacidad
+              </a>
+              .
+            </p>
           </form>
         )}
       </div>

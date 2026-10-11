@@ -1,11 +1,12 @@
-import PageShell from "@/components/PageShell";
+import LegalDocument from "@/components/LegalDocument";
+import type { Seccion } from "@/components/LegalDocument";
 import { correoSoporte, telefonoWhatsApp } from "@/lib/contact";
 
 // ponytail: borrador redactado sin revisión legal (2026-10-10). Antes del lanzamiento debe revisarlo un abogado,
 // sobre todo cancelación y reembolsos, responsabilidad y datos personales.
 const ACTUALIZADO = "10 de octubre de 2026";
 
-const secciones = [
+const secciones: Seccion[] = [
   {
     titulo: "1. El servicio",
     parrafos: [
@@ -93,26 +94,12 @@ const secciones = [
 ];
 
 const Terminos = () => (
-  <PageShell title="Términos del servicio">
-    <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-      <h1 className="text-4xl font-semibold tracking-tight">Términos del servicio</h1>
-      <p className="mt-3 text-sm text-ink">Última actualización: {ACTUALIZADO}</p>
-      <p className="mt-8 leading-relaxed text-ink">
-        Estos términos regulan el uso de Nildu, el software para veterinarias de NILDU S.R.L., sociedad costarricense. Al crear una cuenta o usar Nildu, la
-        clínica que contrata el servicio y sus usuarios aceptan estos términos.
-      </p>
-      {secciones.map((s) => (
-        <section key={s.titulo} className="mt-10">
-          <h2 className="text-xl font-semibold">{s.titulo}</h2>
-          {s.parrafos.map((p) => (
-            <p key={p} className="mt-3 leading-relaxed text-ink">
-              {p}
-            </p>
-          ))}
-        </section>
-      ))}
-    </article>
-  </PageShell>
+  <LegalDocument
+    titulo="Términos del servicio"
+    actualizado={ACTUALIZADO}
+    intro="Estos términos regulan el uso de Nildu, el software para veterinarias de NILDU S.R.L., sociedad costarricense. Al crear una cuenta o usar Nildu, la clínica que contrata el servicio y sus usuarios aceptan estos términos."
+    secciones={secciones}
+  />
 );
 
 export default Terminos;

@@ -23,6 +23,9 @@ const Footer = () => (
           <a href="/terminos" className="hover:text-white">
             Términos
           </a>
+          <a href="/privacidad" className="hover:text-white">
+            Privacidad
+          </a>
         </nav>
       </div>
       <ul className="flex gap-5 text-white/80">
