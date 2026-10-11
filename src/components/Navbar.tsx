@@ -8,6 +8,7 @@ const links = [
   { href: "#funciones", label: "Funciones" },
   { href: "#precios", label: "Precios" },
   { href: "#contacto", label: "Contacto" },
+  { href: "/ayuda", label: "Ayuda" },
 ];
 
 const whatsapp = whatsappUrl("Hola, quiero información sobre Nildu.");
