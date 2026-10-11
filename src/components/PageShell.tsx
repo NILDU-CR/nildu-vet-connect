@@ -5,7 +5,7 @@ import Footer from "./Footer";
 
 type PageShellProps = { title: string; children: ReactNode };
 
-// Marco de las páginas sueltas (ayuda, términos): encabezado mínimo, porque se ven también durante el "Próximamente".
+// Marco de las páginas sueltas (ayuda, términos, privacidad): encabezado mínimo, sin el menú de la landing.
 const PageShell = ({ title, children }: PageShellProps) => {
   useEffect(() => {
     document.title = `${title} · Nildu`;
