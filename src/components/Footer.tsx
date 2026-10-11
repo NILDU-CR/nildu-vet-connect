@@ -16,6 +16,14 @@ const Footer = () => (
         <a href="mailto:info@nildu.com" className="mt-4 block text-sm text-white/80 hover:text-white">
           info@nildu.com
         </a>
+        <nav aria-label="Enlaces del pie" className="mt-4 flex gap-5 text-sm text-white/80">
+          <a href="/ayuda" className="hover:text-white">
+            Ayuda
+          </a>
+          <a href="/terminos" className="hover:text-white">
+            Términos
+          </a>
+        </nav>
       </div>
       <ul className="flex gap-5 text-white/80">
         {redes.map(({ href, label, Icon }) => (

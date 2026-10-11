@@ -1,5 +1,6 @@
 import { useState } from "react";
 import wordmark from "@/assets/brand/wordmark.png";
+import { whatsappUrl } from "@/lib/contact";
 import { primaryButton } from "@/lib/styles";
 import { CloseIcon, MenuIcon, WhatsAppIcon } from "./Icons";
 
@@ -9,7 +10,7 @@ const links = [
   { href: "#contacto", label: "Contacto" },
 ];
 
-const whatsapp = "https://wa.me/50689205444?text=" + encodeURIComponent("Hola, quiero información sobre Nildu.");
+const whatsapp = whatsappUrl("Hola, quiero información sobre Nildu.");
 
 const entrar = "rounded-md border border-line px-4 py-2 text-sm font-medium text-navy hover:border-navy";
 

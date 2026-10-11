@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    { "source": "/help", "destination": "/ayuda", "permanent": false },
+    { "source": "/terms", "destination": "/terminos", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/ayuda", "destination": "/index.html" },
+    { "source": "/terminos", "destination": "/index.html" }
+  ]
+}
