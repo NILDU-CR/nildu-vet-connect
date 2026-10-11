@@ -29,6 +29,8 @@ const ContactForm = () => {
   const [captcha, setCaptcha] = useState("");
   // Cada token de hCaptcha sirve una sola vez: tras un error se vuelve a montar el widget.
   const [captchaKey, setCaptchaKey] = useState(0);
+  // hCaptcha pesa ~100 KB: se carga cuando la persona entra al formulario, no con la página.
+  const [enUso, setEnUso] = useState(false);
   const okRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const ContactForm = () => {
         ) : !accessKey ? (
           <p className="self-start rounded-lg border border-line bg-white p-6">Para solicitar una demo, escribe a {correo}.</p>
         ) : (
-          <form onSubmit={onSubmit} className="grid gap-4 rounded-lg border border-line bg-white p-6">
+          <form onSubmit={onSubmit} onFocus={() => setEnUso(true)} className="grid gap-4 rounded-lg border border-line bg-white p-6">
             {campos.map((c) => (
               <div key={c.name}>
                 <label htmlFor={c.name} className="block text-sm font-medium">
@@ -100,7 +102,11 @@ const ContactForm = () => {
               checked={values.botcheck !== ""}
               onChange={(e) => setValues({ ...values, botcheck: e.target.checked ? "1" : "" })}
             />
-            <Captcha key={captchaKey} onToken={setCaptcha} fallback={<>Escribe a {correo}.</>} />
+            {enUso ? (
+              <Captcha key={captchaKey} onToken={setCaptcha} fallback={<>Escribe a {correo}.</>} />
+            ) : (
+              <div className="min-h-[78px]" />
+            )}
             {status === "sin-captcha" && (
               <p role="alert" className="text-sm text-red-700">
                 Completa la verificación antes de enviar.

@@ -13,7 +13,7 @@ const SITEKEY = "50b2fe65-b00b-4b9e-ad62-3ba471098be2";
 
 let ready: Promise<void> | null = null;
 
-// El script de hCaptcha se carga una sola vez, cuando aparece el formulario.
+// El script de hCaptcha se carga una sola vez, la primera vez que se monta el widget.
 function loadHCaptcha(): Promise<void> {
   ready ??= new Promise((resolve, reject) => {
     window.onHCaptchaLoad = () => resolve();

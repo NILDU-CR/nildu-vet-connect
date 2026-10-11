@@ -40,6 +40,13 @@ def main() -> None:
         img.save(target, "WEBP", quality=quality, method=6)
         print(f"{dst}: {img.width}x{img.height}, {target.stat().st_size // 1024} KB")
 
+    # Versiones más angostas del hero para el srcset: los celulares no bajan la de 1700.
+    hero = Image.open(OUT / "hero.webp")
+    for width in (800, 1200):
+        target = OUT / f"hero-{width}.webp"
+        hero.resize((width, round(hero.height * width / hero.width)), Image.LANCZOS).save(target, "WEBP", quality=84, method=6)
+        print(f"{target.name}: {target.stat().st_size // 1024} KB")
+
     og = Image.new("RGB", (1200, 630), "white")
     mark = Image.open(ROOT / "src" / "assets" / "brand" / "wordmark.png").convert("RGBA")
     mark = mark.resize((round(mark.width * 44 / mark.height), 44), Image.LANCZOS)
