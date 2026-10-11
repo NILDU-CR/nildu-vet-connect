@@ -1,12 +1,21 @@
 import { useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import agenda from "@/assets/screens/modulos/agenda.webp";
+import agenda720 from "@/assets/screens/modulos/agenda-720.webp";
 import inventario from "@/assets/screens/modulos/inventario.webp";
+import inventario720 from "@/assets/screens/modulos/inventario-720.webp";
 import reportes from "@/assets/screens/modulos/reportes.webp";
 import tareas from "@/assets/screens/modulos/tareas.webp";
+import tareas720 from "@/assets/screens/modulos/tareas-720.webp";
 import consulta from "@/assets/screens/consulta.webp";
+import consulta720 from "@/assets/screens/consulta-720.webp";
 import fiscal from "@/assets/screens/fiscal.webp";
+import fiscal720 from "@/assets/screens/fiscal-720.webp";
 import BrowserFrame from "./BrowserFrame";
+
+// Ancho de la captura: en lg+ la columna mide ~510 px; abajo ocupa el panel menos sus márgenes.
+const SIZES = "(min-width: 1024px) 510px, calc(100vw - 98px)";
+const srcSet = (chica: string, grande: string) => `${chica} 720w, ${grande} 1440w`;
 
 // Titular provisional mientras Steve elige.
 const TITULAR = "Seis módulos. Una sola historia por paciente.";
@@ -18,7 +27,7 @@ type Modulo = {
   texto: string;
   items: string[];
   // Sin captura, el panel ocupa todo el ancho.
-  img?: { src: string; alt: string; width: number; height: number };
+  img?: { src: string; srcSet?: string; alt: string; width: number; height: number };
 };
 
 // Cada frase corresponde a una fila de la sección 3 del spec. No agregar nada que no esté ahí.
@@ -29,7 +38,7 @@ const modulos: Modulo[] = [
     titulo: "Agenda",
     texto: "Citas por profesional y consultorio, con la disponibilidad a la vista. El cliente recibe un correo cuando creas, mueves o cancelas su cita.",
     items: ["Vistas de mes, semana y día", "Reprogramar arrastrando", "Horarios y disponibilidad por profesional", "Motivos de cita configurables"],
-    img: { src: agenda, alt: "Vista semanal de la agenda de Nildu, con citas de dos consultorios y dos profesionales", width: 1440, height: 778 },
+    img: { src: agenda, srcSet: srcSet(agenda720, agenda), alt: "Vista semanal de la agenda de Nildu, con citas de dos consultorios y dos profesionales", width: 1440, height: 778 },
   },
   {
     id: "expediente",
@@ -37,7 +46,7 @@ const modulos: Modulo[] = [
     titulo: "Expediente clínico",
     texto: "Cada consulta usa el formulario de su tipo, con los signos vitales comparados contra su rango normal.",
     items: ["Vacunas con lote y próxima dosis", "Desparasitaciones y medicamentos", "Curva de peso y archivos adjuntos", "Vacunas aplicadas en otra veterinaria"],
-    img: { src: consulta, alt: "Consulta en Nildu con signos vitales y su rango normal", width: 1440, height: 778 },
+    img: { src: consulta, srcSet: srcSet(consulta720, consulta), alt: "Consulta en Nildu con signos vitales y su rango normal", width: 1440, height: 778 },
   },
   {
     id: "facturacion",
@@ -50,7 +59,7 @@ const modulos: Modulo[] = [
       "Abonos y ventas a crédito",
       "Totales del día por sucursal",
     ],
-    img: { src: fiscal, alt: "Orden en caja con la opción de emitir factura o tiquete electrónico", width: 1440, height: 778 },
+    img: { src: fiscal, srcSet: srcSet(fiscal720, fiscal), alt: "Orden en caja con la opción de emitir factura o tiquete electrónico", width: 1440, height: 778 },
   },
   {
     id: "inventario",
@@ -58,7 +67,7 @@ const modulos: Modulo[] = [
     titulo: "Inventario",
     texto: "Existencias por sucursal y bodega, con lotes y vencimientos. Lo que vendes se rebaja solo.",
     items: ["Alertas de reorden, por vencer y vencido", "Kárdex por artículo", "Código CABYS e impuesto por artículo", "Importación del catálogo desde Excel"],
-    img: { src: inventario, alt: "Existencias en Nildu con avisos de reponer y un lote por vencer", width: 1440, height: 692 },
+    img: { src: inventario, srcSet: srcSet(inventario720, inventario), alt: "Existencias en Nildu con avisos de reponer y un lote por vencer", width: 1440, height: 692 },
   },
   {
     id: "tareas",
@@ -66,7 +75,7 @@ const modulos: Modulo[] = [
     titulo: "Tareas",
     texto: "Un tablero para el equipo: cada tarea lleva responsable, fecha de vencimiento y prioridad, y puede quedar ligada a un cliente o a un paciente.",
     items: ["Columnas por estado: mueves las tarjetas arrastrando", "Responsables, prioridad y etiquetas", "Ligadas a un cliente o a un paciente", "Comentarios e historial de cambios"],
-    img: { src: tareas, alt: "Tablero de tareas de Nildu con columnas Por hacer, En proceso y Completado", width: 1440, height: 490 },
+    img: { src: tareas, srcSet: srcSet(tareas720, tareas), alt: "Tablero de tareas de Nildu con columnas Por hacer, En proceso y Completado", width: 1440, height: 490 },
   },
   {
     id: "reportes",
@@ -167,7 +176,7 @@ const ModulesSection = () => {
                     ))}
                   </ul>
                 </div>
-                {m.img && <BrowserFrame src={m.img.src} alt={m.img.alt} url="nildu.app" eager={false} width={m.img.width} height={m.img.height} />}
+                {m.img && <BrowserFrame src={m.img.src} srcSet={m.img.srcSet} sizes={m.img.srcSet && SIZES} alt={m.img.alt} url="nildu.app" eager={false} width={m.img.width} height={m.img.height} />}
               </div>
             </div>
           ))}

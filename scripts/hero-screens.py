@@ -39,6 +39,10 @@ def main() -> None:
         target = out_dir / dst
         img.save(target, "WEBP", quality=quality, method=6)
         print(f"{dst}: {img.width}x{img.height}, {target.stat().st_size // 1024} KB")
+        # Versión de 720 para el srcset de los módulos: en celular la captura se ve a ~550 px.
+        if out_dir != OUT and img.width > 720:
+            small = out_dir / dst.replace(".webp", "-720.webp")
+            img.resize((720, round(img.height * 720 / img.width)), Image.LANCZOS).save(small, "WEBP", quality=quality, method=6)
 
     # Versiones más angostas del hero para el srcset: los celulares no bajan la de 1700.
     hero = Image.open(OUT / "hero.webp")
