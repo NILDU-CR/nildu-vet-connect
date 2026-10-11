@@ -8,11 +8,11 @@ import Privacidad from "./pages/Privacidad";
 // Vercel (*.vercel.app) y localhost muestran la landing completa para revisarla antes del lanzamiento.
 const comingSoon = import.meta.env.VITE_COMING_SOON === "1" && location.hostname.endsWith("nildu.com");
 
-// Páginas sueltas: se ven siempre, también durante el "Próximamente", porque el portal enlaza /terms y /privacy.
+// Durante el "Próximamente" todo el sitio, páginas sueltas incluidas, muestra solo "Próximamente".
 // En Vercel, /terms, /privacy y /help redirigen a su nombre en español (vercel.json); aquí se aceptan para el servidor local.
 const paginas: Record<string, () => JSX.Element> = { "/ayuda": Ayuda, "/help": Ayuda, "/terminos": Terminos, "/terms": Terminos, "/privacidad": Privacidad, "/privacy": Privacidad };
-const Pagina = paginas[location.pathname.replace(/\/$/, "")];
+const Pagina = comingSoon ? ComingSoon : paginas[location.pathname.replace(/\/$/, "")] ?? Index;
 
-const App = () => (Pagina ? <Pagina /> : comingSoon ? <ComingSoon /> : <Index />);
+const App = () => <Pagina />;
 
 export default App;
