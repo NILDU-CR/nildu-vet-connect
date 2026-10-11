@@ -3,7 +3,7 @@ import type { Seccion } from "@/components/LegalDocument";
 import { correoSoporte } from "@/lib/contact";
 
 // ponytail: borrador redactado sin revisión legal (2026-10-10). Antes del lanzamiento debe revisarlo un abogado.
-// Si cambia un proveedor (alojamiento, correo, formulario, captcha), hay que actualizar la sección 4.
+// Si cambia un proveedor (alojamiento, red, correo, formulario, captcha), hay que actualizar la sección 4.
 const ACTUALIZADO = "11 de octubre de 2026";
 
 const secciones: Seccion[] = [
@@ -20,7 +20,7 @@ const secciones: Seccion[] = [
       "Formulario de demo: tu nombre, correo, teléfono y el nombre de tu veterinaria. Nildu los usa solo para contactarte sobre la demo. El formulario se envía a través de Web3Forms, que lo reenvía al correo de Nildu.",
       "Verificación: antes de enviar el formulario, hCaptcha comprueba que lo envía una persona. Para eso recibe datos técnicos de tu navegador y puede usar cookies, según su propia política de privacidad.",
       "WhatsApp: si escribes a Nildu por WhatsApp, la conversación pasa por WhatsApp y se rige también por sus condiciones.",
-      "Datos técnicos: el sitio está alojado en Vercel, que registra datos técnicos de las visitas, como la dirección IP, para operar el servicio.",
+      "Datos técnicos: el sitio está alojado en Vercel y pasa por Cloudflare, que lo protege de ataques y lo entrega más rápido. Los dos registran datos técnicos de las visitas, como la dirección IP, para operar el servicio. Cloudflare puede usar cookies técnicas cuando necesita comprobar que una visita no es un ataque.",
       "Este sitio no usa cookies propias ni herramientas de analítica o de publicidad.",
     ],
   },
@@ -36,7 +36,7 @@ const secciones: Seccion[] = [
     titulo: "4. Con quién se comparten",
     parrafos: [
       "Ministerio de Hacienda: los datos de los comprobantes electrónicos, como exige la ley.",
-      "Proveedores que ayudan a operar el servicio: Microsoft Azure (alojamiento del software), Vercel (alojamiento de este sitio), Web3Forms y hCaptcha (formulario de demo) y el servicio de envío de correos. Cada uno recibe solo lo necesario para su tarea.",
+      "Proveedores que ayudan a operar el servicio: Microsoft Azure (alojamiento del software), Vercel (alojamiento de este sitio), Cloudflare (red y protección de este sitio), Web3Forms y hCaptcha (formulario de demo) y el servicio de envío de correos. Cada uno recibe solo lo necesario para su tarea.",
       "Autoridades, cuando una ley o una orden judicial lo exijan.",
       "Nildu no vende datos personales ni los usa para publicidad.",
     ],
