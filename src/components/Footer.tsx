@@ -12,7 +12,7 @@ const Footer = () => (
   <footer className="bg-navy text-white">
     <div className="mx-auto flex max-w-page flex-col gap-8 px-4 py-12 sm:px-6 md:flex-row md:items-start md:justify-between">
       <div>
-        <img src={wordmarkWhite} alt="Nildu" className="h-7 w-auto" />
+        <img src={wordmarkWhite} alt="Nildu" width={241} height={84} className="h-7 w-auto" />
         <a href="mailto:info@nildu.com" className="mt-4 block text-sm text-white/80 hover:text-white">
           info@nildu.com
         </a>

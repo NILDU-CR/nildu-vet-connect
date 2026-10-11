@@ -16,7 +16,7 @@ const PageShell = ({ title, children }: PageShellProps) => {
       <header className="border-b border-line bg-white">
         <div className="mx-auto flex h-16 max-w-page items-center justify-between px-4 sm:px-6">
           <a href="/" className="shrink-0">
-            <img src={wordmark} alt="Nildu" className="h-7 w-auto" />
+            <img src={wordmark} alt="Nildu" width={241} height={84} className="h-7 w-auto" />
           </a>
           <a href="https://nildu.app" className="rounded-md border border-line px-4 py-2 text-sm font-medium text-navy hover:border-navy">
             Iniciar sesión

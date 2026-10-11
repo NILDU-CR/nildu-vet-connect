@@ -1,4 +1,6 @@
 import hero from "@/assets/screens/hero/hero.webp";
+import hero800 from "@/assets/screens/hero/hero-800.webp";
+import hero1200 from "@/assets/screens/hero/hero-1200.webp";
 import { primaryButton } from "@/lib/styles";
 
 const HeroSection = () => (
@@ -24,6 +26,9 @@ const HeroSection = () => (
 
       <img
         src={hero}
+        srcSet={`${hero800} 800w, ${hero1200} 1200w, ${hero} 1700w`}
+        sizes="(min-width: 1088px) 1040px, calc(100vw - 32px)"
+        fetchPriority="high"
         alt="Nildu con la agenda de octubre, el panel de control, la ficha de Canelo, su curva de peso y sus archivos"
         width={1700}
         height={1038}
