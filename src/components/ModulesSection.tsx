@@ -11,6 +11,7 @@ import consulta from "@/assets/screens/consulta.webp";
 import consulta720 from "@/assets/screens/consulta-720.webp";
 import fiscal from "@/assets/screens/fiscal.webp";
 import fiscal720 from "@/assets/screens/fiscal-720.webp";
+import { useLang } from "@/lib/i18n";
 import BrowserFrame from "./BrowserFrame";
 
 // Ancho de la captura: en lg+ la columna mide ~510 px; abajo ocupa el panel menos sus márgenes.
@@ -18,72 +19,145 @@ const SIZES = "(min-width: 1024px) 510px, calc(100vw - 98px)";
 const srcSet = (chica: string, grande: string) => `${chica} 720w, ${grande} 1440w`;
 
 // Titular provisional mientras Steve elige.
-const TITULAR = "Seis módulos. Una sola historia por paciente.";
+const textos = {
+  es: {
+    titular: "Seis módulos. Una sola historia por paciente.",
+    bajada: "Agenda, expediente, facturación, inventario, tareas y reportes, conectados. Lo que registras en la consulta llega a la caja y al inventario.",
+    tablist: "Módulos de Nildu",
+  },
+  en: {
+    titular: "Six modules. One story per patient.",
+    bajada: "Schedule, records, invoicing, inventory, tasks and reports, all connected. What you record in the visit reaches the till and the inventory.",
+    tablist: "Nildu modules",
+  },
+};
+
+type Texto = { pestana: string; titulo: string; texto: string; items: string[]; alt: string; nota?: string };
 
 type Modulo = {
   id: string;
-  pestana: string;
-  titulo: string;
-  texto: string;
-  items: string[];
+  es: Texto;
+  en: Texto;
   // Sin captura, el panel ocupa todo el ancho.
-  img?: { src: string; srcSet?: string; alt: string; width: number; height: number };
+  img?: { src: string; srcSet?: string; width: number; height: number };
 };
 
 // Cada frase corresponde a una fila de la sección 3 del spec. No agregar nada que no esté ahí.
 const modulos: Modulo[] = [
   {
     id: "agenda",
-    pestana: "Agenda",
-    titulo: "Agenda",
-    texto: "Citas por profesional y consultorio, con la disponibilidad a la vista. El cliente recibe un correo cuando creas, mueves o cancelas su cita.",
-    items: ["Vistas de mes, semana y día", "Reprogramar arrastrando", "Horarios y disponibilidad por profesional", "Motivos de cita configurables"],
-    img: { src: agenda, srcSet: srcSet(agenda720, agenda), alt: "Vista semanal de la agenda de Nildu, con citas de dos consultorios y dos profesionales", width: 1440, height: 778 },
+    es: {
+      pestana: "Agenda",
+      titulo: "Agenda",
+      texto: "Citas por profesional y consultorio, con la disponibilidad a la vista. El cliente recibe un correo cuando creas, mueves o cancelas su cita.",
+      items: ["Vistas de mes, semana y día", "Reprogramar arrastrando", "Horarios y disponibilidad por profesional", "Motivos de cita configurables"],
+      alt: "Vista semanal de la agenda de Nildu, con citas de dos consultorios y dos profesionales",
+    },
+    en: {
+      pestana: "Schedule",
+      titulo: "Schedule",
+      texto: "Appointments by provider and exam room, with availability at a glance. The client gets an email when you create, move or cancel their appointment.",
+      items: ["Month, week and day views", "Drag to reschedule", "Hours and availability per provider", "Configurable appointment reasons"],
+      alt: "Weekly view of the Nildu schedule, with appointments in two exam rooms for two providers",
+    },
+    img: { src: agenda, srcSet: srcSet(agenda720, agenda), width: 1440, height: 778 },
   },
   {
     id: "expediente",
-    pestana: "Expediente",
-    titulo: "Expediente clínico",
-    texto: "Cada consulta usa el formulario de su tipo, con los signos vitales comparados contra su rango normal.",
-    items: ["Vacunas con lote y próxima dosis", "Desparasitaciones y medicamentos", "Curva de peso y archivos adjuntos", "Vacunas aplicadas en otra veterinaria"],
-    img: { src: consulta, srcSet: srcSet(consulta720, consulta), alt: "Consulta en Nildu con signos vitales y su rango normal", width: 1440, height: 778 },
+    es: {
+      pestana: "Expediente",
+      titulo: "Expediente clínico",
+      texto: "Cada consulta usa el formulario de su tipo, con los signos vitales comparados contra su rango normal.",
+      items: ["Vacunas con lote y próxima dosis", "Desparasitaciones y medicamentos", "Curva de peso y archivos adjuntos", "Vacunas aplicadas en otra veterinaria"],
+      alt: "Consulta en Nildu con signos vitales y su rango normal",
+    },
+    en: {
+      pestana: "Records",
+      titulo: "Medical records",
+      texto: "Each visit uses the form for its type, with vital signs compared against their normal range.",
+      items: ["Vaccines with lot and next dose", "Deworming and medications", "Weight curve and attached files", "Vaccines given at another practice"],
+      alt: "A visit in Nildu with vital signs and their normal range",
+    },
+    img: { src: consulta, srcSet: srcSet(consulta720, consulta), width: 1440, height: 778 },
   },
   {
     id: "facturacion",
-    pestana: "Facturación",
-    titulo: "Facturación",
-    texto: "El botón Cobrar pasa la consulta a caja. Emites la factura o el tiquete electrónico ante Hacienda y el cliente recibe el XML y el PDF por correo.",
-    items: [
-      "Factura, tiquete, notas de crédito y débito",
-      "Pago dividido: efectivo, tarjeta, SINPE Móvil o transferencia",
-      "Abonos y ventas a crédito",
-      "Totales del día por sucursal",
-    ],
-    img: { src: fiscal, srcSet: srcSet(fiscal720, fiscal), alt: "Orden en caja con la opción de emitir factura o tiquete electrónico", width: 1440, height: 778 },
+    es: {
+      pestana: "Facturación",
+      titulo: "Facturación",
+      texto: "El botón Cobrar pasa la consulta a caja. Emites la factura o el tiquete electrónico ante Hacienda y el cliente recibe el XML y el PDF por correo.",
+      items: [
+        "Factura, tiquete, notas de crédito y débito",
+        "Pago dividido: efectivo, tarjeta, SINPE Móvil o transferencia",
+        "Abonos y ventas a crédito",
+        "Totales del día por sucursal",
+      ],
+      nota: "La factura electrónica ante Hacienda es solo para Costa Rica. En otros países puedes facturar desde Nildu, pero los comprobantes no tienen validez fiscal.",
+      alt: "Orden en caja con la opción de emitir factura o tiquete electrónico",
+    },
+    en: {
+      pestana: "Invoicing",
+      titulo: "Invoicing",
+      texto: "The Charge button sends the visit to the till. You issue the electronic invoice or receipt with Hacienda, and the client gets the XML and PDF by email.",
+      items: ["Invoices, receipts, credit and debit notes", "Split payment: cash, card, SINPE Móvil or transfer", "Deposits and sales on credit", "Daily totals by branch"],
+      nota: "Electronic invoicing with Hacienda is only available in Costa Rica. In other countries you can invoice from Nildu, but the documents have no tax validity.",
+      alt: "Order at the till with the option to issue an electronic invoice or receipt",
+    },
+    img: { src: fiscal, srcSet: srcSet(fiscal720, fiscal), width: 1440, height: 778 },
   },
   {
     id: "inventario",
-    pestana: "Inventario",
-    titulo: "Inventario",
-    texto: "Existencias por sucursal y bodega, con lotes y vencimientos. Lo que vendes se rebaja solo.",
-    items: ["Alertas de reorden, por vencer y vencido", "Kárdex por artículo", "Código CABYS e impuesto por artículo", "Importación del catálogo desde Excel"],
-    img: { src: inventario, srcSet: srcSet(inventario720, inventario), alt: "Existencias en Nildu con avisos de reponer y un lote por vencer", width: 1440, height: 692 },
+    es: {
+      pestana: "Inventario",
+      titulo: "Inventario",
+      texto: "Existencias por sucursal y bodega, con lotes y vencimientos. Lo que vendes se rebaja solo.",
+      items: ["Alertas de reorden, por vencer y vencido", "Kárdex por artículo", "Código CABYS e impuesto por artículo", "Importación del catálogo desde Excel"],
+      alt: "Existencias en Nildu con avisos de reponer y un lote por vencer",
+    },
+    en: {
+      pestana: "Inventory",
+      titulo: "Inventory",
+      texto: "Stock by branch and warehouse, with lots and expiry dates. What you sell is deducted automatically.",
+      items: ["Reorder, expiring and expired alerts", "Stock ledger per item", "CABYS code and tax per item", "Catalog import from Excel"],
+      alt: "Stock in Nildu with reorder warnings and a lot about to expire",
+    },
+    img: { src: inventario, srcSet: srcSet(inventario720, inventario), width: 1440, height: 692 },
   },
   {
     id: "tareas",
-    pestana: "Tareas",
-    titulo: "Tareas",
-    texto: "Un tablero para el equipo: cada tarea lleva responsable, fecha de vencimiento y prioridad, y puede quedar ligada a un cliente o a un paciente.",
-    items: ["Columnas por estado: mueves las tarjetas arrastrando", "Responsables, prioridad y etiquetas", "Ligadas a un cliente o a un paciente", "Comentarios e historial de cambios"],
-    img: { src: tareas, srcSet: srcSet(tareas720, tareas), alt: "Tablero de tareas de Nildu con columnas Por hacer, En proceso y Completado", width: 1440, height: 490 },
+    es: {
+      pestana: "Tareas",
+      titulo: "Tareas",
+      texto: "Un tablero para el equipo: cada tarea lleva responsable, fecha de vencimiento y prioridad, y puede quedar ligada a un cliente o a un paciente.",
+      items: ["Columnas por estado: mueves las tarjetas arrastrando", "Responsables, prioridad y etiquetas", "Ligadas a un cliente o a un paciente", "Comentarios e historial de cambios"],
+      alt: "Tablero de tareas de Nildu con columnas Por hacer, En proceso y Completado",
+    },
+    en: {
+      pestana: "Tasks",
+      titulo: "Tasks",
+      texto: "A board for the team: each task has an owner, a due date and a priority, and can be linked to a client or a patient.",
+      items: ["Status columns: drag the cards", "Owners, priority and labels", "Linked to a client or a patient", "Comments and change history"],
+      alt: "Nildu task board with To do, In progress and Done columns",
+    },
+    img: { src: tareas, srcSet: srcSet(tareas720, tareas), width: 1440, height: 490 },
   },
   {
     id: "reportes",
-    pestana: "Reportes",
-    titulo: "Reportes",
-    texto: "Tu clínica en números: el inicio muestra clientes y pacientes activos, citas de hoy y de la semana, y tareas pendientes.",
-    items: ["Reporte de citas en Excel", "Reporte de pacientes en Excel", "Citas de hoy y de la semana en el inicio", "Tareas atrasadas y pendientes"],
-    img: { src: reportes, alt: "Panel de control con clientes y pacientes activos, citas de hoy y de la semana, y tareas", width: 644, height: 408 },
+    es: {
+      pestana: "Reportes",
+      titulo: "Reportes",
+      texto: "Tu veterinaria en números: el inicio muestra clientes y pacientes activos, citas de hoy y de la semana, y tareas pendientes.",
+      items: ["Reporte de citas en Excel", "Reporte de pacientes en Excel", "Citas de hoy y de la semana en el inicio", "Tareas atrasadas y pendientes"],
+      alt: "Panel de control con clientes y pacientes activos, citas de hoy y de la semana, y tareas",
+    },
+    en: {
+      pestana: "Reports",
+      titulo: "Reports",
+      texto: "Your practice in numbers: the home page shows active clients and patients, today's and this week's appointments, and pending tasks.",
+      items: ["Appointments report in Excel", "Patients report in Excel", "Today's and this week's appointments on the home page", "Overdue and pending tasks"],
+      alt: "Dashboard with active clients and patients, today's and this week's appointments, and tasks",
+    },
+    img: { src: reportes, width: 644, height: 408 },
   },
 ];
 
@@ -93,6 +167,8 @@ const panelId = (m: Modulo) => `modulo-panel-${m.id}`;
 const ModulesSection = () => {
   const [activo, setActivo] = useState(0);
   const pestanas = useRef<(HTMLButtonElement | null)[]>([]);
+  const [lang] = useLang();
+  const t = textos[lang];
 
   const ir = (i: number) => {
     setActivo(i);
@@ -114,17 +190,15 @@ const ModulesSection = () => {
     <section id="funciones" className="scroll-mt-20 bg-mist py-20">
       <div className="mx-auto max-w-page px-4 sm:px-6">
         <div className="text-center">
-          <h2 className="mx-auto max-w-2xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl">{TITULAR}</h2>
-          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-ink">
-            Agenda, expediente, facturación, inventario, tareas y reportes, conectados. Lo que registras en la consulta llega a la caja y al inventario.
-          </p>
+          <h2 className="mx-auto max-w-2xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl">{t.titular}</h2>
+          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-ink">{t.bajada}</p>
         </div>
 
         <div className="mt-12">
           {/* La fila hace scroll dentro de sí misma en celular, sin barra visible. */}
           <div
             role="tablist"
-            aria-label="Módulos de Nildu"
+            aria-label={t.tablist}
             onKeyDown={onKeyDown}
             className="flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
@@ -145,7 +219,7 @@ const ModulesSection = () => {
                   i === activo ? "bg-navy text-white" : "text-ink hover:text-navy"
                 }`}
               >
-                {m.pestana}
+                {m[lang].pestana}
               </button>
             ))}
           </div>
@@ -163,10 +237,10 @@ const ModulesSection = () => {
             >
               <div className={`grid items-center gap-10 ${m.img ? "lg:grid-cols-[1fr_1.15fr]" : ""}`}>
                 <div>
-                  <h3 className="text-2xl font-semibold">{m.titulo}</h3>
-                  <p className="mt-3 leading-relaxed text-white/75">{m.texto}</p>
+                  <h3 className="text-2xl font-semibold">{m[lang].titulo}</h3>
+                  <p className="mt-3 leading-relaxed text-white/75">{m[lang].texto}</p>
                   <ul role="list" className="mt-6 space-y-2">
-                    {m.items.map((item) => (
+                    {m[lang].items.map((item) => (
                       <li key={item} className="flex gap-3">
                         <span aria-hidden="true" className="text-cta">
                           —
@@ -175,8 +249,9 @@ const ModulesSection = () => {
                       </li>
                     ))}
                   </ul>
+                  {m[lang].nota && <p className="mt-6 rounded-md border border-white/20 px-4 py-3 text-sm leading-relaxed text-white/75">{m[lang].nota}</p>}
                 </div>
-                {m.img && <BrowserFrame src={m.img.src} srcSet={m.img.srcSet} sizes={m.img.srcSet && SIZES} alt={m.img.alt} url="nildu.app" eager={false} width={m.img.width} height={m.img.height} />}
+                {m.img && <BrowserFrame src={m.img.src} srcSet={m.img.srcSet} sizes={m.img.srcSet && SIZES} alt={m[lang].alt} url="nildu.app" eager={false} width={m.img.width} height={m.img.height} />}
               </div>
             </div>
           ))}

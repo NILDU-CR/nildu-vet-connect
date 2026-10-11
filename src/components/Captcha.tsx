@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { useLang } from "@/lib/i18n";
 
 declare global {
   interface Window {
@@ -18,7 +19,7 @@ function loadHCaptcha(): Promise<void> {
   ready ??= new Promise((resolve, reject) => {
     window.onHCaptchaLoad = () => resolve();
     const script = document.createElement("script");
-    script.src = "https://js.hcaptcha.com/1/api.js?render=explicit&hl=es&onload=onHCaptchaLoad";
+    script.src = "https://js.hcaptcha.com/1/api.js?render=explicit&onload=onHCaptchaLoad";
     script.async = true;
     script.onerror = () => {
       ready = null;
@@ -31,10 +32,11 @@ function loadHCaptcha(): Promise<void> {
 
 type CaptchaProps = { onToken: (token: string) => void; fallback: ReactNode };
 
-// Para pedir un token nuevo (por ejemplo, después de un envío fallido), el padre lo vuelve a montar con otra `key`.
+// Para pedir un token nuevo (por ejemplo, después de un envío fallido) o cambiar de idioma, el padre lo vuelve a montar con otra `key`.
 const Captcha = ({ onToken, fallback }: CaptchaProps) => {
   const box = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
+  const [lang] = useLang();
 
   useEffect(() => {
     let alive = true;
@@ -43,6 +45,7 @@ const Captcha = ({ onToken, fallback }: CaptchaProps) => {
         if (!alive || !box.current || !window.hcaptcha) return;
         window.hcaptcha.render(box.current, {
           sitekey: SITEKEY,
+          hl: lang,
           // El widget normal mide 303 px; en pantallas angostas se usa el compacto.
           size: box.current.offsetWidth < 303 ? "compact" : "normal",
           callback: onToken,
@@ -55,9 +58,9 @@ const Captcha = ({ onToken, fallback }: CaptchaProps) => {
     return () => {
       alive = false;
     };
-  }, [onToken]);
+  }, [onToken, lang]);
 
-  if (failed) return <p className="text-sm text-ink">No se pudo cargar la verificación. {fallback}</p>;
+  if (failed) return <p className="text-sm text-ink">{fallback}</p>;
   return <div ref={box} className="min-h-[78px]" />;
 };
 

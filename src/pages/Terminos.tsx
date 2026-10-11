@@ -17,8 +17,8 @@ const secciones: Seccion[] = [
   {
     titulo: "2. Tu cuenta y tus usuarios",
     parrafos: [
-      "La clínica crea los usuarios de su equipo y define qué puede hacer cada uno. Cada persona debe usar su propia cuenta y guardar su contraseña en secreto.",
-      `La clínica responde por lo que hagan sus usuarios dentro de Nildu. Si crees que alguien entró a tu cuenta sin permiso, escribe de inmediato a ${correoSoporte}.`,
+      "La veterinaria crea los usuarios de su equipo y define qué puede hacer cada uno. Cada persona debe usar su propia cuenta y guardar su contraseña en secreto.",
+      `La veterinaria responde por lo que hagan sus usuarios dentro de Nildu. Si crees que alguien entró a tu cuenta sin permiso, escribe de inmediato a ${correoSoporte}.`,
     ],
   },
   {
@@ -31,22 +31,22 @@ const secciones: Seccion[] = [
   {
     titulo: "4. Tus datos",
     parrafos: [
-      "La información que registras en Nildu (clientes, pacientes, consultas, facturas, inventario) es de la clínica. Nildu la guarda y la procesa solo para prestarte el servicio; no la vende ni la usa para publicidad.",
-      "La clínica es responsable de contar con la autorización de sus clientes para registrar sus datos y para que Nildu les envíe correos en su nombre, como los avisos de citas, según la Ley N.º 8968 de Protección de la Persona frente al Tratamiento de sus Datos Personales.",
-      "Nildu aplica medidas razonables de seguridad para proteger la información. Si ocurre un incidente que afecte los datos de tu clínica, Nildu te avisará.",
+      "La información que registras en Nildu (clientes, pacientes, consultas, facturas, inventario) es de la veterinaria. Nildu la guarda y la procesa solo para prestarte el servicio; no la vende ni la usa para publicidad.",
+      "La veterinaria es responsable de contar con la autorización de sus clientes para registrar sus datos y para que Nildu les envíe correos en su nombre, como los avisos de citas, según la Ley N.º 8968 de Protección de la Persona frente al Tratamiento de sus Datos Personales.",
+      "Nildu aplica medidas razonables de seguridad para proteger la información. Si ocurre un incidente que afecte los datos de tu veterinaria, Nildu te avisará.",
     ],
   },
   {
     titulo: "5. Factura electrónica",
     parrafos: [
-      "Para emitir comprobantes electrónicos, la clínica entrega a Nildu su llave criptográfica de Hacienda con su PIN y su usuario y contraseña de Hacienda. Nildu los usa solo para firmar y enviar los comprobantes de la clínica.",
-      "La clínica es responsable de que su información tributaria sea correcta, incluidos los códigos CABYS, las tarifas de IVA y los datos de sus clientes. Nildu no responde por rechazos ni multas de Hacienda causados por datos incorrectos.",
+      "Para emitir comprobantes electrónicos, la veterinaria entrega a Nildu su llave criptográfica de Hacienda con su PIN y su usuario y contraseña de Hacienda. Nildu los usa solo para firmar y enviar los comprobantes de la veterinaria.",
+      "La veterinaria es responsable de que su información tributaria sea correcta, incluidos los códigos CABYS, las tarifas de IVA y los datos de sus clientes. Nildu no responde por rechazos ni multas de Hacienda causados por datos incorrectos.",
     ],
   },
   {
     titulo: "6. Uso aceptable",
     parrafos: [
-      "No puedes usar Nildu para actividades ilegales, para enviar correo no deseado, para intentar entrar a la cuenta de otra clínica ni para copiar o revender el software.",
+      "No puedes usar Nildu para actividades ilegales, para enviar correo no deseado, para intentar entrar a la cuenta de otra veterinaria ni para copiar o revender el software.",
     ],
   },
   {
@@ -66,14 +66,14 @@ const secciones: Seccion[] = [
     titulo: "9. Responsabilidad",
     parrafos: [
       "Nildu es una herramienta de registro y administración. Las decisiones clínicas son siempre del profesional veterinario.",
-      "En la medida en que la ley lo permita, Nildu no responde por daños indirectos, como pérdida de ingresos o de clientes, y su responsabilidad total no supera lo que la clínica pagó por Nildu en los últimos 12 meses.",
+      "En la medida en que la ley lo permita, Nildu no responde por daños indirectos, como pérdida de ingresos o de clientes, y su responsabilidad total no supera lo que la veterinaria pagó por Nildu en los últimos 12 meses.",
     ],
   },
   {
     titulo: "10. Cancelación y suspensión",
     parrafos: [
       `Puedes cancelar tu suscripción cuando quieras escribiendo a ${correoSoporte}. El acceso sigue hasta el final del periodo pagado y no se hacen reembolsos por el tiempo que quede.`,
-      "Antes de cancelar, puedes descargar los reportes de citas y de pacientes en Excel. Después, puedes pedir que Nildu elimine los datos de tu clínica, salvo los que la ley obligue a conservar.",
+      "Antes de cancelar, puedes descargar los reportes de citas y de pacientes en Excel. Después, puedes pedir que Nildu elimine los datos de tu veterinaria, salvo los que la ley obligue a conservar.",
       "Nildu puede suspender o cerrar una cuenta que incumpla estos términos.",
     ],
   },
@@ -97,7 +97,7 @@ const Terminos = () => (
   <LegalDocument
     titulo="Términos del servicio"
     actualizado={ACTUALIZADO}
-    intro="Estos términos regulan el uso de Nildu, el software para veterinarias de NILDU S.R.L., sociedad costarricense. Al crear una cuenta o usar Nildu, la clínica que contrata el servicio y sus usuarios aceptan estos términos."
+    intro="Estos términos regulan el uso de Nildu, el software para veterinarias de NILDU S.R.L., sociedad costarricense. Al crear una cuenta o usar Nildu, la veterinaria que contrata el servicio y sus usuarios aceptan estos términos."
     secciones={secciones}
   />
 );
