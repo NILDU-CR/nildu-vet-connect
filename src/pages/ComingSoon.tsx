@@ -57,16 +57,6 @@ const ComingSoon = () => {
         </div>
         <p className="text-xs text-slate-600/60">&copy; {new Date().getFullYear()} Nildu Vet Connect</p>
       </div>
-      <style>{`
-        @keyframes pulseGradient { 
-          0%,100% { filter: hue-rotate(0deg) brightness(1); }
-          50% { filter: hue-rotate(35deg) brightness(1.15); }
-        }
-        @keyframes titleGlow {
-          0%,100% { text-shadow: 0 0 14px rgba(0,255,200,0.15), 0 0 28px rgba(0,180,160,0.08); }
-          50% { text-shadow: 0 0 18px rgba(0,255,220,0.35), 0 0 42px rgba(0,200,170,0.18); }
-        }
-      `}</style>
     </div>
   );
 };
