@@ -26,3 +26,9 @@
     outline-color: #ffffff;
   }
 }
+
+/* Brillo del título de la página "Próximamente"; va aquí porque el CSP bloquea los <style> inline. */
+@keyframes titleGlow {
+  0%,100% { text-shadow: 0 0 14px rgba(0,255,200,0.15), 0 0 28px rgba(0,180,160,0.08); }
+  50% { text-shadow: 0 0 18px rgba(0,255,220,0.35), 0 0 42px rgba(0,200,170,0.18); }
+}
