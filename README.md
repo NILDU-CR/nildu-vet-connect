@@ -32,7 +32,7 @@ pnpm typecheck && pnpm lint && pnpm test && pnpm build
 
 Las capturas salen del portal de QA con la clínica demo.
 
-- Hero (agenda mensual y tres recortes flotantes): las fuentes van en `capturas/` (ignorada por git) y se procesan con
+- Hero (una sola imagen compuesta, `capturas/hero-compuesto.webp`) y pestañas de módulos: las fuentes van en `capturas/` (ignorada por git) y se procesan con
   `python scripts/hero-screens.py`, que también genera `public/og.png`.
 - Sección de flujo: a 1440×778, como PNG (`consulta.png`, `caja.png`, `fiscal.png`) en una carpeta, y luego:
 

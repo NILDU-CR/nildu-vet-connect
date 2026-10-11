@@ -1,14 +1,5 @@
-import agendaMes from "@/assets/screens/hero/agenda-mes.webp";
-import ficha from "@/assets/screens/hero/ficha.webp";
-import peso from "@/assets/screens/hero/peso.webp";
-import archivos from "@/assets/screens/hero/archivos.webp";
-import citas from "@/assets/screens/hero/citas.webp";
+import hero from "@/assets/screens/hero/hero.webp";
 import { primaryButton } from "@/lib/styles";
-import BrowserFrame from "./BrowserFrame";
-import { LoopArrow, Sparks } from "./Doodles";
-
-// Recortes reales del portal que flotan sobre la agenda. Solo en md+; en celular se ve únicamente la agenda.
-const flotante = "absolute hidden overflow-hidden rounded-xl border border-line bg-white shadow-[0_1px_2px_rgba(23,44,68,0.08),0_16px_40px_rgba(23,44,68,0.16)] md:block";
 
 const HeroSection = () => (
   <section id="inicio" className="scroll-mt-20">
@@ -31,27 +22,13 @@ const HeroSection = () => (
         </div>
       </div>
 
-      <div className="mx-auto mt-14 max-w-[1040px] md:pb-24">
-        <div className="relative md:mx-[11%]">
-          <BrowserFrame src={agendaMes} alt="Agenda mensual de Nildu con las citas de dos consultorios" url="nildu.app" eager={true} width={1600} height={766} />
-          {/* Posiciones en % del marco, según el boceto de Steve. */}
-          <figure className={`${flotante} left-[6.5%] top-[64%] w-[16.7%]`}>
-            <img src={ficha} alt="Ficha del paciente Canelo: especie, sexo, edad y peso" width={398} height={633} loading="lazy" decoding="async" className="block h-auto w-full" />
-          </figure>
-          <figure className={`${flotante} left-[34%] top-[61%] w-[36%]`}>
-            <img src={citas} alt="Citas de Canelo con su dueña, filtradas por periodo" width={600} height={447} loading="lazy" decoding="async" className="block h-auto w-full" />
-          </figure>
-          <figure className={`${flotante} left-[78%] top-[53%] w-[32%]`}>
-            <img src={peso} alt="Evolución del peso de Canelo con su curva" width={720} height={197} loading="lazy" decoding="async" className="block h-auto w-full" />
-          </figure>
-          <figure className={`${flotante} left-[80%] top-[76%] w-[30%]`}>
-            <img src={archivos} alt="Archivos de Canelo: examen de sangre y radiografía" width={760} height={229} loading="lazy" decoding="async" className="block h-auto w-full" />
-          </figure>
-          <LoopArrow className="absolute bottom-[37%] left-[1%] hidden w-12 -scale-x-100 text-dot-cyan md:block lg:w-16" />
-          <Sparks className="absolute bottom-[50%] left-[105%] hidden w-8 rotate-12 text-dot-gold md:block" />
-          <Sparks className="absolute left-[104%] top-[95%] hidden w-8 text-dot-violet md:block" />
-        </div>
-      </div>
+      <img
+        src={hero}
+        alt="Nildu con la agenda de octubre, el panel de control, la ficha de Canelo, su curva de peso y sus archivos"
+        width={1700}
+        height={1038}
+        className="mx-auto mt-14 block h-auto w-full max-w-[1040px]"
+      />
     </div>
   </section>
 );
