@@ -3,10 +3,11 @@ import type { FormEvent } from "react";
 import { submitLead } from "@/lib/lead";
 import type { LeadFields } from "@/lib/lead";
 import { primaryButton } from "@/lib/styles";
+import Captcha from "./Captcha";
 
-type Status = "idle" | "sending" | "ok" | "error";
+type Status = "idle" | "sending" | "ok" | "error" | "sin-captcha";
 
-const empty: LeadFields = { nombre: "", correo: "", telefono: "", veterinaria: "", botcheck: "" };
+const empty: LeadFields = { nombre: "", correo: "", telefono: "", veterinaria: "", botcheck: "", captcha: "" };
 const accessKey = import.meta.env.VITE_WEB3FORMS_KEY ?? "";
 
 const campos = [
@@ -25,6 +26,9 @@ const correo = (
 const ContactForm = () => {
   const [values, setValues] = useState<LeadFields>(empty);
   const [status, setStatus] = useState<Status>("idle");
+  const [captcha, setCaptcha] = useState("");
+  // Cada token de hCaptcha sirve una sola vez: tras un error se vuelve a montar el widget.
+  const [captchaKey, setCaptchaKey] = useState(0);
   const okRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -34,14 +38,20 @@ const ContactForm = () => {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (status === "sending") return;
+    if (!captcha) {
+      setStatus("sin-captcha");
+      return;
+    }
     setStatus("sending");
-    const result = await submitLead(values, accessKey, fetch);
+    const result = await submitLead({ ...values, captcha }, accessKey, fetch);
     if (result === "ok") {
       setValues(empty);
       setStatus("ok");
     } else {
       // En error se conservan los datos para que la persona no tenga que reescribirlos.
       setStatus("error");
+      setCaptcha("");
+      setCaptchaKey((k) => k + 1);
     }
   };
 
@@ -90,6 +100,12 @@ const ContactForm = () => {
               checked={values.botcheck !== ""}
               onChange={(e) => setValues({ ...values, botcheck: e.target.checked ? "1" : "" })}
             />
+            <Captcha key={captchaKey} onToken={setCaptcha} fallback={<>Escribe a {correo}.</>} />
+            {status === "sin-captcha" && (
+              <p role="alert" className="text-sm text-red-700">
+                Completa la verificación antes de enviar.
+              </p>
+            )}
             {status === "error" && (
               <p role="alert" className="text-sm text-red-700">
                 ¡Ups! No se pudo enviar. Escribe a {correo}.

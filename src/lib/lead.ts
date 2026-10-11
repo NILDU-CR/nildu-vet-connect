@@ -4,6 +4,8 @@ export type LeadFields = {
   telefono: string;
   veterinaria: string;
   botcheck: string;
+  // Token de hCaptcha; Web3Forms lo valida.
+  captcha: string;
 };
 
 export type LeadResult = "ok" | "error" | "no-key";
@@ -28,6 +30,7 @@ export async function submitLead(fields: LeadFields, accessKey: string, fetchImp
         email: fields.correo,
         telefono: fields.telefono,
         veterinaria: fields.veterinaria,
+        "h-captcha-response": fields.captcha,
       }),
     });
     const data = (await res.json()) as { success?: boolean };

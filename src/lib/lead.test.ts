@@ -9,6 +9,7 @@ const fields: LeadFields = {
   telefono: "+506 8888 0000",
   veterinaria: "Vet Demo",
   botcheck: "",
+  captcha: "token-hcaptcha",
 };
 
 function recordingFetch(respond: () => Response) {
@@ -39,6 +40,7 @@ test("envía los campos a Web3Forms y devuelve ok", async () => {
   assert.equal(body.telefono, "+506 8888 0000");
   assert.equal(body.veterinaria, "Vet Demo");
   assert.equal(body.subject, "Solicitud de demo — Vet Demo");
+  assert.equal(body["h-captcha-response"], "token-hcaptcha");
 });
 
 test("envía con timeout de 15 s", async () => {
