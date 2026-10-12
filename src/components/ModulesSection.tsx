@@ -2,16 +2,28 @@ import { useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import agenda from "@/assets/screens/modulos/agenda.webp";
 import agenda720 from "@/assets/screens/modulos/agenda-720.webp";
+import agendaEn from "@/assets/screens/modulos/agenda-en.webp";
+import agendaEn720 from "@/assets/screens/modulos/agenda-en-720.webp";
 import inventario from "@/assets/screens/modulos/inventario.webp";
 import inventario720 from "@/assets/screens/modulos/inventario-720.webp";
+import inventarioEn from "@/assets/screens/modulos/inventario-en.webp";
+import inventarioEn720 from "@/assets/screens/modulos/inventario-en-720.webp";
 import reportes from "@/assets/screens/modulos/reportes.webp";
+import reportesEn from "@/assets/screens/modulos/reportes-en.webp";
 import tareas from "@/assets/screens/modulos/tareas.webp";
 import tareas720 from "@/assets/screens/modulos/tareas-720.webp";
+import tareasEn from "@/assets/screens/modulos/tareas-en.webp";
+import tareasEn720 from "@/assets/screens/modulos/tareas-en-720.webp";
 import consulta from "@/assets/screens/consulta.webp";
 import consulta720 from "@/assets/screens/consulta-720.webp";
+import consultaEn from "@/assets/screens/consulta-en.webp";
+import consultaEn720 from "@/assets/screens/consulta-en-720.webp";
 import fiscal from "@/assets/screens/fiscal.webp";
 import fiscal720 from "@/assets/screens/fiscal-720.webp";
+import fiscalEn from "@/assets/screens/fiscal-en.webp";
+import fiscalEn720 from "@/assets/screens/fiscal-en-720.webp";
 import { useLang } from "@/lib/i18n";
+import type { Lang } from "@/lib/i18n";
 import BrowserFrame from "./BrowserFrame";
 
 // Ancho de la captura: en lg+ la columna mide ~510 px; abajo ocupa el panel menos sus márgenes.
@@ -38,8 +50,8 @@ type Modulo = {
   id: string;
   es: Texto;
   en: Texto;
-  // Sin captura, el panel ocupa todo el ancho.
-  img?: { src: string; srcSet?: string; width: number; height: number };
+  // Sin captura, el panel ocupa todo el ancho. Cada idioma tiene su captura, del mismo tamaño.
+  img?: { src: Record<Lang, string>; srcSet?: Record<Lang, string>; width: number; height: number };
 };
 
 // Cada frase corresponde a una fila de la sección 3 del spec. No agregar nada que no esté ahí.
@@ -60,7 +72,7 @@ const modulos: Modulo[] = [
       items: ["Month, week and day views", "Drag to reschedule", "Hours and availability per provider", "Configurable appointment reasons"],
       alt: "Weekly view of the Nildu schedule, with appointments in two exam rooms for two providers",
     },
-    img: { src: agenda, srcSet: srcSet(agenda720, agenda), width: 1440, height: 778 },
+    img: { src: { es: agenda, en: agendaEn }, srcSet: { es: srcSet(agenda720, agenda), en: srcSet(agendaEn720, agendaEn) }, width: 1440, height: 778 },
   },
   {
     id: "expediente",
@@ -78,7 +90,7 @@ const modulos: Modulo[] = [
       items: ["Vaccines with lot and next dose", "Deworming and medications", "Weight curve and attached files", "Vaccines given at another practice"],
       alt: "A visit in Nildu with vital signs and their normal range",
     },
-    img: { src: consulta, srcSet: srcSet(consulta720, consulta), width: 1440, height: 778 },
+    img: { src: { es: consulta, en: consultaEn }, srcSet: { es: srcSet(consulta720, consulta), en: srcSet(consultaEn720, consultaEn) }, width: 1440, height: 778 },
   },
   {
     id: "facturacion",
@@ -103,7 +115,7 @@ const modulos: Modulo[] = [
       nota: "Electronic invoicing with Hacienda is only available in Costa Rica. In other countries you can invoice from Nildu, but the documents have no tax validity.",
       alt: "Order at the till with the option to issue an electronic invoice or receipt",
     },
-    img: { src: fiscal, srcSet: srcSet(fiscal720, fiscal), width: 1440, height: 778 },
+    img: { src: { es: fiscal, en: fiscalEn }, srcSet: { es: srcSet(fiscal720, fiscal), en: srcSet(fiscalEn720, fiscalEn) }, width: 1440, height: 778 },
   },
   {
     id: "inventario",
@@ -121,7 +133,7 @@ const modulos: Modulo[] = [
       items: ["Reorder, expiring and expired alerts", "Stock ledger per item", "CABYS code and tax per item", "Catalog import from Excel"],
       alt: "Stock in Nildu with reorder warnings and a lot about to expire",
     },
-    img: { src: inventario, srcSet: srcSet(inventario720, inventario), width: 1440, height: 692 },
+    img: { src: { es: inventario, en: inventarioEn }, srcSet: { es: srcSet(inventario720, inventario), en: srcSet(inventarioEn720, inventarioEn) }, width: 1440, height: 692 },
   },
   {
     id: "tareas",
@@ -139,7 +151,7 @@ const modulos: Modulo[] = [
       items: ["Status columns: drag the cards", "Owners, priority and labels", "Linked to a client or a patient", "Comments and change history"],
       alt: "Nildu task board with To do, In progress and Done columns",
     },
-    img: { src: tareas, srcSet: srcSet(tareas720, tareas), width: 1440, height: 490 },
+    img: { src: { es: tareas, en: tareasEn }, srcSet: { es: srcSet(tareas720, tareas), en: srcSet(tareasEn720, tareasEn) }, width: 1440, height: 490 },
   },
   {
     id: "reportes",
@@ -157,7 +169,7 @@ const modulos: Modulo[] = [
       items: ["Appointments report in Excel", "Patients report in Excel", "Today's and this week's appointments on the home page", "Overdue and pending tasks"],
       alt: "Dashboard with active clients and patients, today's and this week's appointments, and tasks",
     },
-    img: { src: reportes, width: 644, height: 408 },
+    img: { src: { es: reportes, en: reportesEn }, width: 644, height: 408 },
   },
 ];
 
@@ -251,7 +263,7 @@ const ModulesSection = () => {
                   </ul>
                   {m[lang].nota && <p className="mt-6 rounded-md border border-white/20 px-4 py-3 text-sm leading-relaxed text-white/75">{m[lang].nota}</p>}
                 </div>
-                {m.img && <BrowserFrame src={m.img.src} srcSet={m.img.srcSet} sizes={m.img.srcSet && SIZES} alt={m[lang].alt} url="nildu.app" eager={false} width={m.img.width} height={m.img.height} />}
+                {m.img && <BrowserFrame src={m.img.src[lang]} srcSet={m.img.srcSet?.[lang]} sizes={m.img.srcSet && SIZES} alt={m[lang].alt} url="nildu.app" eager={false} width={m.img.width} height={m.img.height} />}
               </div>
             </div>
           ))}

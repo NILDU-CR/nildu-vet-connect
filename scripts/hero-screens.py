@@ -24,6 +24,13 @@ JOBS = [
     ("modulo-tareas.png", SCREENS / "modulos", "tareas.webp", (0, 0, 1558, 530), 1440, 82),
     # Reportes: solo el Panel de control del inicio (la portada del demo es una foto ajena).
     ("modulo-reportes.png", SCREENS / "modulos", "reportes.webp", (856, 68, 1500, 476), 1440, 82),
+    # Las mismas pantallas con el portal en inglés, para la landing en inglés (fuentes en capturas/en/, con los mismos tamaños).
+    ("en/modulo-agenda-semana.png", SCREENS / "modulos", "agenda-en.webp", None, 1440, 82),
+    ("en/modulo-inventario.png", SCREENS / "modulos", "inventario-en.webp", (0, 0, 1558, 749), 1440, 82),
+    ("en/modulo-tareas.png", SCREENS / "modulos", "tareas-en.webp", (0, 0, 1558, 530), 1440, 82),
+    ("en/modulo-reportes.png", SCREENS / "modulos", "reportes-en.webp", (856, 68, 1500, 476), 1440, 82),
+    ("en/consulta.png", SCREENS, "consulta-en.webp", None, 1440, 82),
+    ("en/fiscal.png", SCREENS, "fiscal-en.webp", None, 1440, 82),
 ]
 
 
