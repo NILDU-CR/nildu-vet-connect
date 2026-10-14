@@ -1,6 +1,9 @@
 import hero from "@/assets/screens/hero/hero.webp";
 import hero800 from "@/assets/screens/hero/hero-800.webp";
 import hero1200 from "@/assets/screens/hero/hero-1200.webp";
+import heroEn from "@/assets/screens/hero/hero-en.webp";
+import heroEn800 from "@/assets/screens/hero/hero-en-800.webp";
+import heroEn1200 from "@/assets/screens/hero/hero-en-1200.webp";
 import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
 
@@ -12,6 +15,7 @@ const textos = {
     demo: "Agenda una demo",
     precios: "Ver precios →",
     alt: "Nildu con la agenda de octubre, el panel de control, la ficha de Canelo, su curva de peso y sus archivos",
+    img: [hero, hero800, hero1200],
   },
   en: {
     etiqueta: "SOFTWARE FOR VETERINARY PRACTICES",
@@ -20,12 +24,14 @@ const textos = {
     demo: "Book a demo",
     precios: "See pricing →",
     alt: "Nildu with the October schedule, the dashboard, Canelo's record, his weight curve and his files",
+    img: [heroEn, heroEn800, heroEn1200],
   },
 };
 
 const HeroSection = () => {
   const [lang] = useLang();
   const t = textos[lang];
+  const [grande, de800, de1200] = t.img;
 
   return (
     <section id="inicio" className="scroll-mt-20">
@@ -45,13 +51,13 @@ const HeroSection = () => {
         </div>
 
         <img
-          src={hero}
-          srcSet={`${hero800} 800w, ${hero1200} 1200w, ${hero} 1700w`}
+          src={grande}
+          srcSet={`${de800} 800w, ${de1200} 1200w, ${grande} 1700w`}
           sizes="(min-width: 1088px) 1040px, calc(100vw - 32px)"
           fetchPriority="high"
           alt={t.alt}
           width={1700}
-          height={1038}
+          height={1021}
           className="mx-auto mt-14 block h-auto w-full max-w-[1040px]"
         />
       </div>
