@@ -18,6 +18,28 @@ export const WhatsAppIcon = ({ className }: IconProps) => (
   </svg>
 );
 
+// Dispositivos de la sección multiplataforma.
+export const ComputerIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+    <rect x="2" y="3" width="20" height="14" rx="2" />
+    <path d="M8 21h8M12 17v4" />
+  </svg>
+);
+
+export const TabletIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+    <rect x="4" y="2" width="16" height="20" rx="2" />
+    <path d="M11 18h2" />
+  </svg>
+);
+
+export const PhoneIcon = ({ className }: IconProps) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
+    <rect x="7" y="2" width="10" height="20" rx="2" />
+    <path d="M11 18h2" />
+  </svg>
+);
+
 // Logos de redes: trazados de Simple Icons (CC0); Instagram dibujado con formas simples.
 export const LinkedInIcon = ({ className }: IconProps) => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
