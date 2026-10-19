@@ -9,18 +9,16 @@ import { primaryButton } from "@/lib/styles";
 
 const textos = {
   es: {
-    etiqueta: "SOFTWARE PARA VETERINARIAS",
-    titulo: "La consulta, la agenda y la factura de tu veterinaria, en un mismo sistema.",
-    bajada: "Registras la consulta, aplicas la vacuna y cobras desde el mismo expediente. La factura electrónica sale hacia Hacienda sin pasar por otro programa.",
+    titulo: "Tu veterinaria en un solo sistema.",
+    bajada: "La consulta, la agenda y la factura en un mismo lugar: registras la visita, aplicas la vacuna y cobras desde el expediente. La factura electrónica va directo a Hacienda.",
     demo: "Agenda una demo",
     precios: "Ver precios →",
     alt: "Nildu con la agenda de octubre, el panel de control, la ficha de Canelo, su curva de peso y sus archivos",
     img: [hero, hero800, hero1200],
   },
   en: {
-    etiqueta: "SOFTWARE FOR VETERINARY PRACTICES",
-    titulo: "Your practice's visits, appointments and invoices, in one system.",
-    bajada: "Record the visit, give the vaccine and charge from the same patient record. Electronic invoices go to Hacienda without another program.",
+    titulo: "Your vet practice in one system.",
+    bajada: "Visits, appointments and invoices in one place: record the visit, give the vaccine and charge from the patient's record. Electronic invoices go straight to Hacienda.",
     demo: "Book a demo",
     precios: "See pricing →",
     alt: "Nildu with the October schedule, the dashboard, Canelo's record, his weight curve and his files",
@@ -35,11 +33,11 @@ const HeroSection = () => {
 
   return (
     <section id="inicio" className="scroll-mt-20">
-      <div className="mx-auto max-w-page px-4 pb-20 pt-16 sm:px-6 md:pt-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs font-medium tracking-[0.12em] text-brand">{t.etiqueta}</p>
-          <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.5rem]">{t.titulo}</h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink">{t.bajada}</p>
+      <div className="mx-auto max-w-page px-4 pb-20 pt-10 sm:px-6 md:pt-14">
+        <div className="mx-auto max-w-4xl text-center">
+          {/* Título corto: dos líneas en todos los anchos, para que la captura del portal suba al primer pantallazo. */}
+          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-[4.5rem]">{t.titulo}</h1>
+          <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink">{t.bajada}</p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
             <a href="#contacto" className={primaryButton}>
               {t.demo}
@@ -58,7 +56,7 @@ const HeroSection = () => {
           alt={t.alt}
           width={1700}
           height={1021}
-          className="mx-auto mt-14 block h-auto w-full max-w-[1040px]"
+          className="mx-auto mt-10 block h-auto w-full max-w-[1040px] md:mt-12"
         />
       </div>
     </section>

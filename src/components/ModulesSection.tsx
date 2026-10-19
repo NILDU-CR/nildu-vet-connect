@@ -207,12 +207,12 @@ const ModulesSection = () => {
         </div>
 
         <div className="mt-12">
-          {/* La fila hace scroll dentro de sí misma en celular, sin barra visible. */}
+          {/* En celular, dos filas de tres pestañas sueltas; desde 768 px, una fila de pestañas de carpeta pegadas al panel. */}
           <div
             role="tablist"
             aria-label={t.tablist}
             onKeyDown={onKeyDown}
-            className="flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="grid grid-cols-3 gap-2 md:flex md:gap-1 md:overflow-x-auto md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden"
           >
             {modulos.map((m, i) => (
               <button
@@ -227,8 +227,8 @@ const ModulesSection = () => {
                 aria-controls={panelId(m)}
                 tabIndex={i === activo ? 0 : -1}
                 onClick={() => setActivo(i)}
-                className={`shrink-0 whitespace-nowrap rounded-t-xl px-5 pb-3.5 pt-3 text-sm font-medium sm:px-6 ${
-                  i === activo ? "bg-navy text-white" : "text-ink hover:text-navy"
+                className={`shrink-0 whitespace-nowrap rounded-xl px-2 py-3 text-sm font-medium md:rounded-b-none md:rounded-t-xl md:px-6 md:pb-3.5 md:pt-3 ${
+                  i === activo ? "bg-navy text-white" : "bg-white text-ink hover:text-navy md:bg-transparent"
                 }`}
               >
                 {m[lang].pestana}
@@ -245,7 +245,7 @@ const ModulesSection = () => {
               tabIndex={0}
               hidden={i !== activo}
               // La esquina superior izquierda queda cuadrada solo cuando la primera pestaña se funde con el panel.
-              className={`rounded-b-2xl rounded-tr-2xl bg-navy p-8 text-white lg:p-10 ${activo === 0 ? "" : "rounded-tl-2xl"}`}
+              className={`mt-2 rounded-2xl bg-navy p-8 text-white md:mt-0 lg:p-10 ${activo === 0 ? "md:rounded-tl-none" : ""}`}
             >
               <div className={`grid items-center gap-10 ${m.img ? "lg:grid-cols-[1fr_1.15fr]" : ""}`}>
                 <div>

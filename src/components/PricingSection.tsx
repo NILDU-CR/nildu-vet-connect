@@ -158,7 +158,7 @@ const PricingSection = () => {
             </div>
           </div>
 
-          <div className="rounded-xl bg-white p-6 text-navy shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
+          <div id="tu-plan" className="rounded-xl bg-white p-6 text-navy shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
             <p className="text-sm font-semibold">{t.tuPlan}</p>
             <p className="text-xs text-ink">
               {anual ? t.anual : t.mensual} · {t.usuarios(users)}
