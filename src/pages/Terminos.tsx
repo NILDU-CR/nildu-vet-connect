@@ -4,7 +4,7 @@ import { correoSoporte, telefonoWhatsApp } from "@/lib/contact";
 
 // ponytail: borrador redactado sin revisión legal (2026-10-10). Antes del lanzamiento debe revisarlo un abogado,
 // sobre todo cancelación y reembolsos, responsabilidad y datos personales.
-const ACTUALIZADO = "10 de octubre de 2026";
+const ACTUALIZADO = "27 de octubre de 2026";
 
 const secciones: Seccion[] = [
   {
@@ -34,6 +34,7 @@ const secciones: Seccion[] = [
       "La información que registras en Nildu (clientes, pacientes, consultas, facturas, inventario) es de la veterinaria. Nildu la guarda y la procesa solo para prestarte el servicio; no la vende ni la usa para publicidad.",
       "La veterinaria es responsable de contar con la autorización de sus clientes para registrar sus datos y para que Nildu les envíe correos en su nombre, como los avisos de citas, según la Ley N.º 8968 de Protección de la Persona frente al Tratamiento de sus Datos Personales.",
       "Nildu aplica medidas razonables de seguridad para proteger la información. Si ocurre un incidente que afecte los datos de tu veterinaria, Nildu te avisará.",
+      `El personal de soporte de Nildu puede entrar a la cuenta de la veterinaria para revisar o resolver un problema, o para configurar algo que se le pida. Cada entrada queda registrada con la fecha, el motivo y lo que se hizo, y la veterinaria puede pedir ese registro escribiendo a ${correoSoporte}.`,
     ],
   },
   {

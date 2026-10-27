@@ -4,7 +4,7 @@ import { correoSoporte } from "@/lib/contact";
 
 // ponytail: borrador redactado sin revisión legal (2026-10-10). Antes del lanzamiento debe revisarlo un abogado.
 // Si cambia un proveedor (alojamiento, red, correo, formulario, captcha), hay que actualizar la sección 4.
-const ACTUALIZADO = "11 de octubre de 2026";
+const ACTUALIZADO = "27 de octubre de 2026";
 
 const secciones: Seccion[] = [
   {
@@ -57,6 +57,7 @@ const secciones: Seccion[] = [
     parrafos: [
       "La conexión con este sitio y con nildu.app va cifrada (HTTPS), y en Nildu cada usuario entra con su propia cuenta y con los permisos de su rol.",
       "Ningún sistema es infalible. Si ocurre un incidente que afecte datos personales, Nildu avisará a las veterinarias afectadas.",
+      `El personal de soporte de Nildu puede entrar a la cuenta de la veterinaria para revisar o resolver un problema, o para configurar algo que se le pida. Cada entrada queda registrada con la fecha, el motivo y lo que se hizo, y la veterinaria puede pedir ese registro escribiendo a ${correoSoporte}.`,
     ],
   },
   {
