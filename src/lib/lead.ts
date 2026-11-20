@@ -3,6 +3,7 @@ export type LeadFields = {
   correo: string;
   telefono: string;
   veterinaria: string;
+  pais: string;
   botcheck: string;
   // Token de hCaptcha; Web3Forms lo valida.
   captcha: string;
@@ -30,6 +31,7 @@ export async function submitLead(fields: LeadFields, accessKey: string, fetchImp
         email: fields.correo,
         telefono: fields.telefono,
         veterinaria: fields.veterinaria,
+        pais: fields.pais,
         "h-captcha-response": fields.captcha,
       }),
     });

@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.app.json --noEmit",
-    "test": "node --test src/lib/lead.test.ts src/lib/pricing.test.ts"
+    "test": "node --test src/lib/lead.test.ts src/lib/pricing.test.ts src/lib/countries.test.ts"
   },
   "dependencies": {
     "react": "^18.3.1",
