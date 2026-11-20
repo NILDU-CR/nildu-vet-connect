@@ -8,6 +8,7 @@ const fields: LeadFields = {
   correo: "ana@example.com",
   telefono: "+506 8888 0000",
   veterinaria: "Vet Demo",
+  pais: "Costa Rica",
   botcheck: "",
   captcha: "token-hcaptcha",
 };
@@ -39,6 +40,7 @@ test("envía los campos a Web3Forms y devuelve ok", async () => {
   assert.equal(body.email, "ana@example.com");
   assert.equal(body.telefono, "+506 8888 0000");
   assert.equal(body.veterinaria, "Vet Demo");
+  assert.equal(body.pais, "Costa Rica");
   assert.equal(body.subject, "Solicitud de demo — Vet Demo");
   assert.equal(body["h-captcha-response"], "token-hcaptcha");
 });
