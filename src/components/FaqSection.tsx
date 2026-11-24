@@ -1,4 +1,5 @@
 import { useLang } from "@/lib/i18n";
+import Puntos from "./Puntos";
 
 const textos = {
   es: {
@@ -34,7 +35,9 @@ const FaqSection = () => {
   return (
     <section className="py-20">
       <div className="mx-auto max-w-page px-4 sm:px-6">
-        <h2 className="text-3xl font-semibold tracking-tight">{t.titulo}</h2>
+        <h2 className="text-3xl font-semibold tracking-tight">
+          <Puntos texto={t.titulo} />
+        </h2>
         <div className="mt-10 max-w-3xl divide-y divide-line border-y border-line">
           {t.preguntas.map((q) => (
             <details key={q.p} className="group py-5">

@@ -3,6 +3,7 @@ import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
 import { PLAN, formatUsd, isVolume, quote } from "@/lib/pricing";
 import type { Period, PlanElegido } from "@/lib/pricing";
+import Puntos from "./Puntos";
 
 const MIN_USERS = 1;
 // Un paso por encima del tope cotizable: ahí el contador muestra "10+" y la tarjeta pasa a precio por volumen.
@@ -115,9 +116,9 @@ const PricingSection = ({ onElegir }: { onElegir: (plan: PlanElegido) => void })
           <div>
             <p className="text-xs font-medium tracking-[0.12em] text-cta">{t.etiqueta}</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-              {t.titulo}
+              <Puntos texto={t.titulo} />
               <br />
-              {t.titulo2}
+              <Puntos texto={t.titulo2} />
             </h2>
             <p className="mt-6 flex items-baseline gap-x-3">
               <span className="text-6xl font-semibold tracking-tight">{formatUsd(PLAN.monthly)}</span>

@@ -1,63 +1,66 @@
+import { useEffect } from "react";
+import wordmark from "@/assets/brand/wordmark.png";
 import Countdown from "@/components/Countdown";
-import ConstellationBackground from "@/components/ConstellationBackground";
-import TaglineRotator from "@/components/TaglineRotator";
-import { useEffect, useState } from "react";
+import HeroTitle from "@/components/HeroTitle";
+import { correoInfo } from "@/lib/contact";
+import { HERO_BAJADA } from "@/lib/hero";
+import { useLang } from "@/lib/i18n";
+import { primaryButton } from "@/lib/styles";
 
-// Página temporal "Próximamente" con fondo de constelaciones y frases rotando.
+const textos = {
+  es: {
+    pestana: "Nildu · Próximamente",
+    titulo: "Próximamente",
+    nota: "Estamos preparando el lanzamiento. Escríbenos y te contamos cómo Nildu puede ayudar a tu veterinaria.",
+    escribir: `Escríbenos a ${correoInfo}`,
+  },
+  en: {
+    pestana: "Nildu · Coming soon",
+    titulo: "Coming soon",
+    nota: "We're getting ready to launch. Write to us and we'll tell you how Nildu can help your vet clinic.",
+    escribir: `Email ${correoInfo}`,
+  },
+};
+
+// Lo que muestra nildu.com antes del lanzamiento (VITE_COMING_SOON=1; ver App.tsx). Una sola pantalla, sin menú ni
+// pie: el logo, "Próximamente" en grande con los colores del logo en movimiento, el título y la bajada de la landing
+// y el correo de contacto. Con "reducir movimiento" activado en el sistema, nada se mueve.
+// El idioma sale de ?lang= o de lo elegido antes en este navegador; si no, español.
 const ComingSoon = () => {
-  const [expired, setExpired] = useState(false);
+  const [lang] = useLang();
+  const t = textos[lang];
+
   useEffect(() => {
-    const targetStr = import.meta.env.VITE_LAUNCH_DATE;
-    if (!targetStr) return;
-    const target = new Date(targetStr).getTime();
-    const check = () => {
-      if (Date.now() > target) setExpired(true);
-    };
-    check();
-    const id = setInterval(check, 1000);
-    return () => clearInterval(id);
-  }, []);
+    document.title = t.pestana;
+  }, [t.pestana]);
 
   return (
-    <div className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center text-white px-4 py-20 bg-slate-950">
-      <ConstellationBackground density={90} />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,rgba(0,200,170,0.12),transparent_70%)]" />
-      <div className="absolute inset-0 backdrop-blur-[1px]" />
-      <div className="relative max-w-2xl w-full text-center space-y-12">
-        <h1 className="text-5xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-200 to-emerald-400 animate-[titleGlow_4s_ease-in-out_infinite]">
-          Próximamente
-        </h1>
-        <TaglineRotator />
-        <p className="text-lg md:text-xl text-slate-300 leading-relaxed font-light max-w-xl mx-auto">
-          Plataforma inteligente para bienestar veterinario, registros vivos y conexión real con las familias.
-        </p>
-        {!expired && (
-          <div className="pt-4">
-            <Countdown />
-          </div>
-        )}
-        {expired && (
-          <p className="text-emerald-300/80 text-sm tracking-wide uppercase mt-2">Listo para despegar</p>
-        )}
-        <div className="flex flex-col items-center space-y-6 pt-4">
-          <p className="text-sm uppercase tracking-[0.35em] text-emerald-300/70">En construcción</p>
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
-          <p className="text-slate-500 text-sm max-w-md">
-            Vuelve pronto y sé de los primeros en explorar lo que viene. Lo mejor aún no se ha mostrado.
-          </p>
-          <p className="text-slate-500 text-sm max-w-md">
-            Si quieres información escribe a{' '}
-            <a
-              href="mailto:info@nildu.com"
-              className="underline decoration-dotted underline-offset-2 hover:text-emerald-300 focus:outline-none focus:text-emerald-300 transition-colors"
-            >
-              info@nildu.com
-            </a>
-          </p>
-        </div>
-        <p className="text-xs text-slate-600/60">&copy; {new Date().getFullYear()} Nildu Vet Connect</p>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-white to-mist px-4 py-16 text-center sm:px-6">
+      <img src={wordmark} alt="Nildu" width={241} height={84} className="h-10 w-auto sm:h-12" />
+
+      <h1 className="titulo-proximamente mt-10 pb-2 text-[2.75rem] font-semibold leading-tight tracking-tight min-[400px]:text-6xl sm:text-7xl lg:text-8xl">
+        {t.titulo}
+      </h1>
+      {/* Los tres puntos del logo (celeste, violeta y anaranjado) saltan uno tras otro, como algo que está por llegar;
+          sus colores, la animación y el degradado del título están en src/index.css. */}
+      <div aria-hidden="true" className="puntos-proximamente mt-4 flex gap-2.5">
+        <span className="h-3 w-3 rounded-full" />
+        <span className="h-3 w-3 rounded-full" />
+        <span className="h-3 w-3 rounded-full" />
       </div>
-    </div>
+
+      <h2 className="mt-10 max-w-3xl text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">
+        <HeroTitle />
+      </h2>
+      <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink">{HERO_BAJADA[lang]}</p>
+
+      <Countdown className="mt-10" />
+
+      <p className="mt-10 max-w-xl text-pretty leading-relaxed text-ink">{t.nota}</p>
+      <a href={`mailto:${correoInfo}`} className={`${primaryButton} mt-6`}>
+        {t.escribir}
+      </a>
+    </main>
   );
 };
 

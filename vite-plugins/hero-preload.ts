@@ -10,12 +10,12 @@ import type { HeroLang } from "../src/lib/hero.ts";
 //
 // El idioma se decide en el navegador, así que un script en línea elige el srcset del idioma y agrega el
 // <link rel="preload">. Repite la lógica de idiomaInicial() en src/lib/i18n.ts (?lang=, lo guardado en
-// localStorage y, si no, el idioma del navegador) y la del "Próximamente" de App.tsx: si una cambia, cambiar la otra.
+// localStorage y, si no, español) y la del "Próximamente" de App.tsx: si una cambia, cambiar la otra.
 //
 // Los srcset, que llevan los nombres con hash de Vite, van en <meta> fuera del script. Así el texto del script no
 // cambia cuando cambian las imágenes, y su hash en el CSP de vercel.json (script-src 'sha256-...') tampoco.
 // El script va en una sola línea para que los saltos de línea de Windows no le cambien el hash.
-const SCRIPT = String.raw`(function(){if(location.pathname!=="/")return;var d=document,m=function(n){var e=d.querySelector('meta[name="nildu-'+n+'"]');return e&&e.getAttribute("content")};if(m("coming-soon")==="1"&&/nildu\.com$/.test(location.hostname))return;var l=null;try{l=new URLSearchParams(location.search).get("lang");if(l!=="es"&&l!=="en")l=localStorage.getItem("lang")}catch(e){}if(l!=="es"&&l!=="en")l=navigator.language.toLowerCase().indexOf("en")===0?"en":"es";var s=m("hero-"+l);if(!s)return;var k=d.createElement("link");k.rel="preload";k.as="image";k.setAttribute("imagesrcset",s);k.setAttribute("imagesizes",m("hero-sizes"));k.setAttribute("fetchpriority","high");d.head.appendChild(k)})();`;
+const SCRIPT = String.raw`(function(){if(location.pathname!=="/")return;var d=document,m=function(n){var e=d.querySelector('meta[name="nildu-'+n+'"]');return e&&e.getAttribute("content")};if(m("coming-soon")==="1"&&/nildu\.com$/.test(location.hostname))return;var l=null;try{l=new URLSearchParams(location.search).get("lang");if(l!=="es"&&l!=="en")l=localStorage.getItem("lang")}catch(e){}if(l!=="es"&&l!=="en")l="es";var s=m("hero-"+l);if(!s)return;var k=d.createElement("link");k.rel="preload";k.as="image";k.setAttribute("imagesrcset",s);k.setAttribute("imagesizes",m("hero-sizes"));k.setAttribute("fetchpriority","high");d.head.appendChild(k)})();`;
 
 const SCRIPT_CSP = `'sha256-${createHash("sha256").update(SCRIPT).digest("base64")}'`;
 

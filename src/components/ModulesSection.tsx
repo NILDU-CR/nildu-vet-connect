@@ -35,6 +35,7 @@ import fiscalEn1080 from "@/assets/screens/fiscal-en-1080.webp";
 import { useLang } from "@/lib/i18n";
 import type { Lang } from "@/lib/i18n";
 import BrowserFrame from "./BrowserFrame";
+import Puntos from "./Puntos";
 
 // Ancho de la captura: en lg+ la columna mide ~510 px. Abajo ocupa el panel menos sus márgenes: el padding del
 // contenedor (px-6 desde 640 px, px-4 en celular), el del panel (p-8) y el borde del marco (1 px por lado).
@@ -214,7 +215,9 @@ const ModulesSection = () => {
     <section id="funciones" className="scroll-mt-20 bg-mist py-20">
       <div className="mx-auto max-w-page px-4 sm:px-6">
         <div className="text-center">
-          <h2 className="mx-auto max-w-2xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl">{t.titular}</h2>
+          <h2 className="mx-auto max-w-2xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+            <Puntos texto={t.titular} />
+          </h2>
           <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-ink">{t.bajada}</p>
         </div>
 
@@ -261,7 +264,9 @@ const ModulesSection = () => {
             >
               <div className={`grid items-center gap-10 ${m.img ? "lg:grid-cols-[1fr_1.15fr]" : ""}`}>
                 <div>
-                  <h3 className="text-2xl font-semibold">{m[lang].titulo}</h3>
+                  <h3 className="text-2xl font-semibold">
+                    <Puntos texto={m[lang].titulo} />
+                  </h3>
                   <p className="mt-3 leading-relaxed text-white/75">{m[lang].texto}</p>
                   <ul role="list" className="mt-6 space-y-2">
                     {m[lang].items.map((item) => (

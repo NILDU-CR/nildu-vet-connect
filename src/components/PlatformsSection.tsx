@@ -1,5 +1,6 @@
 import { useLang } from "@/lib/i18n";
 import { ComputerIcon, PhoneIcon, TabletIcon } from "./Icons";
+import Puntos from "./Puntos";
 
 const textos = {
   es: {
@@ -33,7 +34,9 @@ const PlatformsSection = () => {
       <div className="mx-auto grid max-w-page items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1fr_1.2fr]">
         <div>
           <p className="text-xs font-medium tracking-[0.12em] text-brand">{t.etiqueta}</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">{t.titulo}</h2>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+            <Puntos texto={t.titulo} />
+          </h2>
           <p className="mt-4 max-w-md leading-relaxed text-ink">{t.texto}</p>
         </div>
         <ul role="list" className="grid grid-cols-3 gap-3 sm:gap-4">

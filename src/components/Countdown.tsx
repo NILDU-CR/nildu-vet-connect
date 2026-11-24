@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLang } from "@/lib/i18n";
 
 interface TimeLeft {
   days: number;
@@ -7,6 +8,13 @@ interface TimeLeft {
   seconds: number;
   expired: boolean;
 }
+
+const unidades = ["days", "hours", "minutes", "seconds"] as const;
+
+const etiquetas = {
+  es: { days: "días", hours: "horas", minutes: "minutos", seconds: "segundos", faltan: "Tiempo para el lanzamiento" },
+  en: { days: "days", hours: "hours", minutes: "minutes", seconds: "seconds", faltan: "Time to launch" },
+};
 
 function calculateTimeLeft(target: Date): TimeLeft {
   const diff = target.getTime() - Date.now();
@@ -18,37 +26,32 @@ function calculateTimeLeft(target: Date): TimeLeft {
   return { days, hours, minutes, seconds, expired: false };
 }
 
-export const Countdown = ({ date }: { date?: string }) => {
+// Cuenta regresiva hasta VITE_LAUNCH_DATE (fecha ISO). Sin fecha, o cuando ya pasó, no muestra nada.
+export const Countdown = ({ date, className = "" }: { date?: string; className?: string }) => {
+  const [lang] = useLang();
+  const t = etiquetas[lang];
   const targetStr = date || import.meta.env.VITE_LAUNCH_DATE;
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
-    targetStr ? calculateTimeLeft(new Date(targetStr)) : { days: 0, hours: 0, minutes: 0, seconds: 0, expired: false }
+    targetStr ? calculateTimeLeft(new Date(targetStr)) : { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true },
   );
 
   useEffect(() => {
     if (!targetStr) return;
     const target = new Date(targetStr);
-    const id = setInterval(() => {
-      setTimeLeft(calculateTimeLeft(target));
-    }, 1000);
+    const id = setInterval(() => setTimeLeft(calculateTimeLeft(target)), 1000);
     return () => clearInterval(id);
   }, [targetStr]);
 
-  if (!targetStr) return null;
+  if (!targetStr || timeLeft.expired) return null;
 
   return (
-    <div className="flex gap-4 justify-center text-slate-200 font-mono text-sm md:text-base">
-      {(["days", "hours", "minutes", "seconds"] as const).map((k, i) => {
-        const value = timeLeft[k];
-        return (
-          <div key={k} className="flex flex-col items-center">
-            <span className="px-3 py-2 rounded-md bg-slate-800/70 backdrop-blur border border-slate-700/40 min-w-[60px] text-center text-lg md:text-2xl font-semibold text-emerald-300">
-              {String(value).padStart(2, "0")}
-            </span>
-            <span className="mt-1 text-[10px] uppercase tracking-widest text-slate-500">{k}</span>
-            {i < 3 && <span className="hidden" aria-hidden>:</span>}
-          </div>
-        );
-      })}
+    <div role="timer" aria-label={t.faltan} className={`flex justify-center gap-2 sm:gap-4 ${className}`}>
+      {unidades.map((k) => (
+        <div key={k} className="flex min-w-[4.25rem] flex-col items-center rounded-lg border border-line bg-white px-2 py-3 sm:min-w-[5.5rem]">
+          <span className="text-2xl font-semibold tabular-nums text-navy sm:text-3xl">{String(timeLeft[k]).padStart(2, "0")}</span>
+          <span className="mt-1 text-xs text-ink">{t[k]}</span>
+        </div>
+      ))}
     </div>
   );
 };

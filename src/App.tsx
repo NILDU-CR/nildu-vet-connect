@@ -13,7 +13,10 @@ const Privacidad = lazy(() => import("./pages/Privacidad"));
 
 // Con VITE_COMING_SOON=1, nildu.com y www.nildu.com muestran solo "Próximamente"; la URL de
 // Vercel (*.vercel.app) y localhost muestran la landing completa para revisarla antes del lanzamiento.
-const comingSoon = import.meta.env.VITE_COMING_SOON === "1" && location.hostname.endsWith("nildu.com");
+// Con pnpm dev, ?proximamente (http://localhost:8080/?proximamente) muestra "Próximamente" para revisarlo; en el
+// sitio publicado ese parámetro no hace nada.
+const vistaPrevia = import.meta.env.DEV && new URLSearchParams(location.search).has("proximamente");
+const comingSoon = (import.meta.env.VITE_COMING_SOON === "1" && location.hostname.endsWith("nildu.com")) || vistaPrevia;
 
 // Durante el "Próximamente" todo el sitio, páginas sueltas incluidas, muestra solo "Próximamente".
 // En Vercel, /terms, /privacy y /help redirigen a su nombre en español (vercel.json); aquí se aceptan para el servidor local.

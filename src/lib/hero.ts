@@ -12,4 +12,10 @@ export type HeroWidth = (typeof HERO_WIDTHS)[number];
 // (px-6 desde 640 px, px-4 en celular).
 export const HERO_SIZES = "(min-width: 1088px) 1040px, (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)";
 
+// Bajada del título del hero; la repite la página "Próximamente".
+export const HERO_BAJADA: Record<HeroLang, string> = {
+  es: "Plataforma inteligente de bienestar veterinario: desde el registro hasta la facturación, todo sin papeleo. Vive una conexión real con los dueños y sus mascotas.",
+  en: "A smart platform for veterinary wellbeing: from check-in to invoicing, all paperless. Build a real connection with owners and their pets.",
+};
+
 export const heroFile = (lang: HeroLang, width: HeroWidth) => `hero${lang === "en" ? "-en" : ""}${width === 1700 ? "" : `-${width}`}.webp`;

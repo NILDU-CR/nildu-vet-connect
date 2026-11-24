@@ -9,6 +9,7 @@ import type { PlanElegido } from "@/lib/pricing";
 import { primaryButton } from "@/lib/styles";
 import Captcha from "./Captcha";
 import { WhatsAppIcon } from "./Icons";
+import Puntos from "./Puntos";
 
 type Status = "idle" | "sending" | "ok" | "error" | "sin-captcha";
 
@@ -182,7 +183,9 @@ const ContactForm = ({ plan }: { plan: PlanElegido | null }) => {
     <section id="contacto" className="scroll-mt-20 bg-mist py-20">
       <div className="mx-auto grid max-w-page gap-10 px-4 sm:px-6 md:grid-cols-2">
         <div>
-          <h2 className="text-3xl font-semibold tracking-tight">{t.titulo}</h2>
+          <h2 className="text-3xl font-semibold tracking-tight">
+            <Puntos texto={t.titulo} />
+          </h2>
           <p className="mt-4 max-w-md leading-relaxed text-ink">{t.texto}</p>
           <ul role="list" className="mt-6 space-y-3">
             <li>

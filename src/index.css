@@ -53,8 +53,103 @@
   }
 }
 
-/* Brillo del título de la página "Próximamente"; va aquí porque el CSP bloquea los <style> inline. */
-@keyframes titleGlow {
-  0%,100% { text-shadow: 0 0 14px rgba(0,255,200,0.15), 0 0 28px rgba(0,180,160,0.08); }
-  50% { text-shadow: 0 0 18px rgba(0,255,220,0.35), 0 0 42px rgba(0,200,170,0.18); }
+/* Colores de los tres puntos del logo, tomados de los píxeles de src/assets/brand/wordmark.png: el de la "i"
+   (celeste), el de la "U" (anaranjado) y el de la "N" (violeta). Van aquí, y no en tailwind.config.ts, para que un
+   cambio se vea sin reiniciar pnpm dev. */
+:root {
+  --punto-celeste: #0bdbf2;
+  --punto-naranja: #fd9602;
+  --punto-violeta: #8834ec;
+}
+
+/* Títulos de la landing y de "Próximamente" (src/components/Puntos.tsx): el punto de cada "i" en celeste y el
+   punto final en anaranjado, como en el logo. La "i" se pinta con un degradado de corte seco: celeste arriba y, abajo,
+   el color del texto (currentColor). Con Poppins 600, el punto de la "i" termina a 0.43em del borde superior de la
+   caja del texto y el palito empieza a 0.49em; el corte a 0.46em cae en ese hueco en cualquier tamaño. La palabra
+   animada de "Próximamente" no lo usa: ya lleva los colores del logo en movimiento. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .i-celeste {
+    background-image: linear-gradient(to bottom, var(--punto-celeste) 0.46em, currentColor 0.46em);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.punto-naranja {
+  color: var(--punto-naranja);
+  -webkit-text-fill-color: var(--punto-naranja);
+}
+
+/* "Próximamente" (src/pages/ComingSoon.tsx): un degradado con los colores del logo se desliza por las letras, y
+   los tres puntos del logo saltan uno tras otro. Va aquí y no en un <style> porque el CSP no permite estilos en línea.
+   Sin soporte de background-clip: text, el título queda en el morado de marca: nunca transparente sobre blanco. */
+.titulo-proximamente {
+  color: #52067e;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .titulo-proximamente {
+    background-image: linear-gradient(90deg, #52067e, var(--punto-violeta), var(--punto-celeste), var(--punto-violeta), #52067e);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.puntos-proximamente > span {
+  opacity: 0.7;
+}
+
+.puntos-proximamente > span:nth-child(1) {
+  background-color: var(--punto-celeste);
+}
+
+.puntos-proximamente > span:nth-child(2) {
+  background-color: var(--punto-violeta);
+}
+
+.puntos-proximamente > span:nth-child(3) {
+  background-color: var(--punto-naranja);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .titulo-proximamente {
+    animation: deslizar 6s linear infinite;
+  }
+
+  .puntos-proximamente > span {
+    animation: saltar 1.4s ease-in-out infinite;
+  }
+
+  .puntos-proximamente > span:nth-child(2) {
+    animation-delay: 160ms;
+  }
+
+  .puntos-proximamente > span:nth-child(3) {
+    animation-delay: 320ms;
+  }
+}
+
+@keyframes deslizar {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes saltar {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  40% {
+    transform: translateY(-0.6rem);
+    opacity: 1;
+  }
 }
