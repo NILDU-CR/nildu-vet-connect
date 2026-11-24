@@ -11,7 +11,8 @@ import { WhatsAppIcon } from "./Icons";
 
 type Status = "idle" | "sending" | "ok" | "error" | "sin-captcha";
 
-const empty: LeadFields = { nombre: "", correo: "", telefono: "", veterinaria: "", pais: "", botcheck: "", captcha: "" };
+// El país arranca en Costa Rica, el mercado principal; el valor es el nombre en español, como en countryOptions.
+const inicial: LeadFields = { nombre: "", correo: "", telefono: "", veterinaria: "", pais: "Costa Rica", botcheck: "", captcha: "" };
 const accessKey = import.meta.env.VITE_WEB3FORMS_KEY ?? "";
 
 const enlace = "font-medium text-brand underline underline-offset-2";
@@ -70,7 +71,7 @@ const campos = [
 ] as const;
 
 const ContactForm = () => {
-  const [values, setValues] = useState<LeadFields>(empty);
+  const [values, setValues] = useState<LeadFields>(inicial);
   const [status, setStatus] = useState<Status>("idle");
   const [captcha, setCaptcha] = useState("");
   // Cada token de hCaptcha sirve una sola vez: tras un error se vuelve a montar el widget.
@@ -109,7 +110,7 @@ const ContactForm = () => {
     setStatus("sending");
     const result = await submitLead({ ...values, captcha }, accessKey, fetch);
     if (result === "ok") {
-      setValues(empty);
+      setValues(inicial);
       setStatus("ok");
     } else {
       // En error se conservan los datos para que la persona no tenga que reescribirlos.
