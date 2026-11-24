@@ -39,7 +39,7 @@ const textos = {
         en un solo sistema<span className={punto}>.</span>
       </>
     ),
-    bajada: "Sin papeleo y todo a un clic: registras la visita, aplicas la vacuna y cobras desde el expediente, estés donde estés.",
+    bajada: "Plataforma inteligente de bienestar veterinario: desde el registro hasta la facturación, todo sin papeleo. Vive una conexión real con los dueños y sus mascotas.",
     demo: "Agenda una demo",
     precios: "Ver precios →",
     alt: "Nildu con la agenda de octubre, el panel de control, la ficha de Canelo, su curva de peso y sus archivos",
@@ -54,7 +54,7 @@ const textos = {
         in one system<span className={punto}>.</span>
       </>
     ),
-    bajada: "No paperwork and everything one click away: record the visit, give the vaccine and charge from the patient's record, wherever you are.",
+    bajada: "A smart platform for veterinary wellbeing: from check-in to invoicing, all paperless. Build a real connection with owners and their pets.",
     demo: "Book a demo",
     precios: "See pricing →",
     alt: "Nildu with the October schedule, the dashboard, Canelo's record, his weight curve and his files",
