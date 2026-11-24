@@ -7,16 +7,24 @@ import heroEn1200 from "@/assets/screens/hero/hero-en-1200.webp";
 import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
 
-// Los dos toques de color del título: la palabra clave en el morado de marca y el punto final
-// en el celeste del punto de la "i" del logo.
+// La palabra clave del título va en el morado de marca, y los puntos de sus íes en los colores de los puntos del logo.
 const acento = "text-brand";
-const punto = "text-dot-cyan";
+// Pinta solo el punto de una "i": un degradado con corte seco recortado a la letra. El corte al 33% cae en el hueco
+// entre el punto y el palo de la "i" de Poppins 600 (el punto va del 19% al 31% de la caja y el palo empieza en el 35%).
+// Con otra tipografía o peso hay que volver a medirlo. El palo toma el color de la palabra (currentColor).
+const puntoI = "bg-clip-text [-webkit-text-fill-color:transparent] [print-color-adjust:exact]";
+const iCeleste = `${puntoI} bg-[linear-gradient(theme(colors.dot.cyan)_33%,currentColor_33%)]`;
+const iNaranja = `${puntoI} bg-[linear-gradient(theme(colors.dot.gold)_33%,currentColor_33%)]`;
 
 const textos = {
   es: {
     titulo: (
       <>
-        Tu <span className={acento}>veterinaria</span> en un solo sistema<span className={punto}>.</span>
+        Tu{" "}
+        <span className={acento}>
+          veter<span className={iCeleste}>i</span>nar<span className={iNaranja}>i</span>a
+        </span>{" "}
+        en un solo sistema.
       </>
     ),
     bajada: "Sin papeleo y todo a un clic: registras la visita, aplicas la vacuna y cobras desde el expediente, estés donde estés.",
@@ -28,7 +36,11 @@ const textos = {
   en: {
     titulo: (
       <>
-        Your <span className={acento}>vet practice</span> in one system<span className={punto}>.</span>
+        Your{" "}
+        <span className={acento}>
+          vet pract<span className={iCeleste}>i</span>ce
+        </span>{" "}
+        in one system.
       </>
     ),
     bajada: "No paperwork and everything one click away: record the visit, give the vaccine and charge from the patient's record, wherever you are.",
