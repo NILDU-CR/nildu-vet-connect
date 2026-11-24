@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { correoSoporte, telefonoWhatsApp, whatsappUrl } from "@/lib/contact";
+import { countryOptions } from "@/lib/countries";
 import { useLang } from "@/lib/i18n";
 import { submitLead } from "@/lib/lead";
 import type { LeadFields } from "@/lib/lead";
@@ -10,16 +11,18 @@ import { WhatsAppIcon } from "./Icons";
 
 type Status = "idle" | "sending" | "ok" | "error" | "sin-captcha";
 
-const empty: LeadFields = { nombre: "", correo: "", telefono: "", veterinaria: "", botcheck: "", captcha: "" };
+const empty: LeadFields = { nombre: "", correo: "", telefono: "", veterinaria: "", pais: "", botcheck: "", captcha: "" };
 const accessKey = import.meta.env.VITE_WEB3FORMS_KEY ?? "";
 
 const enlace = "font-medium text-brand underline underline-offset-2";
+const campoClase = "mt-1 w-full rounded-md border border-ink/70 bg-white px-3 py-2 text-navy focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand";
 
 const textos = {
   es: {
     titulo: "Solicita una demo",
     texto: "Completa el formulario y el equipo de Nildu te contactará para mostrarte el sistema. Si prefieres, escríbenos directo:",
-    campos: { nombre: "Nombre", correo: "Correo", telefono: "Teléfono", veterinaria: "Nombre de la veterinaria" },
+    campos: { nombre: "Nombre", correo: "Correo", telefono: "Teléfono", veterinaria: "Nombre de la veterinaria", pais: "País" },
+    eligePais: "Selecciona un país",
     waTexto: "Hola, quiero agendar una demo de Nildu.",
     escribe: (correo: ReactNode, wa: ReactNode) => (
       <>
@@ -39,7 +42,8 @@ const textos = {
   en: {
     titulo: "Request a demo",
     texto: "Fill in the form and the Nildu team will contact you to show you the system. Or write to us directly:",
-    campos: { nombre: "Name", correo: "Email", telefono: "Phone", veterinaria: "Practice name" },
+    campos: { nombre: "Name", correo: "Email", telefono: "Phone", veterinaria: "Practice name", pais: "Country" },
+    eligePais: "Select a country",
     waTexto: "Hi, I'd like to book a Nildu demo.",
     escribe: (correo: ReactNode, wa: ReactNode) => (
       <>
@@ -76,6 +80,7 @@ const ContactForm = () => {
   const okRef = useRef<HTMLParagraphElement>(null);
   const [lang] = useLang();
   const t = textos[lang];
+  const paises = useMemo(() => countryOptions(lang), [lang]);
 
   const whatsapp = whatsappUrl(t.waTexto);
   const correo = (
@@ -161,10 +166,33 @@ const ContactForm = () => {
                   required
                   value={values[c.name]}
                   onChange={(e) => setValues({ ...values, [c.name]: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-ink/70 px-3 py-2 text-navy focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+                  className={campoClase}
                 />
               </div>
             ))}
+            <div>
+              <label htmlFor="pais" className="block text-sm font-medium">
+                {t.campos.pais}
+              </label>
+              <select
+                id="pais"
+                name="pais"
+                autoComplete="country-name"
+                required
+                value={values.pais}
+                onChange={(e) => setValues({ ...values, pais: e.target.value })}
+                className={campoClase}
+              >
+                <option value="" disabled>
+                  {t.eligePais}
+                </option>
+                {paises.map((p) => (
+                  <option key={p.value} value={p.value}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+            </div>
             <input
               type="checkbox"
               name="botcheck"

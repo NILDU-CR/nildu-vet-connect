@@ -4,7 +4,7 @@ import { correoSoporte } from "@/lib/contact";
 
 // ponytail: borrador redactado sin revisión legal (2026-10-10). Antes del lanzamiento debe revisarlo un abogado.
 // Si cambia un proveedor (alojamiento, red, correo, formulario, captcha), hay que actualizar la sección 4.
-const ACTUALIZADO = "27 de octubre de 2026";
+const ACTUALIZADO = "19 de noviembre de 2026";
 
 const secciones: Seccion[] = [
   {
@@ -17,7 +17,7 @@ const secciones: Seccion[] = [
   {
     titulo: "2. Datos que recibe este sitio",
     parrafos: [
-      "Formulario de demo: tu nombre, correo, teléfono y el nombre de tu veterinaria. Nildu los usa solo para contactarte sobre la demo. El formulario se envía a través de Web3Forms, que lo reenvía al correo de Nildu.",
+      "Formulario de demo: tu nombre, correo, teléfono, país y el nombre de tu veterinaria. Nildu los usa solo para contactarte sobre la demo. El formulario se envía a través de Web3Forms, que lo reenvía al correo de Nildu.",
       "Verificación: antes de enviar el formulario, hCaptcha comprueba que lo envía una persona. Para eso recibe datos técnicos de tu navegador y puede usar cookies, según su propia política de privacidad.",
       "WhatsApp: si escribes a Nildu por WhatsApp, la conversación pasa por WhatsApp y se rige también por sus condiciones.",
       "Datos técnicos: el sitio está alojado en Vercel y pasa por Cloudflare, que lo protege de ataques y lo entrega más rápido. Los dos registran datos técnicos de las visitas, como la dirección IP, para operar el servicio. Cloudflare puede usar cookies técnicas cuando necesita comprobar que una visita no es un ataque.",

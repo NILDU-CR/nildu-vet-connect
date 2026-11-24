@@ -1,36 +1,38 @@
 import { useState } from "react";
 import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
-import { PLAN, formatUsd, quote } from "@/lib/pricing";
+import { PLAN, formatUsd, isVolume, quote } from "@/lib/pricing";
 import type { Period } from "@/lib/pricing";
 
 const MIN_USERS = 1;
-const MAX_USERS = 50;
+// Un paso por encima del tope cotizable: ahí el contador muestra "10+" y la tarjeta pasa a licenciamiento por volumen.
+const MAX_USERS = PLAN.maxQuotedUsers + 1;
 
 const textos = {
   es: {
     etiqueta: "PRECIO",
     titulo: "Un plan. Todo incluido.",
     titulo2: "Pagas por tu equipo, no por funciones.",
-    lanzamiento: "Precio de lanzamiento · por tiempo limitado",
     alMesIva: "USD al mes + IVA",
-    oficial: "Precio oficial",
     alMes: "al mes",
     alAno: "al año",
     iva: "+ IVA",
-    ahorro: `Ahorras ${formatUsd(PLAN.regularMonthly - PLAN.monthly)} al mes frente al precio oficial mientras dure el lanzamiento.`,
-    usuarios: (n: number) => `${n} ${n === 1 ? "usuario" : "usuarios"}`,
-    incluidos: (n: number) => `${n} ${n === 1 ? "usuario incluido" : "usuarios incluidos"}`,
-    adicionales: (n: number) => `${n} ${n === 1 ? "usuario adicional" : "usuarios adicionales"}`,
-    adicionalPrecio: `Cada usuario adicional, ${formatUsd(PLAN.extraUserMonthly)} al mes.`,
+    licencias: (n: number) => `${n} ${n === 1 ? "licencia" : "licencias"}`,
+    incluidos: (n: number) => `${n} ${n === 1 ? "licencia incluida" : "licencias incluidas"}`,
+    adicionales: (n: number) => `${n} ${n === 1 ? "licencia adicional" : "licencias adicionales"}`,
+    adicionalPrecio: `Cada licencia adicional, ${formatUsd(PLAN.extraUserMonthly)} al mes.`,
     incluye: "Incluye",
     periodo: "Periodo de pago",
     mensual: "Mensual",
     anual: "Anual",
     anualGratis: "Anual · 2 meses gratis",
     cuantos: "¿Cuántas personas usarán Nildu?",
-    quitar: "Quitar un usuario",
-    agregar: "Agregar un usuario",
+    quitar: "Quitar una licencia",
+    agregar: "Agregar una licencia",
+    masDe: `Más de ${PLAN.maxQuotedUsers} licencias`,
+    volumen: "Licenciamiento por volumen",
+    volumenDetalle: `Con más de ${PLAN.maxQuotedUsers} licencias, recibe una propuesta a la medida de tu equipo.`,
+    propuesta: "Solicitar contacto para propuesta",
     enPlan: "en el plan",
     tuPlan: "Tu plan",
     plan: (anual: boolean) => `Plan Nildu ${anual ? "anual" : "mensual"}`,
@@ -42,7 +44,7 @@ const textos = {
     demo: "Agenda una demo",
     preguntas: [
       { q: "¿La factura electrónica cuesta aparte?", a: "No, va incluida en el plan." },
-      { q: "¿Qué cuenta como usuario?", a: "Cada persona de tu equipo con acceso a Nildu." },
+      { q: "¿Qué cuenta como licencia?", a: "Cada persona de tu equipo con acceso a Nildu usa una licencia." },
       { q: "¿El precio incluye IVA?", a: "No, el IVA se suma al precio." },
     ],
   },
@@ -50,25 +52,26 @@ const textos = {
     etiqueta: "PRICING",
     titulo: "One plan. Everything included.",
     titulo2: "You pay for your team, not for features.",
-    lanzamiento: "Launch price · limited time",
     alMesIva: "USD per month + VAT",
-    oficial: "Regular price",
     alMes: "per month",
     alAno: "per year",
     iva: "+ VAT",
-    ahorro: `You save ${formatUsd(PLAN.regularMonthly - PLAN.monthly)} a month off the regular price while the launch lasts.`,
-    usuarios: (n: number) => `${n} ${n === 1 ? "user" : "users"}`,
-    incluidos: (n: number) => `${n} ${n === 1 ? "user" : "users"} included`,
-    adicionales: (n: number) => `${n} additional ${n === 1 ? "user" : "users"}`,
-    adicionalPrecio: `Each additional user, ${formatUsd(PLAN.extraUserMonthly)} per month.`,
+    licencias: (n: number) => `${n} ${n === 1 ? "license" : "licenses"}`,
+    incluidos: (n: number) => `${n} ${n === 1 ? "license" : "licenses"} included`,
+    adicionales: (n: number) => `${n} additional ${n === 1 ? "license" : "licenses"}`,
+    adicionalPrecio: `Each additional license, ${formatUsd(PLAN.extraUserMonthly)} per month.`,
     incluye: "Includes",
     periodo: "Billing period",
     mensual: "Monthly",
     anual: "Annual",
     anualGratis: "Annual · 2 months free",
     cuantos: "How many people will use Nildu?",
-    quitar: "Remove a user",
-    agregar: "Add a user",
+    quitar: "Remove a license",
+    agregar: "Add a license",
+    masDe: `More than ${PLAN.maxQuotedUsers} licenses`,
+    volumen: "Volume licensing",
+    volumenDetalle: `With more than ${PLAN.maxQuotedUsers} licenses, get a proposal tailored to your team.`,
+    propuesta: "Request a proposal",
     enPlan: "in the plan",
     tuPlan: "Your plan",
     plan: (anual: boolean) => `Nildu plan, ${anual ? "annual" : "monthly"}`,
@@ -80,7 +83,7 @@ const textos = {
     demo: "Book a demo",
     preguntas: [
       { q: "Does electronic invoicing cost extra?", a: "No, it's included in the plan." },
-      { q: "What counts as a user?", a: "Each person on your team with access to Nildu." },
+      { q: "What counts as a license?", a: "Each person on your team with access to Nildu uses one license." },
       { q: "Does the price include VAT?", a: "No, VAT is added to the price." },
     ],
   },
@@ -96,6 +99,7 @@ const PricingSection = () => {
   const t = textos[lang];
   const q = quote(users, period);
   const anual = period === "anual";
+  const volumen = isVolume(users);
 
   return (
     <section id="precios" className="scroll-mt-20 bg-navy py-20 text-white">
@@ -108,20 +112,12 @@ const PricingSection = () => {
               <br />
               {t.titulo2}
             </h2>
-            <p className="mt-6 inline-block rounded-full bg-dot-gold px-3 py-1 text-xs font-semibold text-navy">{t.lanzamiento}</p>
-            <div className="mt-4 flex flex-wrap items-end gap-x-8 gap-y-4">
-              <p className="flex items-baseline gap-x-3">
-                <span className="text-6xl font-semibold tracking-tight">{formatUsd(PLAN.monthly)}</span>
-                <span className="text-sm text-white/70">{t.alMesIva}</span>
-              </p>
-              <p className="text-white/70">
-                <span className="block text-xs">{t.oficial}</span>
-                <s className="text-2xl font-semibold decoration-2">{formatUsd(PLAN.regularMonthly)}</s> <span className="text-sm">{t.alMes}</span>
-              </p>
-            </div>
-            <p className="mt-4 text-white/85">{t.ahorro}</p>
-            <p className="mt-2">
-              {t.incluye} {t.usuarios(PLAN.includedUsers)}. {t.adicionalPrecio}
+            <p className="mt-6 flex items-baseline gap-x-3">
+              <span className="text-6xl font-semibold tracking-tight">{formatUsd(PLAN.monthly)}</span>
+              <span className="text-sm text-white/70">{t.alMesIva}</span>
+            </p>
+            <p className="mt-4">
+              {t.incluye} {t.licencias(PLAN.includedUsers)}. {t.adicionalPrecio}
             </p>
             <div role="group" aria-label={t.periodo} className="mt-8 inline-flex rounded-full border border-white/25 p-1 text-sm">
               <button
@@ -146,8 +142,8 @@ const PricingSection = () => {
               <button type="button" aria-label={t.quitar} disabled={users === MIN_USERS} onClick={() => setUsers(users - 1)} className={contadorBoton}>
                 −
               </button>
-              <span aria-live="polite" className="min-w-[2ch] text-center text-2xl font-semibold">
-                {users}
+              <span aria-live="polite" className="min-w-[3ch] text-center text-2xl font-semibold">
+                {volumen ? `${PLAN.maxQuotedUsers}+` : users}
               </span>
               <button type="button" aria-label={t.agregar} disabled={users === MAX_USERS} onClick={() => setUsers(users + 1)} className={contadorBoton}>
                 +
@@ -160,23 +156,25 @@ const PricingSection = () => {
 
           <div id="tu-plan" className="rounded-xl bg-white p-6 text-navy shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
             <p className="text-sm font-semibold">{t.tuPlan}</p>
-            <p className="text-xs text-ink">
-              {anual ? t.anual : t.mensual} · {t.usuarios(users)}
-            </p>
+            <p className="text-xs text-ink">{volumen ? t.masDe : `${anual ? t.anual : t.mensual} · ${t.licencias(users)}`}</p>
             <div className="mt-3">
-              <p className="flex justify-between py-1.5 text-sm">
-                <span>{t.plan(anual)}</span>
-                <span>{formatUsd(q.base)}</span>
-              </p>
-              <p className="flex justify-between py-1.5 text-sm">
-                <span>{t.incluidos(PLAN.includedUsers)}</span>
-                <span className="text-ink">$0</span>
-              </p>
-              {q.extraUsers > 0 && (
-                <p className="flex justify-between py-1.5 text-sm">
-                  <span>{t.adicionales(q.extraUsers)}</span>
-                  <span>{formatUsd(q.extraCost)}</span>
-                </p>
+              {!volumen && (
+                <>
+                  <p className="flex justify-between py-1.5 text-sm">
+                    <span>{t.plan(anual)}</span>
+                    <span>{formatUsd(q.base)}</span>
+                  </p>
+                  <p className="flex justify-between py-1.5 text-sm">
+                    <span>{t.incluidos(PLAN.includedUsers)}</span>
+                    <span className="text-ink">$0</span>
+                  </p>
+                  {q.extraUsers > 0 && (
+                    <p className="flex justify-between py-1.5 text-sm">
+                      <span>{t.adicionales(q.extraUsers)}</span>
+                      <span>{formatUsd(q.extraCost)}</span>
+                    </p>
+                  )}
+                </>
               )}
               <p className="flex justify-between py-1.5 text-sm">
                 <span>{t.factura}</span>
@@ -188,26 +186,32 @@ const PricingSection = () => {
               </p>
             </div>
             <div aria-live="polite" className="mt-3 border-t border-line pt-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold">Total</span>
-                <span className="text-right">
-                  <span className="block text-xs text-ink">
-                    {t.oficial} <s>{formatUsd(q.regularTotal)}</s>
-                  </span>
-                  <span className="block text-2xl font-semibold">{formatUsd(q.total)}</span>
-                  <span className="block text-xs text-ink">
-                    {anual ? t.alAno : t.alMes} {t.iva}
-                  </span>
-                </span>
-              </div>
-              {anual && (
-                <p className="mt-1 text-right text-xs text-ink">
-                  {t.equivale} {formatUsd(q.perMonth)} {t.alMes}
-                </p>
+              {volumen ? (
+                <>
+                  <p className="text-lg font-semibold">{t.volumen}</p>
+                  <p className="mt-1 text-sm text-ink">{t.volumenDetalle}</p>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold">Total</span>
+                    <span className="text-right">
+                      <span className="block text-2xl font-semibold">{formatUsd(q.total)}</span>
+                      <span className="block text-xs text-ink">
+                        {anual ? t.alAno : t.alMes} {t.iva}
+                      </span>
+                    </span>
+                  </div>
+                  {anual && (
+                    <p className="mt-1 text-right text-xs text-ink">
+                      {t.equivale} {formatUsd(q.perMonth)} {t.alMes}
+                    </p>
+                  )}
+                </>
               )}
             </div>
             <a href="#contacto" className={`${primaryButton} mt-5 w-full text-center`}>
-              {t.demo}
+              {volumen ? t.propuesta : t.demo}
             </a>
           </div>
         </div>

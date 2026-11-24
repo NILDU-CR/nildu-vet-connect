@@ -1,30 +1,34 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { quote, formatUsd } from "./pricing.ts";
+import { quote, formatUsd, isVolume } from "./pricing.ts";
 
-test("1 usuario mensual paga solo el plan de lanzamiento", () => {
-  const q = quote(1, "mensual");
-  assert.equal(q.extraUsers, 0);
-  assert.equal(q.total, 25);
-  assert.equal(q.regularTotal, 45);
-});
-
-test("3 usuarios mensual: 2 adicionales a $5", () => {
+test("hasta 3 licencias mensual pagan solo el plan", () => {
+  assert.equal(quote(1, "mensual").total, 65);
   const q = quote(3, "mensual");
-  assert.equal(q.extraUsers, 2);
-  assert.equal(q.extraCost, 10);
-  assert.equal(q.total, 35);
-  assert.equal(q.perMonth, 35);
-  assert.equal(q.regularTotal, 55);
+  assert.equal(q.extraUsers, 0);
+  assert.equal(q.total, 65);
 });
 
-test("3 usuarios anual: plan $250 + 2 adicionales a $50", () => {
-  const q = quote(3, "anual");
-  assert.equal(q.base, 250);
-  assert.equal(q.extraCost, 100);
-  assert.equal(q.total, 350);
-  assert.ok(Math.abs(q.perMonth - 29.1667) < 0.001);
-  assert.equal(q.regularTotal, 550);
+test("5 licencias mensual: 2 adicionales a $10", () => {
+  const q = quote(5, "mensual");
+  assert.equal(q.extraUsers, 2);
+  assert.equal(q.extraCost, 20);
+  assert.equal(q.total, 85);
+  assert.equal(q.perMonth, 85);
+});
+
+test("5 licencias anual: plan $650 + 2 adicionales a $100", () => {
+  const q = quote(5, "anual");
+  assert.equal(q.base, 650);
+  assert.equal(q.extraCost, 200);
+  assert.equal(q.total, 850);
+  assert.ok(Math.abs(q.perMonth - 70.8333) < 0.001);
+});
+
+test("10 licencias todavía se cotizan; más de 10 es licenciamiento por volumen", () => {
+  assert.equal(isVolume(10), false);
+  assert.equal(quote(10, "mensual").total, 135);
+  assert.equal(isVolume(11), true);
 });
 
 test("formatUsd: enteros sin decimales, fracciones con dos", () => {
