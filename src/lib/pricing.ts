@@ -1,5 +1,8 @@
 export type Period = "mensual" | "anual";
 
+// Lo que la persona armó en la sección de precios; viaja con la solicitud de demo.
+export type PlanElegido = { period: Period; users: number };
+
 // Debe coincidir con el plan cargado en Nildu (SubscriptionType.IncludedSeat en la base de datos).
 // El anual cobra 10 meses ("2 meses gratis"), también en los usuarios adicionales.
 // Por encima de maxQuotedUsers no se muestra precio: es precio por volumen, con propuesta aparte.

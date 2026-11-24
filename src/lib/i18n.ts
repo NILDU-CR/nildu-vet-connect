@@ -5,7 +5,7 @@ export type Lang = "es" | "en";
 const esLang = (v: string | null): v is Lang => v === "es" || v === "en";
 
 // Orden: ?lang= en la URL (para compartir el enlace en inglés), lo elegido antes en este navegador, y si no,
-// el idioma del navegador (español salvo que sea inglés).
+// español. El inglés solo aparece si la persona lo elige, así el idioma que llega con la solicitud de demo dice algo.
 export function idiomaInicial(): Lang {
   const param = new URLSearchParams(location.search).get("lang");
   if (esLang(param)) {
@@ -16,9 +16,9 @@ export function idiomaInicial(): Lang {
     const guardado = localStorage.getItem("lang");
     if (esLang(guardado)) return guardado;
   } catch {
-    // Almacenamiento bloqueado: se usa el del navegador.
+    // Almacenamiento bloqueado: queda el español.
   }
-  return navigator.language.toLowerCase().startsWith("en") ? "en" : "es";
+  return "es";
 }
 
 export function guardarIdioma(lang: Lang) {

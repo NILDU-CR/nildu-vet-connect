@@ -21,7 +21,7 @@ const textos = {
     waTexto: "Hi, I need help with Nildu.",
     correo: "Email",
     entrar: "Log in",
-    entrarTexto: "Go to your practice at nildu.app",
+    entrarTexto: "Log in to your vet clinic at nildu.app",
   },
 };
 
@@ -41,12 +41,12 @@ const Ayuda = () => {
               <p className="mt-4 font-semibold">WhatsApp</p>
               <p className="mt-1 text-ink">{telefonoWhatsApp}</p>
             </a>
-            <a href={`mailto:${correoSoporte}`} className={tarjeta}>
+            <a href={`mailto:${correoSoporte[lang]}`} className={tarjeta}>
               <span aria-hidden="true" className="text-2xl leading-none text-brand">
                 @
               </span>
               <p className="mt-4 font-semibold">{t.correo}</p>
-              <p className="mt-1 text-ink">{correoSoporte}</p>
+              <p className="mt-1 text-ink">{correoSoporte[lang]}</p>
             </a>
             <a href="https://nildu.app" className={tarjeta}>
               <span aria-hidden="true" className="text-2xl leading-none text-brand">

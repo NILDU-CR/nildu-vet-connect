@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
 import { PLAN, formatUsd, isVolume, quote } from "@/lib/pricing";
-import type { Period } from "@/lib/pricing";
+import type { Period, PlanElegido } from "@/lib/pricing";
 
 const MIN_USERS = 1;
 // Un paso por encima del tope cotizable: ahí el contador muestra "10+" y la tarjeta pasa a precio por volumen.
@@ -13,10 +13,10 @@ const textos = {
     etiqueta: "PRECIO",
     titulo: "Un plan. Todo incluido.",
     titulo2: "Pagas por tu equipo, no por funciones.",
-    alMesIva: "USD al mes + IVA",
+    alMesIva: "USD al mes, IVA incluido",
     alMes: "al mes",
     alAno: "al año",
-    iva: "+ IVA",
+    iva: "IVA incluido",
     usuarios: (n: number) => `${n} ${n === 1 ? "usuario" : "usuarios"}`,
     incluidos: (n: number) => `${n} ${n === 1 ? "usuario incluido" : "usuarios incluidos"}`,
     adicionales: (n: number) => `${n} ${n === 1 ? "usuario adicional" : "usuarios adicionales"}`,
@@ -45,17 +45,17 @@ const textos = {
     preguntas: [
       { q: "¿La factura electrónica cuesta aparte?", a: "No, va incluida en el plan." },
       { q: "¿Qué cuenta como usuario?", a: "Cada persona de tu equipo con acceso a Nildu es un usuario." },
-      { q: "¿El precio incluye IVA?", a: "No, el IVA se suma al precio." },
+      { q: "¿El precio incluye IVA?", a: "Sí, el precio ya incluye el IVA." },
     ],
   },
   en: {
     etiqueta: "PRICING",
     titulo: "One plan. Everything included.",
     titulo2: "You pay for your team, not for features.",
-    alMesIva: "USD per month + VAT",
+    alMesIva: "USD per month, VAT included",
     alMes: "per month",
     alAno: "per year",
-    iva: "+ VAT",
+    iva: "VAT included",
     usuarios: (n: number) => `${n} ${n === 1 ? "user" : "users"}`,
     incluidos: (n: number) => `${n} ${n === 1 ? "user" : "users"} included`,
     adicionales: (n: number) => `${n} additional ${n === 1 ? "user" : "users"}`,
@@ -84,7 +84,7 @@ const textos = {
     preguntas: [
       { q: "Does electronic invoicing cost extra?", a: "No, it's included in the plan." },
       { q: "What counts as a user?", a: "Each person on your team with access to Nildu is one user." },
-      { q: "Does the price include VAT?", a: "No, VAT is added to the price." },
+      { q: "Does the price include VAT?", a: "Yes, VAT is already included in the price." },
     ],
   },
 };
@@ -92,9 +92,16 @@ const textos = {
 const periodoBase = "rounded-full px-4 py-1.5";
 const contadorBoton = "h-9 w-9 rounded-md border border-white/30 disabled:opacity-40";
 
-const PricingSection = () => {
+// onElegir avisa a la página el plan que la persona armó, para enviarlo con la solicitud de demo. Solo cuenta si tocó
+// el periodo, el contador o el botón de la tarjeta: los valores iniciales, sin tocar, no son una elección.
+const PricingSection = ({ onElegir }: { onElegir: (plan: PlanElegido) => void }) => {
   const [period, setPeriod] = useState<Period>("anual");
   const [users, setUsers] = useState(3);
+  const elegir = (p: Period, u: number) => {
+    setPeriod(p);
+    setUsers(u);
+    onElegir({ period: p, users: u });
+  };
   const [lang] = useLang();
   const t = textos[lang];
   const q = quote(users, period);
@@ -123,7 +130,7 @@ const PricingSection = () => {
               <button
                 type="button"
                 aria-pressed={!anual}
-                onClick={() => setPeriod("mensual")}
+                onClick={() => elegir("mensual", users)}
                 className={`${periodoBase} ${!anual ? "bg-white font-medium text-navy" : "text-white/75"}`}
               >
                 {t.mensual}
@@ -131,7 +138,7 @@ const PricingSection = () => {
               <button
                 type="button"
                 aria-pressed={anual}
-                onClick={() => setPeriod("anual")}
+                onClick={() => elegir("anual", users)}
                 className={`${periodoBase} ${anual ? "bg-white font-medium text-navy" : "text-white/75"}`}
               >
                 {t.anualGratis}
@@ -139,13 +146,13 @@ const PricingSection = () => {
             </div>
             <p className="mt-8 text-sm text-white/75">{t.cuantos}</p>
             <div className="mt-3 flex items-center gap-4">
-              <button type="button" aria-label={t.quitar} disabled={users === MIN_USERS} onClick={() => setUsers(users - 1)} className={contadorBoton}>
+              <button type="button" aria-label={t.quitar} disabled={users === MIN_USERS} onClick={() => elegir(period, users - 1)} className={contadorBoton}>
                 −
               </button>
               <span aria-live="polite" className="min-w-[3ch] text-center text-2xl font-semibold">
                 {volumen ? `${PLAN.maxQuotedUsers}+` : users}
               </span>
-              <button type="button" aria-label={t.agregar} disabled={users === MAX_USERS} onClick={() => setUsers(users + 1)} className={contadorBoton}>
+              <button type="button" aria-label={t.agregar} disabled={users === MAX_USERS} onClick={() => elegir(period, users + 1)} className={contadorBoton}>
                 +
               </button>
               <span className="text-xs text-white/70">
@@ -198,7 +205,7 @@ const PricingSection = () => {
                     <span className="text-right">
                       <span className="block text-2xl font-semibold">{formatUsd(q.total)}</span>
                       <span className="block text-xs text-ink">
-                        {anual ? t.alAno : t.alMes} {t.iva}
+                        {anual ? t.alAno : t.alMes}, {t.iva}
                       </span>
                     </span>
                   </div>
@@ -210,7 +217,7 @@ const PricingSection = () => {
                 </>
               )}
             </div>
-            <a href="#contacto" className={`${primaryButton} mt-5 w-full text-center`}>
+            <a href="#contacto" onClick={() => elegir(period, users)} className={`${primaryButton} mt-5 w-full text-center`}>
               {volumen ? t.propuesta : t.demo}
             </a>
           </div>

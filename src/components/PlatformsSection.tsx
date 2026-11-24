@@ -15,7 +15,7 @@ const textos = {
   en: {
     etiqueta: "ANY DEVICE",
     titulo: "On your computer, tablet or phone.",
-    texto: "Nildu runs in the browser. Nothing to install and no server at the practice: sign in from the front desk, the exam room or home.",
+    texto: "Nildu runs in the browser. Nothing to install and no server at the clinic: sign in from the front desk, the exam room or home.",
     equipos: [
       { nombre: "Computer", sistemas: "Windows or Mac", Icono: ComputerIcon },
       { nombre: "Tablet", sistemas: "iPad or Android", Icono: TabletIcon },

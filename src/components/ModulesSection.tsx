@@ -99,7 +99,7 @@ const modulos: Modulo[] = [
       pestana: "Records",
       titulo: "Medical records",
       texto: "Each visit uses the form for its type, with vital signs compared against their normal range.",
-      items: ["Vaccines with lot and next dose", "Deworming and medications", "Weight curve and attached files", "Vaccines given at another practice"],
+      items: ["Vaccines with lot and next dose", "Deworming and medications", "Weight curve and attached files", "Vaccines given at another clinic"],
       alt: "A visit in Nildu with vital signs and their normal range",
     },
     img: { src: { es: consulta, en: consultaEn }, srcSet: { es: srcSet(consulta720, consulta1080, consulta), en: srcSet(consultaEn720, consultaEn1080, consultaEn) }, width: 1440, height: 778 },
@@ -177,7 +177,7 @@ const modulos: Modulo[] = [
     en: {
       pestana: "Reports",
       titulo: "Reports",
-      texto: "Your practice in numbers: the home page shows active clients and patients, today's and this week's appointments, and pending tasks.",
+      texto: "Your clinic in numbers: the home page shows active clients and patients, today's and this week's appointments, and pending tasks.",
       items: ["Appointments report in Excel", "Patients report in Excel", "Today's and this week's appointments on the home page", "Overdue and pending tasks"],
       alt: "Dashboard with active clients and patients, today's and this week's appointments, and tasks",
     },

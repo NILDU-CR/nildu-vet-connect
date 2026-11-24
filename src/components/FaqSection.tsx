@@ -22,7 +22,7 @@ const textos = {
         r: "Your Hacienda cryptographic key (.p12 file) with its PIN, plus your Hacienda username and password. This applies only in Costa Rica.",
       },
       { p: "Is it available in other languages?", r: "Yes. For now, in Spanish and English." },
-      { p: "How do I get started?", r: "Request a demo and the Nildu team sets up your practice." },
+      { p: "How do I get started?", r: "Request a demo and the Nildu team sets up your clinic." },
     ],
   },
 };

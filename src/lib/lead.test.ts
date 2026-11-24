@@ -1,10 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { submitLead } from "./lead.ts";
-import type { LeadFields } from "./lead.ts";
+import { detallePlan, submitLead } from "./lead.ts";
+import type { LeadContexto, LeadFields } from "./lead.ts";
 
 const fields: LeadFields = {
-  nombre: "Ana Mora",
+  nombre: "Ana",
+  apellido: "Mora",
   correo: "ana@example.com",
   telefono: "+506 8888 0000",
   veterinaria: "Vet Demo",
@@ -12,6 +13,8 @@ const fields: LeadFields = {
   botcheck: "",
   captcha: "token-hcaptcha",
 };
+
+const contexto: LeadContexto = { idioma: "es", plan: null };
 
 function recordingFetch(respond: () => Response) {
   const calls: { url: string; init: RequestInit }[] = [];
@@ -26,55 +29,79 @@ const json = (status: number, body: unknown) => () => new Response(JSON.stringif
 
 test("sin llave no envía nada", async () => {
   const f = recordingFetch(json(200, { success: true }));
-  assert.equal(await submitLead(fields, "", f.impl), "no-key");
+  assert.equal(await submitLead(fields, contexto, "", f.impl), "no-key");
   assert.equal(f.calls.length, 0);
 });
 
 test("envía los campos a Web3Forms y devuelve ok", async () => {
   const f = recordingFetch(json(200, { success: true }));
-  assert.equal(await submitLead(fields, "llave-123", f.impl), "ok");
+  assert.equal(await submitLead(fields, contexto, "llave-123", f.impl), "ok");
   assert.equal(f.calls[0].url, "https://api.web3forms.com/submit");
   const body = JSON.parse(String(f.calls[0].init.body));
   assert.equal(body.access_key, "llave-123");
-  assert.equal(body.nombre, "Ana Mora");
+  assert.equal(body.nombre, "Ana");
+  assert.equal(body.apellido, "Mora");
   assert.equal(body.email, "ana@example.com");
   assert.equal(body.telefono, "+506 8888 0000");
   assert.equal(body.veterinaria, "Vet Demo");
   assert.equal(body.pais, "Costa Rica");
+  assert.equal(body.idioma, "Español");
+  assert.equal(body.plan, "No eligió plan en la sección de precios");
+  assert.equal(body.usuarios, undefined);
+  assert.equal(body.privacidad, undefined);
   assert.equal(body.subject, "Solicitud de demo — Vet Demo");
   assert.equal(body["h-captcha-response"], "token-hcaptcha");
 });
 
+test("envía el idioma de la página y el plan que armó en Precios", async () => {
+  const f = recordingFetch(json(200, { success: true }));
+  await submitLead(fields, { idioma: "en", plan: { period: "anual", users: 5 } }, "llave-123", f.impl);
+  const body = JSON.parse(String(f.calls[0].init.body));
+  assert.equal(body.idioma, "Inglés");
+  assert.equal(body.plan, "Anual");
+  assert.equal(body.usuarios, "5");
+  assert.equal(body.total, "$850 al año, IVA incluido");
+});
+
+test("detallePlan: mensual cotizado y precio por volumen", () => {
+  assert.deepEqual(detallePlan({ period: "mensual", users: 3 }), { plan: "Mensual", usuarios: "3", total: "$65 al mes, IVA incluido" });
+  assert.deepEqual(detallePlan({ period: "mensual", users: 11 }), {
+    plan: "Mensual",
+    usuarios: "Más de 10",
+    total: "Precio por volumen (pide propuesta)",
+  });
+});
+
 test("envía con timeout de 15 s", async () => {
   const f = recordingFetch(json(200, { success: true }));
-  await submitLead(fields, "llave-123", f.impl);
+  await submitLead(fields, contexto, "llave-123", f.impl);
   assert.ok(f.calls[0].init.signal instanceof AbortSignal);
 });
 
 test("success:false de Web3Forms es error", async () => {
   const f = recordingFetch(json(200, { success: false, message: "Invalid access key" }));
-  assert.equal(await submitLead(fields, "llave-123", f.impl), "error");
+  assert.equal(await submitLead(fields, contexto, "llave-123", f.impl), "error");
 });
 
 test("HTTP 500 es error aunque diga success", async () => {
   const f = recordingFetch(json(500, { success: true }));
-  assert.equal(await submitLead(fields, "llave-123", f.impl), "error");
+  assert.equal(await submitLead(fields, contexto, "llave-123", f.impl), "error");
 });
 
 test("respuesta que no es JSON es error", async () => {
   const f = recordingFetch(() => new Response("<html>Bad gateway</html>", { status: 502 }));
-  assert.equal(await submitLead(fields, "llave-123", f.impl), "error");
+  assert.equal(await submitLead(fields, contexto, "llave-123", f.impl), "error");
 });
 
 test("fallo de red es error", async () => {
   const impl = (async () => {
     throw new TypeError("Failed to fetch");
   }) as typeof fetch;
-  assert.equal(await submitLead(fields, "llave-123", impl), "error");
+  assert.equal(await submitLead(fields, contexto, "llave-123", impl), "error");
 });
 
 test("campo trampa lleno: no envía y simula éxito", async () => {
   const f = recordingFetch(json(200, { success: true }));
-  assert.equal(await submitLead({ ...fields, botcheck: "1" }, "llave-123", f.impl), "ok");
+  assert.equal(await submitLead({ ...fields, botcheck: "1" }, contexto, "llave-123", f.impl), "ok");
   assert.equal(f.calls.length, 0);
 });

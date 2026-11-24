@@ -1,90 +1,191 @@
 import LegalDocument from "@/components/LegalDocument";
-import type { Seccion } from "@/components/LegalDocument";
+import type { Documento, Seccion } from "@/components/LegalDocument";
 import { correoSoporte } from "@/lib/contact";
+import type { Lang } from "@/lib/i18n";
 
-// ponytail: borrador redactado sin revisión legal (2026-10-10). Antes del lanzamiento debe revisarlo un abogado.
-// Si cambia un proveedor (alojamiento, red, correo, formulario, captcha), hay que actualizar la sección 4.
-const ACTUALIZADO = "19 de noviembre de 2026";
+// Borrador sin revisión legal (2026-11-23). Antes de publicarlo debe revisarlo un abogado.
+// Versión resumida: el acuerdo con cada veterinaria sobre los datos de sus clientes está en la sección 6 de los
+// términos. Lo que dice sale del código de Nildu (rama dev) y de la Ley 8968 y su Reglamento 37554-JP; si cambia una
+// medida de seguridad, el acceso del soporte o un criterio de conservación, hay que revisar las secciones 3 y 4 y,
+// en los términos, las secciones 6, 7, 9 y 16, que dicen lo mismo.
+// El texto que vale es el español; la versión en inglés es una traducción de referencia y debe decir lo mismo,
+// sección por sección.
 
-const secciones: Seccion[] = [
+const seccionesEs: Seccion[] = [
   {
-    titulo: "1. Quién es responsable",
-    parrafos: [
-      `NILDU S.R.L. («Nildu»), sociedad costarricense, es responsable de los datos que recibe en este sitio y de los datos de las cuentas de usuario de Nildu. Puedes escribir a ${correoSoporte} para cualquier tema de privacidad.`,
-      "Los datos que cada veterinaria registra en Nildu sobre sus clientes y sus pacientes son responsabilidad de esa veterinaria. Nildu los trata en su nombre y solo para prestarle el servicio.",
+    titulo: "1. Datos que trata Nildu",
+    contenido: [
+      "Nildu recopila solo los datos necesarios para prestar el servicio:",
+      {
+        lista: [
+          "Formulario de demo: nombre, apellido, correo, teléfono, país y nombre de la veterinaria.",
+          "Cuenta de usuario: nombre, correo, rol y contraseña.",
+          "Datos técnicos: dirección IP, navegador, accesos y errores, para proteger y mantener el servicio.",
+          "Datos que cada veterinaria registra sobre sus clientes y sus mascotas: contacto de los dueños, historia clínica, citas y facturas.",
+        ],
+      },
+      "Los datos del formulario y de la cuenta son obligatorios: sin ellos Nildu no puede contactarte ni darte acceso.",
     ],
   },
   {
-    titulo: "2. Datos que recibe este sitio",
-    parrafos: [
-      "Formulario de demo: tu nombre, correo, teléfono, país y el nombre de tu veterinaria. Nildu los usa solo para contactarte sobre la demo. El formulario se envía a través de Web3Forms, que lo reenvía al correo de Nildu.",
-      "Verificación: antes de enviar el formulario, hCaptcha comprueba que lo envía una persona. Para eso recibe datos técnicos de tu navegador y puede usar cookies, según su propia política de privacidad.",
-      "WhatsApp: si escribes a Nildu por WhatsApp, la conversación pasa por WhatsApp y se rige también por sus condiciones.",
-      "Datos técnicos: el sitio está alojado en Vercel y pasa por Cloudflare, que lo protege de ataques y lo entrega más rápido. Los dos registran datos técnicos de las visitas, como la dirección IP, para operar el servicio. Cloudflare puede usar cookies técnicas cuando necesita comprobar que una visita no es un ataque.",
-      "Este sitio no usa cookies propias ni herramientas de analítica o de publicidad.",
+    titulo: "2. Para qué se usan",
+    contenido: [
+      {
+        lista: [
+          "Prestar el servicio, dar soporte y controlar el acceso según el rol de cada usuario.",
+          "Responder las solicitudes de demo y facturar la suscripción.",
+          "Proteger el servicio, investigar incidentes y corregir errores.",
+          "Avisar de cambios en el servicio o en esta política.",
+          "Enviar, por cuenta de cada veterinaria, los correos de citas y los comprobantes electrónicos, y transmitir los comprobantes a Hacienda.",
+        ],
+      },
+      "Nildu no vende datos personales ni los usa para publicidad de terceros. Solo los comparte con los proveedores que necesita para operar el servicio, como el alojamiento en la nube (también fuera de Costa Rica) y el envío de correos, y con las autoridades cuando la ley lo exija.",
     ],
   },
   {
-    titulo: "3. Datos en el software Nildu",
-    parrafos: [
-      "Usuarios de la veterinaria: nombre, correo y datos de acceso, para identificarte y aplicar los permisos que la veterinaria te asigna. nildu.app usa cookies o el almacenamiento del navegador para mantener abierta tu sesión.",
-      "Clientes y pacientes: los datos que la veterinaria registra, como nombre, cédula, correo y teléfono de los dueños, los datos de las mascotas y su historia clínica, las citas y las facturas.",
-      "Con esos datos, Nildu muestra y guarda los registros de la veterinaria, envía en su nombre los correos de citas y los comprobantes electrónicos (XML y PDF) y transmite los comprobantes a Hacienda.",
+    titulo: "3. Resguardo de datos",
+    contenido: [
+      "Nildu protege los datos con medidas técnicas y administrativas: conexiones cifradas, cuentas individuales con permisos por rol, bloqueo tras varios intentos fallidos de inicio de sesión, copias de seguridad y registro de accesos.",
+      "El soporte de Nildu solo accede a la cuenta de una veterinaria a solicitud directa del suscriptor. Cada ingreso y acción queda registrado.",
     ],
   },
   {
-    titulo: "4. Con quién se comparten",
-    parrafos: [
-      "Ministerio de Hacienda: los datos de los comprobantes electrónicos, como exige la ley.",
-      "Proveedores que ayudan a operar el servicio: Microsoft Azure (alojamiento del software), Vercel (alojamiento de este sitio), Cloudflare (red y protección de este sitio), Web3Forms y hCaptcha (formulario de demo) y el servicio de envío de correos. Cada uno recibe solo lo necesario para su tarea.",
-      "Autoridades, cuando una ley o una orden judicial lo exijan.",
-      "Nildu no vende datos personales ni los usa para publicidad.",
+    titulo: "4. Cuánto tiempo se guardan",
+    contenido: [
+      "Nildu conserva los datos personales solo mientras sean necesarios para los fines de esta política, según estos criterios:",
+      {
+        lista: [
+          "Cuentas y uso de la plataforma: mientras la cuenta esté activa y la suscripción vigente. Al cerrarse la cuenta, se eliminan o se anonimizan cuando ya no son necesarios.",
+          "Datos de los clientes y mascotas de una veterinaria: la veterinaria es la responsable de esta información y Nildu la trata por cuenta de ella y según sus instrucciones. Al cancelarse la suscripción, la veterinaria puede descargarlos y después se eliminan de los sistemas de Nildu.",
+          "Copias de seguridad: los datos eliminados pueden seguir en las copias hasta que estas se sobrescriban en su ciclo normal; mientras tanto quedan bloqueados y no se usan.",
+          "Facturación y registros contables y fiscales: durante los plazos que exija la legislación vigente, aun después de cerrada la cuenta.",
+          "Obligaciones legales y reclamos: si la ley obliga a conservar algún dato, o si es necesario para atender un reclamo, como los registros de seguridad, queda bloqueado hasta que venza el plazo correspondiente.",
+        ],
+      },
+      "Vencidos esos plazos, los datos se eliminan de forma segura o se anonimizan de forma irreversible.",
     ],
   },
   {
-    titulo: "5. Dónde se guardan",
-    parrafos: ["Los datos se guardan en servidores en la nube que pueden estar fuera de Costa Rica."],
-  },
-  {
-    titulo: "6. Cuánto tiempo se guardan",
-    parrafos: [
-      "Los datos del formulario se guardan mientras sirvan para atender tu solicitud; puedes pedir que se borren antes.",
-      "Los datos de una veterinaria se guardan mientras su suscripción esté activa. Al cancelar, la veterinaria puede pedir que se eliminen, salvo los que la ley obligue a conservar, como los comprobantes electrónicos.",
+    titulo: "5. Eliminación de datos",
+    contenido: [
+      `Puedes pedir en cualquier momento y sin costo ver, corregir o eliminar tus datos o tu cuenta, o revocar tu consentimiento. Escribe a ${correoSoporte.es} con el asunto «Solicitud de datos personales» e indica:`,
+      {
+        lista: [
+          "Tu nombre completo.",
+          "El correo asociado a tu cuenta.",
+          "Qué quieres hacer: ver, corregir o eliminar tus datos (toda la cuenta o solo algunos), o revocar tu consentimiento.",
+        ],
+      },
+      "Nildu atenderá tu solicitud sin demora y dentro del plazo que fija la ley vigente. Antes de hacerlo, puede pedirte información para verificar tu identidad.",
+      "Al eliminar tu cuenta se borran tus datos de perfil y tus credenciales de acceso. Solo se conserva lo que la ley obliga a guardar o lo necesario para atender reclamos, como la facturación y los registros de seguridad; esa información queda bloqueada y se elimina al vencer su plazo.",
+      "Si eres cliente de una veterinaria que usa Nildu, el expediente de tu mascota y tus datos de contacto pertenecen a esa veterinaria, que es la responsable de tratarlos. Dirige tu solicitud directamente a ella; Nildu la ayudará a atenderla dentro del plazo que fija la ley vigente.",
     ],
   },
   {
-    titulo: "7. Seguridad",
-    parrafos: [
-      "La conexión con este sitio y con nildu.app va cifrada (HTTPS), y en Nildu cada usuario entra con su propia cuenta y con los permisos de su rol.",
-      "Ningún sistema es infalible. Si ocurre un incidente que afecte datos personales, Nildu avisará a las veterinarias afectadas.",
-      `El personal de soporte de Nildu puede entrar a la cuenta de la veterinaria para revisar o resolver un problema, o para configurar algo que se le pida. Cada entrada queda registrada con la fecha, el motivo y lo que se hizo, y la veterinaria puede pedir ese registro escribiendo a ${correoSoporte}.`,
+    titulo: "6. Cambios a esta política",
+    contenido: [
+      "Nildu puede actualizar esta política; la fecha de la última versión aparece al inicio. Si un cambio es importante, Nildu lo avisará por correo a los clientes activos.",
     ],
-  },
-  {
-    titulo: "8. Tus derechos",
-    parrafos: [
-      `Puedes pedir acceso a tus datos, corregirlos o eliminarlos escribiendo a ${correoSoporte}.`,
-      "Si eres cliente de una veterinaria que usa Nildu, escribe primero a tu veterinaria, porque es la responsable de tus datos; Nildu la ayudará a atender tu solicitud.",
-      "También puedes acudir a la Agencia de Protección de Datos de los Habitantes (PRODHAB).",
-    ],
-  },
-  {
-    titulo: "9. Cambios a esta política",
-    parrafos: ["Nildu puede actualizar esta política. La fecha de la última versión aparece al inicio de esta página."],
-  },
-  {
-    titulo: "10. Contacto",
-    parrafos: [`Para cualquier consulta sobre privacidad, escribe a ${correoSoporte}.`],
   },
 ];
 
-const Privacidad = () => (
-  <LegalDocument
-    titulo="Política de privacidad"
-    actualizado={ACTUALIZADO}
-    intro="Esta política explica qué datos personales trata Nildu, para qué y con quién los comparte, tanto en este sitio (www.nildu.com) como en el software Nildu (nildu.app), de acuerdo con la Ley N.º 8968 de Protección de la Persona frente al Tratamiento de sus Datos Personales."
-    secciones={secciones}
-  />
-);
+const seccionesEn: Seccion[] = [
+  {
+    titulo: "1. Data Nildu processes",
+    contenido: [
+      "Nildu collects only the data it needs to provide the service:",
+      {
+        lista: [
+          "Demo form: first name, last name, email, phone, country and veterinary clinic name.",
+          "User account: name, email, role and password.",
+          "Technical data: IP address, browser, access records and errors, to protect and maintain the service.",
+          "Data each vet clinic records about its clients and their pets: owners' contact details, medical records, appointments and invoices.",
+        ],
+      },
+      "The demo form and account details are required: without them Nildu cannot contact you or give you access.",
+    ],
+  },
+  {
+    titulo: "2. What the data is used for",
+    contenido: [
+      {
+        lista: [
+          "Providing the service and support, and controlling access according to each user's role.",
+          "Responding to demo requests and billing the subscription.",
+          "Protecting the service, investigating incidents and fixing errors.",
+          "Notifying you of changes to the service or to this policy.",
+          "Sending appointment emails and electronic receipts on behalf of each vet clinic, and submitting receipts to the Ministry of Finance (Hacienda).",
+        ],
+      },
+      "Nildu does not sell personal data or use it for third-party advertising. It shares it only with the providers it needs to run the service, such as cloud hosting (also outside Costa Rica) and email delivery, and with authorities when the law requires it.",
+    ],
+  },
+  {
+    titulo: "3. Data safeguarding",
+    contenido: [
+      "Nildu protects data with technical and administrative measures: encrypted connections, individual accounts with role-based permissions, lockout after several failed sign-in attempts, backups and access logging.",
+      "Nildu support only accesses a vet clinic's account at the subscriber's direct request. Every sign-in and action is logged.",
+    ],
+  },
+  {
+    titulo: "4. How long the data is kept",
+    contenido: [
+      "Nildu keeps personal data only as long as it is needed for the purposes of this policy, according to these criteria:",
+      {
+        lista: [
+          "Accounts and platform use: while the account is active and the subscription is in force. When the account is closed, the data is deleted or anonymized once it is no longer needed.",
+          "Data about a vet clinic's clients and pets: the vet clinic is responsible for this information, and Nildu processes it on the vet clinic's behalf and following its instructions. When the subscription is cancelled, the vet clinic can download it, and it is then deleted from Nildu's systems.",
+          "Backups: deleted data may remain in backups until they are overwritten in their normal cycle; until then it is blocked and not used.",
+          "Billing, accounting and tax records: for the periods required by current law, even after the account is closed.",
+          "Legal obligations and claims: if the law requires keeping some data, or it is needed to handle a claim, such as security records, it stays blocked until the relevant period ends.",
+        ],
+      },
+      "Once those periods end, the data is securely deleted or irreversibly anonymized.",
+    ],
+  },
+  {
+    titulo: "5. Data deletion",
+    contenido: [
+      `You can ask at any time, free of charge, to see, correct or delete your data or your account, or to withdraw your consent. Write to ${correoSoporte.en} with the subject "Personal data request" and include:`,
+      {
+        lista: [
+          "Your full name.",
+          "The email linked to your account.",
+          "What you want to do: see, correct or delete your data (the whole account or only some data), or withdraw your consent.",
+        ],
+      },
+      "Nildu will handle your request without delay and within the period set by current law. Before doing so, it may ask for information to verify your identity.",
+      "Deleting your account erases your profile data and sign-in credentials. Nildu keeps only what the law requires or what is needed to handle claims, such as billing and security records; that information is blocked and deleted when its period ends.",
+      "If you are a client of a veterinary clinic that uses Nildu, your pet's record and your contact details belong to that vet clinic, which is responsible for processing them. Send your request directly to the vet clinic; Nildu will help it respond within the period set by current law.",
+    ],
+  },
+  {
+    titulo: "6. Changes to this policy",
+    contenido: [
+      "Nildu may update this policy; the date of the latest version appears at the top. If a change is significant, Nildu will notify active customers by email.",
+    ],
+  },
+];
+
+const documento: Record<Lang, Documento> = {
+  es: {
+    titulo: "Política de privacidad",
+    actualizado: "23 de noviembre de 2026",
+    intro: [
+      "Esta política explica qué datos personales trata Nildu en este sitio (www.nildu.com) y en el software Nildu (nildu.app), para qué los usa, con quién los comparte y cómo los protege. Al enviar el formulario de demo o crear tu cuenta, aceptas esta política. Puedes revocar tu consentimiento en cualquier momento.",
+    ],
+    secciones: seccionesEs,
+  },
+  en: {
+    titulo: "Privacy Policy",
+    actualizado: "November 23, 2026",
+    intro: [
+      "This policy explains what personal data Nildu processes on this website (www.nildu.com) and in the Nildu software (nildu.app), what it uses it for, who it shares it with and how it protects it. By submitting the demo form or creating your account, you accept this policy. You can withdraw your consent at any time.",
+    ],
+    secciones: seccionesEn,
+  },
+};
+
+const Privacidad = () => <LegalDocument documento={documento} />;
 
 export default Privacidad;

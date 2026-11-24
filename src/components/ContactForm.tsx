@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
-import { correoSoporte, telefonoWhatsApp, whatsappUrl } from "@/lib/contact";
+import { correoInfo, telefonoWhatsApp, whatsappUrl } from "@/lib/contact";
 import { countryOptions } from "@/lib/countries";
 import { useLang } from "@/lib/i18n";
 import { submitLead } from "@/lib/lead";
 import type { LeadFields } from "@/lib/lead";
+import type { PlanElegido } from "@/lib/pricing";
 import { primaryButton } from "@/lib/styles";
 import Captcha from "./Captcha";
 import { WhatsAppIcon } from "./Icons";
@@ -12,7 +13,7 @@ import { WhatsAppIcon } from "./Icons";
 type Status = "idle" | "sending" | "ok" | "error" | "sin-captcha";
 
 // El país arranca en Costa Rica, el mercado principal; el valor es el nombre en español, como en countryOptions.
-const inicial: LeadFields = { nombre: "", correo: "", telefono: "", veterinaria: "", pais: "Costa Rica", botcheck: "", captcha: "" };
+const inicial: LeadFields = { nombre: "", apellido: "", correo: "", telefono: "", veterinaria: "", pais: "Costa Rica", botcheck: "", captcha: "" };
 const accessKey = import.meta.env.VITE_WEB3FORMS_KEY ?? "";
 
 const enlace = "font-medium text-brand underline underline-offset-2";
@@ -22,7 +23,7 @@ const textos = {
   es: {
     titulo: "Solicita una demo",
     texto: "Completa el formulario y el equipo de Nildu te contactará para mostrarte el sistema. Si prefieres, escríbenos directo:",
-    campos: { nombre: "Nombre", correo: "Correo", telefono: "Teléfono", veterinaria: "Nombre de la veterinaria", pais: "País" },
+    campos: { nombre: "Nombre", apellido: "Apellido", correo: "Correo", telefono: "Teléfono", veterinaria: "Nombre de la veterinaria", pais: "País" },
     eligePais: "Selecciona un país",
     waTexto: "Hola, quiero agendar una demo de Nildu.",
     escribe: (correo: ReactNode, wa: ReactNode) => (
@@ -37,13 +38,20 @@ const textos = {
     captchaFallo: "No se pudo cargar la verificación. Puedes",
     enviando: "Enviando…",
     demo: "Agenda una demo",
-    privacidad: "Nildu usa tus datos solo para contactarte sobre la demo. Lee la",
+    acepto: "Al solicitar tu demo, aceptas la",
     politica: "política de privacidad",
+    aceptoFin: "y que Nildu use tus datos para contactarte.",
+    ejemploCorreo: "correo@vet.com",
+    aviso: {
+      vacio: "Completa este campo.",
+      correo: "Escribe un correo válido, por ejemplo correo@vet.com.",
+      pais: "Selecciona un país.",
+    },
   },
   en: {
     titulo: "Request a demo",
     texto: "Fill in the form and the Nildu team will contact you to show you the system. Or write to us directly:",
-    campos: { nombre: "Name", correo: "Email", telefono: "Phone", veterinaria: "Practice name", pais: "Country" },
+    campos: { nombre: "First name", apellido: "Last name", correo: "Email", telefono: "Phone", veterinaria: "Veterinary clinic name", pais: "Country" },
     eligePais: "Select a country",
     waTexto: "Hi, I'd like to book a Nildu demo.",
     escribe: (correo: ReactNode, wa: ReactNode) => (
@@ -58,19 +66,35 @@ const textos = {
     captchaFallo: "The verification couldn't load. You can",
     enviando: "Sending…",
     demo: "Book a demo",
-    privacidad: "Nildu uses your data only to contact you about the demo. Read the",
+    acepto: "By requesting your demo, you accept the",
     politica: "privacy policy",
+    aceptoFin: "and agree that Nildu may use your data to contact you.",
+    ejemploCorreo: "name@vet.com",
+    aviso: {
+      vacio: "Please fill in this field.",
+      correo: "Enter a valid email, for example name@vet.com.",
+      pais: "Select a country.",
+    },
   },
 };
 
-const campos = [
-  { name: "nombre", type: "text", autoComplete: "name" },
-  { name: "correo", type: "email", autoComplete: "email" },
-  { name: "telefono", type: "tel", autoComplete: "tel" },
-  { name: "veterinaria", type: "text", autoComplete: "organization" },
+// Nombre y apellido van en una fila, correo y teléfono en otra; la veterinaria y el país, solos.
+const filaNombre = [
+  { name: "nombre", type: "text", autoComplete: "given-name" },
+  { name: "apellido", type: "text", autoComplete: "family-name" },
 ] as const;
 
-const ContactForm = () => {
+const filaContacto = [
+  { name: "correo", type: "email", autoComplete: "email" },
+  { name: "telefono", type: "tel", autoComplete: "tel" },
+] as const;
+
+const campos = [{ name: "veterinaria", type: "text", autoComplete: "organization" }] as const;
+
+const filaDoble = "grid gap-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2";
+
+// plan: lo que la persona armó en Precios (null si no tocó esa sección); se envía con la solicitud.
+const ContactForm = ({ plan }: { plan: PlanElegido | null }) => {
   const [values, setValues] = useState<LeadFields>(inicial);
   const [status, setStatus] = useState<Status>("idle");
   const [captcha, setCaptcha] = useState("");
@@ -81,12 +105,46 @@ const ContactForm = () => {
   const okRef = useRef<HTMLParagraphElement>(null);
   const [lang] = useLang();
   const t = textos[lang];
+
+  // El navegador escribe sus avisos de validación en su propio idioma ("Please fill out this field"). Con
+  // setCustomValidity se muestran en el idioma de la página; el aviso se borra en cuanto la persona corrige el campo.
+  const validar = {
+    onInvalid: (e: FormEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const el = e.currentTarget;
+      const { valueMissing, typeMismatch } = el.validity;
+      const aviso = valueMissing && el instanceof HTMLSelectElement ? t.aviso.pais : typeMismatch ? t.aviso.correo : t.aviso.vacio;
+      el.setCustomValidity(aviso);
+    },
+    onInput: (e: FormEvent<HTMLInputElement | HTMLSelectElement>) => e.currentTarget.setCustomValidity(""),
+  };
+
+  // min-w-0: dentro de la fila de dos columnas, el campo se encoge en vez de desbordar en celulares angostos.
+  const campo = (c: (typeof filaNombre)[number] | (typeof filaContacto)[number] | (typeof campos)[number]) => (
+    <div key={c.name} className="min-w-0">
+      <label htmlFor={c.name} className="block text-sm font-medium">
+        {t.campos[c.name]}
+      </label>
+      <input
+        id={c.name}
+        name={c.name}
+        type={c.type}
+        autoComplete={c.autoComplete}
+        required
+        value={values[c.name]}
+        onChange={(e) => setValues({ ...values, [c.name]: e.target.value })}
+        // Solo el correo lleva ejemplo: muestra el formato que se espera.
+        placeholder={c.name === "correo" ? t.ejemploCorreo : undefined}
+        {...validar}
+        className={`${campoClase} placeholder:text-ink/50`}
+      />
+    </div>
+  );
   const paises = useMemo(() => countryOptions(lang), [lang]);
 
   const whatsapp = whatsappUrl(t.waTexto);
   const correo = (
-    <a href={`mailto:${correoSoporte}`} className={enlace}>
-      {correoSoporte}
+    <a href={`mailto:${correoInfo}`} className={enlace}>
+      {correoInfo}
     </a>
   );
   const wa = (
@@ -108,7 +166,7 @@ const ContactForm = () => {
       return;
     }
     setStatus("sending");
-    const result = await submitLead({ ...values, captcha }, accessKey, fetch);
+    const result = await submitLead({ ...values, captcha }, { idioma: lang, plan }, accessKey, fetch);
     if (result === "ok") {
       setValues(inicial);
       setStatus("ok");
@@ -128,11 +186,11 @@ const ContactForm = () => {
           <p className="mt-4 max-w-md leading-relaxed text-ink">{t.texto}</p>
           <ul role="list" className="mt-6 space-y-3">
             <li>
-              <a href={`mailto:${correoSoporte}`} className="inline-flex items-center gap-3 font-medium text-navy hover:text-brand">
+              <a href={`mailto:${correoInfo}`} className="inline-flex items-center gap-3 font-medium text-navy hover:text-brand">
                 <span aria-hidden="true" className="w-5 text-center text-xl leading-none text-brand">
                   @
                 </span>
-                {correoSoporte}
+                {correoInfo}
               </a>
             </li>
             <li>
@@ -154,23 +212,11 @@ const ContactForm = () => {
           </p>
         ) : (
           <form onSubmit={onSubmit} onFocus={() => setEnUso(true)} className="grid gap-4 rounded-lg border border-line bg-white p-6">
-            {campos.map((c) => (
-              <div key={c.name}>
-                <label htmlFor={c.name} className="block text-sm font-medium">
-                  {t.campos[c.name]}
-                </label>
-                <input
-                  id={c.name}
-                  name={c.name}
-                  type={c.type}
-                  autoComplete={c.autoComplete}
-                  required
-                  value={values[c.name]}
-                  onChange={(e) => setValues({ ...values, [c.name]: e.target.value })}
-                  className={campoClase}
-                />
-              </div>
-            ))}
+            {/* Dos campos por fila solo si el formulario tiene espacio: en celular va uno por fila, y entre 768 y 1023 px
+                el formulario comparte el ancho con el texto y también va uno por fila. */}
+            <div className={filaDoble}>{filaNombre.map(campo)}</div>
+            <div className={filaDoble}>{filaContacto.map(campo)}</div>
+            {campos.map(campo)}
             <div>
               <label htmlFor="pais" className="block text-sm font-medium">
                 {t.campos.pais}
@@ -182,6 +228,7 @@ const ContactForm = () => {
                 required
                 value={values.pais}
                 onChange={(e) => setValues({ ...values, pais: e.target.value })}
+                {...validar}
                 className={campoClase}
               >
                 <option value="" disabled>
@@ -204,7 +251,8 @@ const ContactForm = () => {
               checked={values.botcheck !== ""}
               onChange={(e) => setValues({ ...values, botcheck: e.target.checked ? "1" : "" })}
             />
-            {enUso ? (
+            {/* La verificación aparece cuando la persona empieza a llenar el formulario; antes no ocupa espacio. */}
+            {enUso && (
               <Captcha
                 key={`${lang}-${captchaKey}`}
                 onToken={setCaptcha}
@@ -214,8 +262,6 @@ const ContactForm = () => {
                   </>
                 }
               />
-            ) : (
-              <div className="min-h-[78px]" />
             )}
             {status === "sin-captcha" && (
               <p role="alert" className="text-sm text-red-700">
@@ -227,16 +273,18 @@ const ContactForm = () => {
                 {t.error} {escribe}.
               </p>
             )}
+            {/* Aviso de aceptación justo antes del botón, para leerlo antes de enviar: toda solicitud enviada acepta la
+                política. El enlace abre en otra pestaña para no perder lo que la persona ya escribió. */}
+            <p className="text-sm text-ink">
+              {t.acepto}{" "}
+              <a href="/privacidad" target="_blank" rel="noopener" className={enlace}>
+                {t.politica}
+              </a>{" "}
+              {t.aceptoFin}
+            </p>
             <button type="submit" disabled={status === "sending"} className={`${primaryButton} disabled:opacity-60`}>
               {status === "sending" ? t.enviando : t.demo}
             </button>
-            <p className="text-xs text-ink">
-              {t.privacidad}{" "}
-              <a href="/privacidad" className="underline underline-offset-2 hover:text-navy">
-                {t.politica}
-              </a>
-              .
-            </p>
           </form>
         )}
       </div>

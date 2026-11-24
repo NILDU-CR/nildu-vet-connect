@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import type { ReactNode } from "react";
 import wordmark from "@/assets/brand/wordmark.png";
 import { useLang } from "@/lib/i18n";
+import { logoBarra } from "@/lib/styles";
 import Footer from "./Footer";
 import LangToggle from "./LangToggle";
 
@@ -20,7 +21,7 @@ const PageShell = ({ title, children }: PageShellProps) => {
       <header className="border-b border-line bg-white">
         <div className="mx-auto flex h-16 max-w-page items-center justify-between px-4 sm:px-6">
           <a href="/" className="shrink-0">
-            <img src={wordmark} alt="Nildu" width={241} height={84} className="h-7 w-auto" />
+            <img src={wordmark} alt="Nildu" width={241} height={84} className={logoBarra} />
           </a>
           <div className="flex items-center gap-3">
             <LangToggle />

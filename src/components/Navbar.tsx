@@ -1,7 +1,7 @@
 import { useState } from "react";
 import wordmark from "@/assets/brand/wordmark.png";
 import { useLang } from "@/lib/i18n";
-import { primaryButton } from "@/lib/styles";
+import { logoBarra, primaryButton } from "@/lib/styles";
 import { CloseIcon, MenuIcon } from "./Icons";
 import LangToggle from "./LangToggle";
 
@@ -45,7 +45,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-40 border-b border-line bg-white">
       <nav aria-label={t.nav} className="mx-auto flex h-16 max-w-page items-center justify-between px-4 sm:px-6">
         <a href="#inicio" className="shrink-0">
-          <img src={wordmark} alt="Nildu" width={241} height={84} className="h-7 w-auto" />
+          <img src={wordmark} alt="Nildu" width={241} height={84} className={logoBarra} />
         </a>
         <div className="hidden items-center gap-8 lg:flex">
           {t.links.map((l) => (
