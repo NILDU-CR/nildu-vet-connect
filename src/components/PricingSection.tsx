@@ -5,7 +5,7 @@ import { PLAN, formatUsd, isVolume, quote } from "@/lib/pricing";
 import type { Period } from "@/lib/pricing";
 
 const MIN_USERS = 1;
-// Un paso por encima del tope cotizable: ahí el contador muestra "10+" y la tarjeta pasa a licenciamiento por volumen.
+// Un paso por encima del tope cotizable: ahí el contador muestra "10+" y la tarjeta pasa a precio por volumen.
 const MAX_USERS = PLAN.maxQuotedUsers + 1;
 
 const textos = {
@@ -17,21 +17,21 @@ const textos = {
     alMes: "al mes",
     alAno: "al año",
     iva: "+ IVA",
-    licencias: (n: number) => `${n} ${n === 1 ? "licencia" : "licencias"}`,
-    incluidos: (n: number) => `${n} ${n === 1 ? "licencia incluida" : "licencias incluidas"}`,
-    adicionales: (n: number) => `${n} ${n === 1 ? "licencia adicional" : "licencias adicionales"}`,
-    adicionalPrecio: `Cada licencia adicional, ${formatUsd(PLAN.extraUserMonthly)} al mes.`,
+    usuarios: (n: number) => `${n} ${n === 1 ? "usuario" : "usuarios"}`,
+    incluidos: (n: number) => `${n} ${n === 1 ? "usuario incluido" : "usuarios incluidos"}`,
+    adicionales: (n: number) => `${n} ${n === 1 ? "usuario adicional" : "usuarios adicionales"}`,
+    adicionalPrecio: `Cada usuario adicional, ${formatUsd(PLAN.extraUserMonthly)} al mes.`,
     incluye: "Incluye",
     periodo: "Periodo de pago",
     mensual: "Mensual",
     anual: "Anual",
     anualGratis: "Anual · 2 meses gratis",
     cuantos: "¿Cuántas personas usarán Nildu?",
-    quitar: "Quitar una licencia",
-    agregar: "Agregar una licencia",
-    masDe: `Más de ${PLAN.maxQuotedUsers} licencias`,
-    volumen: "Licenciamiento por volumen",
-    volumenDetalle: `Con más de ${PLAN.maxQuotedUsers} licencias, recibe una propuesta a la medida de tu equipo.`,
+    quitar: "Quitar un usuario",
+    agregar: "Agregar un usuario",
+    masDe: `Más de ${PLAN.maxQuotedUsers} usuarios`,
+    volumen: "Precio por volumen",
+    volumenDetalle: `Con más de ${PLAN.maxQuotedUsers} usuarios, recibe una propuesta a la medida de tu equipo.`,
     propuesta: "Solicitar contacto para propuesta",
     enPlan: "en el plan",
     tuPlan: "Tu plan",
@@ -44,7 +44,7 @@ const textos = {
     demo: "Agenda una demo",
     preguntas: [
       { q: "¿La factura electrónica cuesta aparte?", a: "No, va incluida en el plan." },
-      { q: "¿Qué cuenta como licencia?", a: "Cada persona de tu equipo con acceso a Nildu usa una licencia." },
+      { q: "¿Qué cuenta como usuario?", a: "Cada persona de tu equipo con acceso a Nildu es un usuario." },
       { q: "¿El precio incluye IVA?", a: "No, el IVA se suma al precio." },
     ],
   },
@@ -56,21 +56,21 @@ const textos = {
     alMes: "per month",
     alAno: "per year",
     iva: "+ VAT",
-    licencias: (n: number) => `${n} ${n === 1 ? "license" : "licenses"}`,
-    incluidos: (n: number) => `${n} ${n === 1 ? "license" : "licenses"} included`,
-    adicionales: (n: number) => `${n} additional ${n === 1 ? "license" : "licenses"}`,
-    adicionalPrecio: `Each additional license, ${formatUsd(PLAN.extraUserMonthly)} per month.`,
+    usuarios: (n: number) => `${n} ${n === 1 ? "user" : "users"}`,
+    incluidos: (n: number) => `${n} ${n === 1 ? "user" : "users"} included`,
+    adicionales: (n: number) => `${n} additional ${n === 1 ? "user" : "users"}`,
+    adicionalPrecio: `Each additional user, ${formatUsd(PLAN.extraUserMonthly)} per month.`,
     incluye: "Includes",
     periodo: "Billing period",
     mensual: "Monthly",
     anual: "Annual",
     anualGratis: "Annual · 2 months free",
     cuantos: "How many people will use Nildu?",
-    quitar: "Remove a license",
-    agregar: "Add a license",
-    masDe: `More than ${PLAN.maxQuotedUsers} licenses`,
-    volumen: "Volume licensing",
-    volumenDetalle: `With more than ${PLAN.maxQuotedUsers} licenses, get a proposal tailored to your team.`,
+    quitar: "Remove a user",
+    agregar: "Add a user",
+    masDe: `More than ${PLAN.maxQuotedUsers} users`,
+    volumen: "Volume pricing",
+    volumenDetalle: `With more than ${PLAN.maxQuotedUsers} users, get a proposal tailored to your team.`,
     propuesta: "Request a proposal",
     enPlan: "in the plan",
     tuPlan: "Your plan",
@@ -83,7 +83,7 @@ const textos = {
     demo: "Book a demo",
     preguntas: [
       { q: "Does electronic invoicing cost extra?", a: "No, it's included in the plan." },
-      { q: "What counts as a license?", a: "Each person on your team with access to Nildu uses one license." },
+      { q: "What counts as a user?", a: "Each person on your team with access to Nildu is one user." },
       { q: "Does the price include VAT?", a: "No, VAT is added to the price." },
     ],
   },
@@ -117,7 +117,7 @@ const PricingSection = () => {
               <span className="text-sm text-white/70">{t.alMesIva}</span>
             </p>
             <p className="mt-4">
-              {t.incluye} {t.licencias(PLAN.includedUsers)}. {t.adicionalPrecio}
+              {t.incluye} {t.usuarios(PLAN.includedUsers)}. {t.adicionalPrecio}
             </p>
             <div role="group" aria-label={t.periodo} className="mt-8 inline-flex rounded-full border border-white/25 p-1 text-sm">
               <button
@@ -156,7 +156,7 @@ const PricingSection = () => {
 
           <div id="tu-plan" className="rounded-xl bg-white p-6 text-navy shadow-[0_20px_50px_rgba(0,0,0,0.28)]">
             <p className="text-sm font-semibold">{t.tuPlan}</p>
-            <p className="text-xs text-ink">{volumen ? t.masDe : `${anual ? t.anual : t.mensual} · ${t.licencias(users)}`}</p>
+            <p className="text-xs text-ink">{volumen ? t.masDe : `${anual ? t.anual : t.mensual} · ${t.usuarios(users)}`}</p>
             <div className="mt-3">
               {!volumen && (
                 <>

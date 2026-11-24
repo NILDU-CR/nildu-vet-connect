@@ -1,8 +1,8 @@
 export type Period = "mensual" | "anual";
 
 // Debe coincidir con el plan cargado en Nildu (SubscriptionType.IncludedSeat en la base de datos).
-// El anual cobra 10 meses ("2 meses gratis"), también en las licencias adicionales.
-// Por encima de maxQuotedUsers no se muestra precio: es licenciamiento por volumen, con propuesta aparte.
+// El anual cobra 10 meses ("2 meses gratis"), también en los usuarios adicionales.
+// Por encima de maxQuotedUsers no se muestra precio: es precio por volumen, con propuesta aparte.
 export const PLAN = { monthly: 65, annual: 650, includedUsers: 3, extraUserMonthly: 10, extraUserAnnual: 100, maxQuotedUsers: 10 };
 
 export type Quote = { base: number; extraUsers: number; extraCost: number; total: number; perMonth: number };
