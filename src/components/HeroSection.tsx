@@ -7,9 +7,16 @@ import heroEn1200 from "@/assets/screens/hero/hero-en-1200.webp";
 import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
 
+// La única palabra del título con color: degradado del morado de marca al violeta del logo.
+const acento = "bg-gradient-to-r from-brand to-dot-violet bg-clip-text text-transparent";
+
 const textos = {
   es: {
-    titulo: "Tu veterinaria en un solo sistema.",
+    titulo: (
+      <>
+        Tu <span className={acento}>veterinaria</span> en un solo sistema.
+      </>
+    ),
     bajada: "La consulta, la agenda y la factura en un mismo lugar: registras la visita, aplicas la vacuna y cobras desde el expediente. La factura electrónica va directo a Hacienda.",
     demo: "Agenda una demo",
     precios: "Ver precios →",
@@ -17,7 +24,11 @@ const textos = {
     img: [hero, hero800, hero1200],
   },
   en: {
-    titulo: "Your vet practice in one system.",
+    titulo: (
+      <>
+        Your <span className={acento}>vet practice</span> in one system.
+      </>
+    ),
     bajada: "Visits, appointments and invoices in one place: record the visit, give the vaccine and charge from the patient's record. Electronic invoices go straight to Hacienda.",
     demo: "Book a demo",
     precios: "See pricing →",
