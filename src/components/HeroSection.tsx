@@ -7,14 +7,15 @@ import heroEn1200 from "@/assets/screens/hero/hero-en-1200.webp";
 import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
 
-// La palabra clave del título va en el morado de marca, y los puntos de sus íes en los colores de los puntos del logo.
+// El título repite dos puntos del logo: la palabra clave va en el morado de marca con el punto de su
+// primera "i" en celeste, y el punto final va en el anaranjado del punto de la U de NILDU.
 const acento = "text-brand";
-// Pinta solo el punto de una "i": un degradado con corte seco recortado a la letra. El corte al 33% cae en el hueco
-// entre el punto y el palo de la "i" de Poppins 600 (el punto va del 19% al 31% de la caja y el palo empieza en el 35%).
-// Con otra tipografía o peso hay que volver a medirlo. El palo toma el color de la palabra (currentColor).
-const puntoI = "bg-clip-text [-webkit-text-fill-color:transparent] [print-color-adjust:exact]";
-const iCeleste = `${puntoI} bg-[linear-gradient(theme(colors.dot.cyan)_33%,currentColor_33%)]`;
-const iNaranja = `${puntoI} bg-[linear-gradient(theme(colors.dot.gold)_33%,currentColor_33%)]`;
+const punto = "text-dot-gold";
+
+// Pinta la "i" con un degradado de corte seco: celeste arriba y morado abajo.
+// Con Poppins 600, el punto de la "i" termina a 0.43em del borde superior de la caja del texto y el
+// palito empieza a 0.49em; el corte a 0.46em cae en ese hueco en cualquier tamaño de letra.
+const iCeleste = "bg-gradient-to-b from-dot-cyan from-[0.46em] to-brand to-[0.46em] bg-clip-text text-transparent";
 
 const textos = {
   es: {
@@ -22,9 +23,9 @@ const textos = {
       <>
         Tu{" "}
         <span className={acento}>
-          veter<span className={iCeleste}>i</span>nar<span className={iNaranja}>i</span>a
+          veter<span className={iCeleste}>i</span>naria
         </span>{" "}
-        en un solo sistema.
+        en un solo sistema<span className={punto}>.</span>
       </>
     ),
     bajada: "Sin papeleo y todo a un clic: registras la visita, aplicas la vacuna y cobras desde el expediente, estés donde estés.",
@@ -38,9 +39,9 @@ const textos = {
       <>
         Your{" "}
         <span className={acento}>
-          vet pract<span className={iCeleste}>i</span>ce
+          vet cl<span className={iCeleste}>i</span>nic
         </span>{" "}
-        in one system.
+        in one system<span className={punto}>.</span>
       </>
     ),
     bajada: "No paperwork and everything one click away: record the visit, give the vaccine and charge from the patient's record, wherever you are.",
