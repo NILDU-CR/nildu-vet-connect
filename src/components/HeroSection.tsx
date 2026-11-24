@@ -17,7 +17,7 @@ const textos = {
         Tu <span className={acento}>veterinaria</span> en un solo sistema.
       </>
     ),
-    bajada: "La consulta, la agenda y la factura en un mismo lugar: registras la visita, aplicas la vacuna y cobras desde el expediente. La factura electrónica va directo a Hacienda.",
+    bajada: "Sin papeleo y todo a un clic: registras la visita, aplicas la vacuna y cobras desde el expediente, estés donde estés.",
     demo: "Agenda una demo",
     precios: "Ver precios →",
     alt: "Nildu con la agenda de octubre, el panel de control, la ficha de Canelo, su curva de peso y sus archivos",
@@ -29,7 +29,7 @@ const textos = {
         Your <span className={acento}>vet practice</span> in one system.
       </>
     ),
-    bajada: "Visits, appointments and invoices in one place: record the visit, give the vaccine and charge from the patient's record. Electronic invoices go straight to Hacienda.",
+    bajada: "No paperwork and everything one click away: record the visit, give the vaccine and charge from the patient's record, wherever you are.",
     demo: "Book a demo",
     precios: "See pricing →",
     alt: "Nildu with the October schedule, the dashboard, Canelo's record, his weight curve and his files",
