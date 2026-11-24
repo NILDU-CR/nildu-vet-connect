@@ -7,14 +7,16 @@ import heroEn1200 from "@/assets/screens/hero/hero-en-1200.webp";
 import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
 
-// La única palabra del título con color: degradado del morado de marca al violeta del logo.
-const acento = "bg-gradient-to-r from-brand to-dot-violet bg-clip-text text-transparent";
+// Los dos toques de color del título: la palabra clave en el morado de marca y el punto final
+// en el celeste del punto de la "i" del logo.
+const acento = "text-brand";
+const punto = "text-dot-cyan";
 
 const textos = {
   es: {
     titulo: (
       <>
-        Tu <span className={acento}>veterinaria</span> en un solo sistema.
+        Tu <span className={acento}>veterinaria</span> en un solo sistema<span className={punto}>.</span>
       </>
     ),
     bajada: "Sin papeleo y todo a un clic: registras la visita, aplicas la vacuna y cobras desde el expediente, estés donde estés.",
@@ -26,7 +28,7 @@ const textos = {
   en: {
     titulo: (
       <>
-        Your <span className={acento}>vet practice</span> in one system.
+        Your <span className={acento}>vet practice</span> in one system<span className={punto}>.</span>
       </>
     ),
     bajada: "No paperwork and everything one click away: record the visit, give the vaccine and charge from the patient's record, wherever you are.",
