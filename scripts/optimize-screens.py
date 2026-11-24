@@ -23,8 +23,9 @@ def main(raw_dir: Path) -> None:
         target = out / f"{name}.webp"
         img.save(target, "WEBP", quality=82, method=6)
         print(f"{target.name}: {target.stat().st_size // 1024} KB")
-        # Versión de 720 para el srcset de la sección de módulos.
-        img.resize((720, round(img.height * 720 / img.width)), Image.LANCZOS).save(out / f"{name}-720.webp", "WEBP", quality=82, method=6)
+        # Versiones de 720 y 1080 para el srcset de la sección de módulos.
+        for width in (720, 1080):
+            img.resize((width, round(img.height * width / img.width)), Image.LANCZOS).save(out / f"{name}-{width}.webp", "WEBP", quality=82, method=6)
 
 
 if __name__ == "__main__":

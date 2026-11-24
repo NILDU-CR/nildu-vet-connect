@@ -1,11 +1,22 @@
 import hero from "@/assets/screens/hero/hero.webp";
 import hero800 from "@/assets/screens/hero/hero-800.webp";
+import hero1040 from "@/assets/screens/hero/hero-1040.webp";
 import hero1200 from "@/assets/screens/hero/hero-1200.webp";
 import heroEn from "@/assets/screens/hero/hero-en.webp";
 import heroEn800 from "@/assets/screens/hero/hero-en-800.webp";
+import heroEn1040 from "@/assets/screens/hero/hero-en-1040.webp";
 import heroEn1200 from "@/assets/screens/hero/hero-en-1200.webp";
+import { HERO_SIZES, HERO_WIDTHS } from "@/lib/hero";
+import type { HeroLang, HeroWidth } from "@/lib/hero";
 import { useLang } from "@/lib/i18n";
 import { primaryButton } from "@/lib/styles";
+
+// Una versión por cada ancho de HERO_WIDTHS; el plugin hero-preload precarga la misma desde el HTML.
+const imagenes: Record<HeroLang, Record<HeroWidth, string>> = {
+  es: { 800: hero800, 1040: hero1040, 1200: hero1200, 1700: hero },
+  en: { 800: heroEn800, 1040: heroEn1040, 1200: heroEn1200, 1700: heroEn },
+};
+const srcSet = (lang: HeroLang) => HERO_WIDTHS.map((w) => `${imagenes[lang][w]} ${w}w`).join(", ");
 
 // El título repite dos puntos del logo: la palabra clave va en el morado de marca con el punto de su
 // primera "i" en celeste, y el punto final va en el anaranjado del punto de la U de NILDU.
@@ -32,7 +43,6 @@ const textos = {
     demo: "Agenda una demo",
     precios: "Ver precios →",
     alt: "Nildu con la agenda de octubre, el panel de control, la ficha de Canelo, su curva de peso y sus archivos",
-    img: [hero, hero800, hero1200],
   },
   en: {
     titulo: (
@@ -48,14 +58,12 @@ const textos = {
     demo: "Book a demo",
     precios: "See pricing →",
     alt: "Nildu with the October schedule, the dashboard, Canelo's record, his weight curve and his files",
-    img: [heroEn, heroEn800, heroEn1200],
   },
 };
 
 const HeroSection = () => {
   const [lang] = useLang();
   const t = textos[lang];
-  const [grande, de800, de1200] = t.img;
 
   return (
     <section id="inicio" className="scroll-mt-20">
@@ -75,9 +83,9 @@ const HeroSection = () => {
         </div>
 
         <img
-          src={grande}
-          srcSet={`${de800} 800w, ${de1200} 1200w, ${grande} 1700w`}
-          sizes="(min-width: 1088px) 1040px, calc(100vw - 32px)"
+          src={imagenes[lang][1700]}
+          srcSet={srcSet(lang)}
+          sizes={HERO_SIZES}
           fetchPriority="high"
           alt={t.alt}
           width={1700}

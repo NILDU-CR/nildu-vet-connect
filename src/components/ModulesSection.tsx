@@ -2,33 +2,45 @@ import { useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import agenda from "@/assets/screens/modulos/agenda.webp";
 import agenda720 from "@/assets/screens/modulos/agenda-720.webp";
+import agenda1080 from "@/assets/screens/modulos/agenda-1080.webp";
 import agendaEn from "@/assets/screens/modulos/agenda-en.webp";
 import agendaEn720 from "@/assets/screens/modulos/agenda-en-720.webp";
+import agendaEn1080 from "@/assets/screens/modulos/agenda-en-1080.webp";
 import inventario from "@/assets/screens/modulos/inventario.webp";
 import inventario720 from "@/assets/screens/modulos/inventario-720.webp";
+import inventario1080 from "@/assets/screens/modulos/inventario-1080.webp";
 import inventarioEn from "@/assets/screens/modulos/inventario-en.webp";
 import inventarioEn720 from "@/assets/screens/modulos/inventario-en-720.webp";
+import inventarioEn1080 from "@/assets/screens/modulos/inventario-en-1080.webp";
 import reportes from "@/assets/screens/modulos/reportes.webp";
 import reportesEn from "@/assets/screens/modulos/reportes-en.webp";
 import tareas from "@/assets/screens/modulos/tareas.webp";
 import tareas720 from "@/assets/screens/modulos/tareas-720.webp";
+import tareas1080 from "@/assets/screens/modulos/tareas-1080.webp";
 import tareasEn from "@/assets/screens/modulos/tareas-en.webp";
 import tareasEn720 from "@/assets/screens/modulos/tareas-en-720.webp";
+import tareasEn1080 from "@/assets/screens/modulos/tareas-en-1080.webp";
 import consulta from "@/assets/screens/consulta.webp";
 import consulta720 from "@/assets/screens/consulta-720.webp";
+import consulta1080 from "@/assets/screens/consulta-1080.webp";
 import consultaEn from "@/assets/screens/consulta-en.webp";
 import consultaEn720 from "@/assets/screens/consulta-en-720.webp";
+import consultaEn1080 from "@/assets/screens/consulta-en-1080.webp";
 import fiscal from "@/assets/screens/fiscal.webp";
 import fiscal720 from "@/assets/screens/fiscal-720.webp";
+import fiscal1080 from "@/assets/screens/fiscal-1080.webp";
 import fiscalEn from "@/assets/screens/fiscal-en.webp";
 import fiscalEn720 from "@/assets/screens/fiscal-en-720.webp";
+import fiscalEn1080 from "@/assets/screens/fiscal-en-1080.webp";
 import { useLang } from "@/lib/i18n";
 import type { Lang } from "@/lib/i18n";
 import BrowserFrame from "./BrowserFrame";
 
-// Ancho de la captura: en lg+ la columna mide ~510 px; abajo ocupa el panel menos sus márgenes.
-const SIZES = "(min-width: 1024px) 510px, calc(100vw - 98px)";
-const srcSet = (chica: string, grande: string) => `${chica} 720w, ${grande} 1440w`;
+// Ancho de la captura: en lg+ la columna mide ~510 px. Abajo ocupa el panel menos sus márgenes: el padding del
+// contenedor (px-6 desde 640 px, px-4 en celular), el del panel (p-8) y el borde del marco (1 px por lado).
+const SIZES = "(min-width: 1024px) 510px, (min-width: 640px) calc(100vw - 114px), calc(100vw - 98px)";
+// La de 1080 cubre las tabletas y los celulares de pantalla densa, que con solo 720 y 1440 bajaban la de 1440.
+const srcSet = (chica: string, media: string, grande: string) => `${chica} 720w, ${media} 1080w, ${grande} 1440w`;
 
 // Titular provisional mientras Steve elige.
 const textos = {
@@ -72,7 +84,7 @@ const modulos: Modulo[] = [
       items: ["Month, week and day views", "Drag to reschedule", "Hours and availability per provider", "Configurable appointment reasons"],
       alt: "Weekly view of the Nildu schedule, with appointments in two exam rooms for two providers",
     },
-    img: { src: { es: agenda, en: agendaEn }, srcSet: { es: srcSet(agenda720, agenda), en: srcSet(agendaEn720, agendaEn) }, width: 1440, height: 778 },
+    img: { src: { es: agenda, en: agendaEn }, srcSet: { es: srcSet(agenda720, agenda1080, agenda), en: srcSet(agendaEn720, agendaEn1080, agendaEn) }, width: 1440, height: 778 },
   },
   {
     id: "expediente",
@@ -90,7 +102,7 @@ const modulos: Modulo[] = [
       items: ["Vaccines with lot and next dose", "Deworming and medications", "Weight curve and attached files", "Vaccines given at another practice"],
       alt: "A visit in Nildu with vital signs and their normal range",
     },
-    img: { src: { es: consulta, en: consultaEn }, srcSet: { es: srcSet(consulta720, consulta), en: srcSet(consultaEn720, consultaEn) }, width: 1440, height: 778 },
+    img: { src: { es: consulta, en: consultaEn }, srcSet: { es: srcSet(consulta720, consulta1080, consulta), en: srcSet(consultaEn720, consultaEn1080, consultaEn) }, width: 1440, height: 778 },
   },
   {
     id: "facturacion",
@@ -115,7 +127,7 @@ const modulos: Modulo[] = [
       nota: "Electronic invoicing with Hacienda is only available in Costa Rica. In other countries you can invoice from Nildu, but the documents have no tax validity.",
       alt: "Order at the till with the option to issue an electronic invoice or receipt",
     },
-    img: { src: { es: fiscal, en: fiscalEn }, srcSet: { es: srcSet(fiscal720, fiscal), en: srcSet(fiscalEn720, fiscalEn) }, width: 1440, height: 778 },
+    img: { src: { es: fiscal, en: fiscalEn }, srcSet: { es: srcSet(fiscal720, fiscal1080, fiscal), en: srcSet(fiscalEn720, fiscalEn1080, fiscalEn) }, width: 1440, height: 778 },
   },
   {
     id: "inventario",
@@ -133,7 +145,7 @@ const modulos: Modulo[] = [
       items: ["Reorder, expiring and expired alerts", "Stock ledger per item", "CABYS code and tax per item", "Catalog import from Excel"],
       alt: "Stock in Nildu with reorder warnings and a lot about to expire",
     },
-    img: { src: { es: inventario, en: inventarioEn }, srcSet: { es: srcSet(inventario720, inventario), en: srcSet(inventarioEn720, inventarioEn) }, width: 1440, height: 692 },
+    img: { src: { es: inventario, en: inventarioEn }, srcSet: { es: srcSet(inventario720, inventario1080, inventario), en: srcSet(inventarioEn720, inventarioEn1080, inventarioEn) }, width: 1440, height: 692 },
   },
   {
     id: "tareas",
@@ -151,7 +163,7 @@ const modulos: Modulo[] = [
       items: ["Status columns: drag the cards", "Owners, priority and labels", "Linked to a client or a patient", "Comments and change history"],
       alt: "Nildu task board with To do, In progress and Done columns",
     },
-    img: { src: { es: tareas, en: tareasEn }, srcSet: { es: srcSet(tareas720, tareas), en: srcSet(tareasEn720, tareasEn) }, width: 1440, height: 490 },
+    img: { src: { es: tareas, en: tareasEn }, srcSet: { es: srcSet(tareas720, tareas1080, tareas), en: srcSet(tareasEn720, tareasEn1080, tareasEn) }, width: 1440, height: 490 },
   },
   {
     id: "reportes",

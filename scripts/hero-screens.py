@@ -48,15 +48,19 @@ def main() -> None:
         target = out_dir / dst
         img.save(target, "WEBP", quality=quality, method=6)
         print(f"{dst}: {img.width}x{img.height}, {target.stat().st_size // 1024} KB")
-        # Versión de 720 para el srcset de los módulos: en celular la captura se ve a ~550 px.
-        if out_dir != OUT and img.width > 720:
-            small = out_dir / dst.replace(".webp", "-720.webp")
-            img.resize((720, round(img.height * 720 / img.width)), Image.LANCZOS).save(small, "WEBP", quality=quality, method=6)
+        # Versiones de 720 y 1080 para el srcset de los módulos: en celular la captura se ve a ~550 px y en
+        # tabletas o pantallas densas a ~700-1000 px (SIZES en ModulesSection.tsx).
+        if out_dir != OUT:
+            for small_width in (720, 1080):
+                if img.width > small_width:
+                    small = out_dir / dst.replace(".webp", f"-{small_width}.webp")
+                    img.resize((small_width, round(img.height * small_width / img.width)), Image.LANCZOS).save(small, "WEBP", quality=quality, method=6)
 
-    # Versiones más angostas del hero para el srcset: los celulares no bajan la de 1700.
+    # Versiones más angostas del hero para el srcset: los celulares no bajan la de 1700, y la de 1040 es la que
+    # se ve en escritorio. Los anchos tienen que ser los de HERO_WIDTHS en src/lib/hero.ts.
     for name in ("hero", "hero-en"):
         hero = Image.open(OUT / f"{name}.webp")
-        for width in (800, 1200):
+        for width in (800, 1040, 1200):
             target = OUT / f"{name}-{width}.webp"
             hero.resize((width, round(hero.height * width / hero.width)), Image.LANCZOS).save(target, "WEBP", quality=84, method=6)
             print(f"{target.name}: {target.stat().st_size // 1024} KB")
