@@ -43,7 +43,7 @@ const HeroSection = () => {
       <div className="mx-auto max-w-page px-4 pb-20 pt-10 sm:px-6 md:pt-14">
         <div className="mx-auto max-w-4xl text-center">
           {/* Título corto: dos líneas en todos los anchos, para que la captura del portal suba al primer pantallazo. */}
-          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-[4.5rem]">
+          <h1 className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl sm:leading-none lg:text-[4.5rem]">
             <HeroTitle />
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink">{t.bajada}</p>

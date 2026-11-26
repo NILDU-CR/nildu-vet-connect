@@ -57,7 +57,7 @@ const Navbar = () => {
           <a href="https://nildu.app" className={entrar}>
             {t.entrar}
           </a>
-          <a href="#contacto" className={`${primaryButton} !px-4 !py-2 text-sm`}>
+          <a href="#contacto" className={`${primaryButton} px-4! py-2! text-sm`}>
             {t.demo}
           </a>
         </div>

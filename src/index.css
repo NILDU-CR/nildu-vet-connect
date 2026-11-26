@@ -1,6 +1,40 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Los colores de Nildu, junto a la paleta por defecto de Tailwind (antes en tailwind.config.ts).
+   Los colores de los puntos del logo están más abajo (--punto-celeste, --punto-naranja, --punto-violeta). */
+@theme {
+  --color-navy: #172c44;
+  --color-ink: #4b5a6b;
+  --color-line: #d5dae1;
+  --color-mist: #f6f7f9;
+  --color-brand: #52067e;
+  --color-brand-hover: #6e1f99;
+  --color-cta: #0cdbf3;
+  --color-cta-hover: #0ac2d8;
+  /* El rojo de los errores del formulario: el red-700 de Tailwind 3. El de Tailwind 4 (oklch) es otro tono. */
+  --color-red-700: #b91c1c;
+
+  --font-sans: "Poppins", system-ui, sans-serif;
+
+  --container-page: 1120px;
+}
+
+/* Lo que Tailwind 4 cambió en sus estilos base respecto de Tailwind 3, para que el sitio se vea y se comporte igual:
+   el borde sin color era gris (hoy es currentColor) y los botones tenían cursor de mano. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: #e5e7eb;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
 
 /* Poppins servida desde el sitio (subset latin de Google Fonts), sin pedir nada a Google.
    Los archivos van en public/fonts con nombre fijo para que index.html los pueda precargar. */
@@ -54,8 +88,8 @@
 }
 
 /* Colores de los tres puntos del logo, tomados de los píxeles de src/assets/brand/wordmark.png: el de la "i"
-   (celeste), el de la "U" (anaranjado) y el de la "N" (violeta). Van aquí, y no en tailwind.config.ts, para que un
-   cambio se vea sin reiniciar pnpm dev. */
+   (celeste), el de la "U" (anaranjado) y el de la "N" (violeta). Van aparte del @theme porque no son clases de
+   Tailwind: los usan las reglas de abajo. */
 :root {
   --punto-celeste: #0bdbf2;
   --punto-naranja: #fd9602;

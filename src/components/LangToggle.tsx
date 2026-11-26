@@ -19,7 +19,7 @@ const LangToggle = () => {
           aria-label={i.nombre}
           aria-pressed={lang === i.lang}
           onClick={() => setLang(i.lang)}
-          className={`rounded px-2 py-1 ${lang === i.lang ? "bg-navy text-white" : "text-ink hover:text-navy"}`}
+          className={`rounded-sm px-2 py-1 ${lang === i.lang ? "bg-navy text-white" : "text-ink hover:text-navy"}`}
         >
           {i.corto}
         </button>

@@ -39,10 +39,10 @@ const ComingSoon = () => {
   }, [t.pestana]);
 
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center bg-gradient-to-b from-white to-mist px-4 py-10 text-center sm:px-6 sm:py-16">
+    <main className="flex min-h-dvh flex-col items-center justify-center bg-linear-to-b/srgb from-white to-mist px-4 py-10 text-center sm:px-6 sm:py-16">
       <img src={wordmark} alt="Nildu" width={241} height={84} className="h-9 w-auto sm:h-12" />
 
-      <h1 className="titulo-proximamente mt-6 pb-2 text-[clamp(2.25rem,12.4vw,4.5rem)] font-semibold leading-tight tracking-tight sm:mt-10 sm:text-7xl lg:text-8xl">
+      <h1 className="titulo-proximamente mt-6 pb-2 text-[clamp(2.25rem,12.4vw,4.5rem)] font-semibold leading-tight tracking-tight sm:mt-10 sm:text-7xl sm:leading-none lg:text-8xl">
         {t.titulo}
       </h1>
       {/* Los tres puntos del logo (celeste, violeta y anaranjado) saltan uno tras otro, como algo que está por llegar;
@@ -53,14 +53,14 @@ const ComingSoon = () => {
         <span className="h-3 w-3 rounded-full" />
       </div>
 
-      <h2 className="mt-8 max-w-3xl text-balance text-[1.75rem] font-semibold leading-tight tracking-tight sm:mt-10 sm:text-5xl">
+      <h2 className="mt-8 max-w-3xl text-balance text-[1.75rem] font-semibold leading-tight tracking-tight sm:mt-10 sm:text-5xl sm:leading-none">
         <HeroTitle />
       </h2>
-      <p className="mt-4 max-w-2xl text-pretty leading-relaxed text-ink sm:mt-6 sm:text-lg">{HERO_BAJADA[lang]}</p>
+      <p className="mt-4 max-w-2xl text-pretty leading-relaxed text-ink sm:mt-6 sm:text-lg sm:leading-7">{HERO_BAJADA[lang]}</p>
 
       <Countdown className="mt-8 sm:mt-10" />
 
-      <p className="mt-6 max-w-xl text-pretty text-sm leading-relaxed text-ink sm:mt-10 sm:text-base">{t.nota}</p>
+      <p className="mt-6 max-w-xl text-pretty text-sm leading-relaxed text-ink sm:mt-10 sm:text-base sm:leading-6">{t.nota}</p>
       {/* En celular el botón ocupa el ancho, hasta 24 rem: más fácil de tocar. */}
       <a href={`mailto:${correoInfo}`} className={`${primaryButton} mt-5 w-full max-w-sm sm:mt-6 sm:w-auto`}>
         {t.escribir}

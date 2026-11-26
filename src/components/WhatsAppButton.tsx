@@ -37,7 +37,7 @@ const WhatsAppButton = () => {
       title={t.etiqueta}
       aria-hidden={oculto || undefined}
       tabIndex={oculto ? -1 : undefined}
-      className={`fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_6px_20px_rgba(23,44,68,0.3)] transition-[opacity,transform] duration-200 hover:scale-105 motion-reduce:transition-none sm:bottom-5 sm:right-5 sm:h-14 sm:w-14 ${
+      className={`fixed bottom-4 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_6px_20px_rgba(23,44,68,0.3)] transition-[opacity,translate,scale] duration-200 hover:scale-105 motion-reduce:transition-none sm:bottom-5 sm:right-5 sm:h-14 sm:w-14 ${
         oculto ? "pointer-events-none translate-y-3 opacity-0" : ""
       }`}
     >

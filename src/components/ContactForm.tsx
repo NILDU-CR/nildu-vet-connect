@@ -18,7 +18,7 @@ const inicial: LeadFields = { nombre: "", apellido: "", correo: "", telefono: ""
 const accessKey = import.meta.env.VITE_WEB3FORMS_KEY ?? "";
 
 const enlace = "font-medium text-brand underline underline-offset-2";
-const campoClase = "mt-1 w-full rounded-md border border-ink/70 bg-white px-3 py-2 text-navy focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand";
+const campoClase = "mt-1 w-full rounded-md border border-ink/70 bg-white px-3 py-2 text-navy focus:border-brand focus:outline-hidden focus:ring-1 focus:ring-brand";
 
 const textos = {
   es: {
@@ -206,7 +206,7 @@ const ContactForm = ({ plan }: { plan: PlanElegido | null }) => {
         </div>
 
         {status === "ok" ? (
-          <p ref={okRef} tabIndex={-1} role="status" className="self-start rounded-lg border border-line bg-white p-6 focus:outline-none">
+          <p ref={okRef} tabIndex={-1} role="status" className="self-start rounded-lg border border-line bg-white p-6 focus:outline-hidden">
             {t.ok}
           </p>
         ) : !accessKey ? (
